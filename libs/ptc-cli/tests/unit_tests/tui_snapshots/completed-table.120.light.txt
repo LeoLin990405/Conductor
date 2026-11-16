@@ -1,0 +1,40 @@
+❯ Show the adapter table.
+
+✔ Done
+Adapters in the registry
+
+Name    Class
+─────────────
+dsh     DeepSeek
+doubao  DoubaoArk
+
+共 2 个注册名，未改任何文件。 The registered adapter names stay alphabetical across the native registry today. 请把注
+册表里的适配器名字逐项核对清楚，确认没有遗漏，然后再告诉我下一步该怎么处理。 done and registry.py see the note
+(https://example.com/note).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                                       shift+enter newline · alt+m mode

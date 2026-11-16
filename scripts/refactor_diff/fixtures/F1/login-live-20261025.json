@@ -1,0 +1,691 @@
+{
+  "flow": "F1",
+  "revision": "live-m2-20261025",
+  "app_revision": "12d17232",
+  "captured_at": "2026-10-24T17:51:11+00:00",
+  "synthetic": false,
+  "http": [
+    {
+      "method": "GET",
+      "path": "/api/v1/oauth/providers",
+      "status": 200,
+      "request": {
+        "accept": "application/json"
+      },
+      "response": {
+        "body": {
+          "providers": [
+            {
+              "id": "codex-oauth",
+              "display_name": "ChatGPT Codex",
+              "display_name_en": "ChatGPT Codex",
+              "brand": "openai",
+              "region": "intl",
+              "kind": "device",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "openai",
+              "website_url": "https://platform.openai.com/api-keys",
+              "models": [],
+              "order": 10
+            },
+            {
+              "id": "claude-oauth",
+              "display_name": "Claude 订阅登录",
+              "display_name_en": "Claude subscription",
+              "brand": "anthropic",
+              "region": "intl",
+              "kind": "paste",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "anthropic",
+              "website_url": "https://console.anthropic.com/settings/keys",
+              "models": [],
+              "order": 10
+            },
+            {
+              "id": "grok-oauth",
+              "display_name": "Grok 订阅登录",
+              "display_name_en": "Grok subscription",
+              "brand": "xai",
+              "region": "intl",
+              "kind": "device",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "xai",
+              "website_url": "https://console.x.ai",
+              "models": [],
+              "order": 10
+            },
+            {
+              "id": "gemini-oauth",
+              "display_name": "Gemini 订阅登录",
+              "display_name_en": "Gemini subscription",
+              "brand": "gemini",
+              "region": "intl",
+              "kind": "paste",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "gemini",
+              "website_url": "https://aistudio.google.com/apikey",
+              "models": [],
+              "order": 10
+            },
+            {
+              "id": "kimi-oauth",
+              "display_name": "Kimi 订阅登录",
+              "display_name_en": "Kimi subscription",
+              "brand": "moonshot",
+              "region": "cn",
+              "kind": "device",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "moonshot-coding",
+              "website_url": "https://www.kimi.com/code/",
+              "models": [
+                "kimi-k3-oauth"
+              ],
+              "order": 20
+            },
+            {
+              "id": "z-ai-cn-oauth",
+              "display_name": "智谱订阅登录",
+              "display_name_en": "Zhipu subscription",
+              "brand": "z-ai-cn",
+              "region": "cn",
+              "kind": "redirect",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "z-ai-cn-coding",
+              "website_url": "https://bigmodel.cn",
+              "models": [
+                "glm-5.3-cn-oauth"
+              ],
+              "order": 20
+            },
+            {
+              "id": "z-ai-oauth",
+              "display_name": "Z.ai 订阅登录",
+              "display_name_en": "Z.ai subscription",
+              "brand": "z-ai",
+              "region": "intl",
+              "kind": "redirect",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "z-ai-coding",
+              "website_url": "https://z.ai",
+              "models": [
+                "glm-5.3-oauth"
+              ],
+              "order": 20
+            },
+            {
+              "id": "mimo-oauth",
+              "display_name": "MiMo 订阅登录",
+              "display_name_en": "MiMo subscription",
+              "brand": "mimo",
+              "region": "cn",
+              "kind": "paste",
+              "login_supported": true,
+              "unavailable_reason": null,
+              "unavailable_reason_en": null,
+              "api_key_provider": "mimo",
+              "website_url": "https://platform.xiaomimimo.com/token-plan",
+              "models": [
+                "mimo-v2.6-flash-oauth",
+                "mimo-v2.6-pro-oauth"
+              ],
+              "order": 20
+            },
+            {
+              "id": "dashscope",
+              "display_name": "通义千问 / 百炼",
+              "display_name_en": "Qwen (DashScope)",
+              "brand": "dashscope",
+              "region": "cn",
+              "kind": "api_key_only",
+              "login_supported": false,
+              "unavailable_reason": "Qwen Code OAuth 免费额度已于 2026-04-15 停止（qwen-code 0.25.1 内提示），仅提供 API Key / Token Plan Key 接入。",
+              "unavailable_reason_en": "Qwen Code's OAuth free quota ended on 2026-04-15 (shown in qwen-code 0.25.1); only API key / Token Plan key access remains.",
+              "api_key_provider": "dashscope",
+              "website_url": "https://bailian.console.aliyun.com/",
+              "models": [],
+              "order": 30
+            },
+            {
+              "id": "minimax",
+              "display_name": "MiniMax",
+              "display_name_en": "MiniMax",
+              "brand": "minimax",
+              "region": "cn",
+              "kind": "api_key_only",
+              "login_supported": false,
+              "unavailable_reason": "官方 CLI 登录基于 API Key（mmx auth login --api-key），不提供账号 OAuth。",
+              "unavailable_reason_en": "The official CLI signs in with an API key (mmx auth login --api-key); no account OAuth is offered.",
+              "api_key_provider": "minimax",
+              "website_url": "https://platform.minimaxi.com/",
+              "models": [],
+              "order": 30
+            },
+            {
+              "id": "stepfun",
+              "display_name": "阶跃星辰 StepFun",
+              "display_name_en": "StepFun",
+              "brand": "stepfun",
+              "region": "cn",
+              "kind": "api_key_only",
+              "login_supported": false,
+              "unavailable_reason": "官方平台仅提供 API Key / Step Plan Key 接入。",
+              "unavailable_reason_en": "The official platform provides API keys / Step Plan keys only.",
+              "api_key_provider": "stepfun",
+              "website_url": "https://platform.stepfun.com/",
+              "models": [],
+              "order": 30
+            },
+            {
+              "id": "doubao-plan",
+              "display_name": "豆包 / 火山方舟 ARK",
+              "display_name_en": "Doubao / Volcengine Ark",
+              "brand": "volcengine",
+              "region": "cn",
+              "kind": "api_key_only",
+              "login_supported": false,
+              "unavailable_reason": "火山方舟 ARK 使用 API Key / AK-SK 接入，不提供第三方账号 OAuth。",
+              "unavailable_reason_en": "Volcengine Ark uses API keys / AK-SK; no third-party account OAuth is offered.",
+              "api_key_provider": "doubao-plan",
+              "website_url": "https://console.volcengine.com/ark",
+              "models": [],
+              "order": 30
+            },
+            {
+              "id": "deepseek",
+              "display_name": "DeepSeek",
+              "display_name_en": "DeepSeek",
+              "brand": "deepseek",
+              "region": "cn",
+              "kind": "api_key_only",
+              "login_supported": false,
+              "unavailable_reason": "仅提供 API Key 接入。",
+              "unavailable_reason_en": "API key access only.",
+              "api_key_provider": "deepseek",
+              "website_url": "https://platform.deepseek.com/",
+              "models": [],
+              "order": 30
+            }
+          ]
+        },
+        "content_type": "application/json"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/oauth/kimi/status",
+      "status": 200,
+      "request": {
+        "accept": "application/json"
+      },
+      "response": {
+        "body": {
+          "connected": false,
+          "account_id": null,
+          "email": null,
+          "plan_type": null
+        },
+        "content_type": "application/json"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me/api-keys",
+      "status": 200,
+      "request": {
+        "accept": "application/json"
+      },
+      "response": {
+        "body": {
+          "byok_enabled": false,
+          "providers": [
+            {
+              "provider": "codex-oauth",
+              "display_name": "ChatGPT Codex",
+              "access_type": "oauth",
+              "brand_key": "openai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "openai",
+              "display_name": "OpenAI",
+              "access_type": "api_key",
+              "brand_key": "openai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "claude-oauth",
+              "display_name": "Claude (OAuth)",
+              "access_type": "oauth",
+              "brand_key": "anthropic",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "anthropic",
+              "display_name": "Anthropic",
+              "access_type": "api_key",
+              "brand_key": "anthropic",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "gemini-oauth",
+              "display_name": "Gemini (Google 登录)",
+              "access_type": "oauth",
+              "brand_key": "gemini",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "gemini",
+              "display_name": "Gemini",
+              "access_type": "api_key",
+              "brand_key": "gemini",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "dashscope",
+              "display_name": "DashScope (Qwen)",
+              "access_type": "api_key",
+              "brand_key": "dashscope",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "dashscope-intl",
+              "display_name": "DashScope (Intl)",
+              "access_type": "api_key",
+              "brand_key": "dashscope",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "volcengine",
+              "display_name": "Doubao",
+              "access_type": "api_key",
+              "brand_key": "volcengine",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "doubao-coding",
+              "display_name": "Doubao",
+              "access_type": "coding_plan",
+              "brand_key": "volcengine",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "doubao-plan",
+              "display_name": "Doubao (ARK Plan)",
+              "access_type": "coding_plan",
+              "brand_key": "volcengine",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "moonshot-coding",
+              "display_name": "Moonshot (Kimi)",
+              "access_type": "coding_plan",
+              "brand_key": "moonshot",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "kimi-oauth",
+              "display_name": "Kimi (订阅登录)",
+              "access_type": "oauth",
+              "brand_key": "moonshot",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "moonshot",
+              "display_name": "Moonshot (Kimi)",
+              "access_type": "api_key",
+              "brand_key": "moonshot",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai-cn",
+              "display_name": "Zhipu AI",
+              "access_type": "api_key",
+              "brand_key": "z-ai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai-coding",
+              "display_name": "Zhipu AI",
+              "access_type": "coding_plan",
+              "brand_key": "z-ai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai-cn-coding",
+              "display_name": "Zhipu AI",
+              "access_type": "coding_plan",
+              "brand_key": "z-ai-cn",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai-oauth",
+              "display_name": "Z.ai (订阅登录)",
+              "access_type": "oauth",
+              "brand_key": "z-ai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai-cn-oauth",
+              "display_name": "智谱 (订阅登录)",
+              "access_type": "oauth",
+              "brand_key": "z-ai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "z-ai",
+              "display_name": "Zhipu AI",
+              "access_type": "api_key",
+              "brand_key": "z-ai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "minimax-coding",
+              "display_name": "MiniMax",
+              "access_type": "coding_plan",
+              "brand_key": "minimax",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "minimax",
+              "display_name": "MiniMax",
+              "access_type": "api_key",
+              "brand_key": "minimax",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "stepfun-plan",
+              "display_name": "StepFun (阶跃星辰)",
+              "access_type": "coding_plan",
+              "brand_key": "stepfun",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "stepfun",
+              "display_name": "StepFun (阶跃星辰)",
+              "access_type": "api_key",
+              "brand_key": "stepfun",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "mimo-oauth",
+              "display_name": "MiMo（登录）",
+              "access_type": "coding_plan",
+              "brand_key": "mimo",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "mimo",
+              "display_name": "Xiaomi MiMo (小米)",
+              "access_type": "coding_plan",
+              "brand_key": "mimo",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "deepinfra",
+              "display_name": "OpenRouter",
+              "access_type": "api_key",
+              "brand_key": "openrouter",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "openrouter",
+              "display_name": "OpenRouter",
+              "access_type": "api_key",
+              "brand_key": "openrouter",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "deepseek",
+              "display_name": "DeepSeek",
+              "access_type": "api_key",
+              "brand_key": "deepseek",
+              "has_key": true,
+              "masked_key": "(server)",
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "groq",
+              "display_name": "Groq",
+              "access_type": "api_key",
+              "brand_key": "groq",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "cerebras",
+              "display_name": "Cerebras",
+              "access_type": "api_key",
+              "brand_key": "cerebras",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "lm-studio",
+              "display_name": "LM Studio",
+              "access_type": "local",
+              "brand_key": "lm-studio",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "vllm",
+              "display_name": "vLLM",
+              "access_type": "local",
+              "brand_key": "vllm",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "ollama",
+              "display_name": "Ollama",
+              "access_type": "local",
+              "brand_key": "ollama",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "grok-oauth",
+              "display_name": "Grok (xAI 登录)",
+              "access_type": "oauth",
+              "brand_key": "xai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            },
+            {
+              "provider": "xai",
+              "display_name": "xAI Grok",
+              "access_type": "api_key",
+              "brand_key": "xai",
+              "has_key": false,
+              "masked_key": null,
+              "base_url": null,
+              "is_custom": false
+            }
+          ]
+        },
+        "content_type": "application/json"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/system/readiness",
+      "status": 200,
+      "request": {
+        "accept": "application/json"
+      },
+      "response": {
+        "body": {
+          "status": "ready",
+          "checked_at": "2026-10-24T17:51:11.565558Z",
+          "verification": "local_checks_only",
+          "checks": [
+            {
+              "id": "database",
+              "status": "ok",
+              "required": true,
+              "summary": "Dependency responded to a read-only check.",
+              "verification": "observed"
+            },
+            {
+              "id": "checkpointer",
+              "status": "ok",
+              "required": true,
+              "summary": "Dependency responded to a read-only check.",
+              "verification": "observed"
+            },
+            {
+              "id": "redis",
+              "status": "ok",
+              "required": true,
+              "summary": "Dependency responded to a read-only check.",
+              "verification": "observed"
+            },
+            {
+              "id": "mcp",
+              "status": "ok",
+              "required": true,
+              "summary": "Built-in MCP discovery state; remote tool calls were not tested.",
+              "verification": "observed"
+            },
+            {
+              "id": "sandbox",
+              "status": "ok",
+              "required": true,
+              "summary": "Sandbox provider configuration is present.",
+              "verification": "configuration_only"
+            },
+            {
+              "id": "sandbox_session",
+              "status": "unknown",
+              "required": false,
+              "summary": "No ready Home sandbox session is currently observed in this worker.",
+              "verification": "not_checked"
+            },
+            {
+              "id": "primary_model",
+              "status": "ok",
+              "required": true,
+              "summary": "A deployment credential is configured; model access was not tested.",
+              "verification": "configuration_only"
+            }
+          ]
+        },
+        "content_type": "application/json"
+      }
+    }
+  ],
+  "sse": [],
+  "db": [],
+  "ui": null
+}

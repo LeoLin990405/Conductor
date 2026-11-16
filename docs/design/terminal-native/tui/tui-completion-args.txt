@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  palette › approve ▏
+  ▸ 7f3a91c2      ◆ Needs you  Ship the terminal-native review queue screen
+    7f9e02b1      ◆ Needs you  Fix the narrow layout
+  2 waiting for a person · tab or enter inserts the id
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                                tab accept · ctrl+down list · esc close · alt+n nav

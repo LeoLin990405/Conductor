@@ -1,0 +1,314 @@
+/*
+ * S18 · /agents (AgentsPage + FleetSkillsPanel) in the terminal-native system.
+ *
+ * Dense mono rows: state glyph + word, name, meta, actions. Every colour is a
+ * token custom property from styles/terminal-native.css (no literal hex);
+ * geometry stays at or under radius.card; no transitions or animations, so
+ * reduced motion has nothing to stop. The keyboard ring comes from the global
+ * focus-defaults layer in tokens.css; nothing here touches `outline`.
+ */
+
+.ag-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+/* ── head ─────────────────────────────────────────────────────────── */
+.ag-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-hairline) solid var(--ink-rule);
+}
+.ag-head-copy { min-width: 0; flex: 1 1 320px; }
+.ag-head h1 {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--size-prose);
+  font-weight: 600;
+  color: var(--ink-fg);
+}
+.ag-lede {
+  margin: 0;
+  font-family: var(--font-prose);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+.ag-statusline {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+.ag-statusline b { color: var(--ink-fg); font-weight: var(--weight-label); }
+
+.ag-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ── sections ─────────────────────────────────────────────────────── */
+.ag-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.ag-section-title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  font-weight: var(--weight-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.ag-subtitle {
+  margin: var(--space-3) 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  font-weight: var(--weight-label);
+  color: var(--ink-fg);
+}
+.ag-count { color: var(--ink-muted); font-weight: var(--weight-value); }
+
+/* ── rows ─────────────────────────────────────────────────────────── */
+.ag-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-card);
+  background: var(--surface-canvas);
+}
+.ag-row {
+  display: grid;
+  grid-template-columns: 9ch minmax(10ch, 18ch) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  min-height: 32px;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  color: var(--ink-fg);
+}
+.ag-row + .ag-row { border-top: var(--border-hairline) solid var(--ink-faint); }
+.ag-rows--plain .ag-row { grid-template-columns: minmax(10ch, 24ch) minmax(0, 1fr); }
+
+.ag-name {
+  min-width: 0;
+  font-weight: var(--weight-label);
+  overflow-wrap: anywhere;
+}
+.ag-meta {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+.ag-dim { color: var(--ink-muted); }
+.ag-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.ag-run-state { color: var(--ink-fg); }
+.ag-run-detail {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ag-step { color: var(--ink-fg); }
+.ag-heartbeat { color: var(--ink-muted); }
+.ag-stall { color: var(--ink-error); }
+.ag-field-label { color: var(--ink-muted); }
+
+/* ── state glyph + word ───────────────────────────────────────────── */
+.ag-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  white-space: nowrap;
+}
+.ag-state-word { color: var(--ink-muted); }
+.ag-state--online .ag-state-glyph { color: var(--ink-ok); }
+.ag-state--busy .ag-state-glyph { color: var(--ink-tempo); }
+.ag-state--offline .ag-state-glyph { color: var(--ink-muted); }
+.ag-state--stalled .ag-state-glyph,
+.ag-state--stalled .ag-state-word { color: var(--ink-error); }
+
+/* ── square tokens (tags, token code) ─────────────────────────────── */
+.ag-tag {
+  display: inline-block;
+  padding: 0 var(--space-1);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+  color: var(--ink-muted);
+}
+.ag-tag--ok { color: var(--ink-ok); }
+.ag-tag--idle { color: var(--ink-muted); }
+.ag-tag--bad { color: var(--ink-error); }
+.ag-code,
+.ag-token {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--surface-elevated);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  color: var(--ink-fg);
+  overflow-wrap: anywhere;
+}
+.ag-token-line {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  overflow-wrap: anywhere;
+}
+
+/* ── controls ─────────────────────────────────────────────────────── */
+.ag-btn {
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink-fg);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ag-btn:hover:not(:disabled) { border-color: var(--ink-fg); }
+.ag-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ag-btn--primary {
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
+  color: var(--ink-on-accent);
+}
+.ag-btn--primary:hover:not(:disabled) { border-color: var(--ink-fg); }
+.ag-btn--danger { color: var(--ink-error); }
+
+.ag-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-baton);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ag-link:disabled { color: var(--ink-muted); text-decoration: none; cursor: not-allowed; }
+
+.ag-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+.ag-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+}
+.ag-inline-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+}
+.ag-input {
+  min-height: 28px;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-control);
+  background: var(--surface-page);
+  color: var(--ink-fg);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+}
+.ag-input--num { width: 7ch; }
+
+.ag-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-inline-start: var(--border-focus) solid var(--ink-hold);
+  border-radius: var(--radius-card);
+  background: var(--surface-canvas);
+}
+.ag-alerts .ag-subtitle { margin: 0; }
+.ag-alert {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  color: var(--ink-hold);
+  overflow-wrap: anywhere;
+}
+
+/* ── fleet skills panel ───────────────────────────────────────────── */
+.ag-fleet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.ag-fleet-agent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+.ag-fleet-agent-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  font-weight: var(--weight-label);
+  color: var(--ink-fg);
+}
+
+/* ── narrow: stack each row instead of dropping columns ───────────── */
+@media (max-width: 720px) {
+  .ag-row,
+  .ag-rows--plain .ag-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-2) var(--space-3);
+  }
+  .ag-row-actions { justify-content: flex-start; }
+  .ag-run-detail { grid-column: auto; }
+  .ag-inline-field { flex-wrap: wrap; }
+  .ag-form { flex-direction: column; align-items: stretch; }
+  .ag-form .ag-btn { align-self: flex-start; }
+}

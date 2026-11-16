@@ -1,0 +1,482 @@
+"""Which model a turn runs, and everything that follows from the answer.
+
+``resolve_llm_config`` sequences the stages: pick the model, resolve its
+tuning, load the user's context, gate their capabilities, and build the clients
+the turn will reach. Building a client is ``clients``; what a model name means
+is ``user_models``.
+"""
+
+from __future__ import annotations
+
+import asyncio
+from dataclasses import dataclass
+from typing import Any
+
+from src.server.contracts.agent_roles import AgentRole
+from ptc_agent.agent.subagent_registry.merge import turn_roster
+
+from src.llms.preferences import (
+    Tuning,
+    compaction_profile_for,
+    resolve_tuning,
+)
+from src.server.services.features import effective_flags_for_user
+from src.tools.web.fetch import fetch_llm_client_override, fetch_model_override
+from src.utils.concurrency import cancel_and_join
+
+from .availability import (
+    _MODEL_PREF_KEYS,
+    cleanup_stale_model_preferences,
+    drop_dead_models,
+    raise_byok_key_required,
+    raise_model_removed,
+)
+
+from . import logger
+
+from .capabilities import gate_capabilities
+from .clients import resolve_clients
+from .subagents import (
+    demote_clientless,
+    read_user_subagents,
+    resolve_user_subagents,
+    subagent_roles,
+)
+from . import user_models
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+_SLOT_MODEL_MAP = {
+    "primary": ("name", "preferred_model"),
+    "background": ("background", "preferred_background_model"),
+}
+
+
+def slot_model(llm: Any, slot: str) -> str:
+    """The model ``slot`` runs on ``llm``; an unset slot falls back to the main model."""
+    return getattr(llm, _SLOT_MODEL_MAP[slot][0], None) or llm.name
+
+
+# Saved models a turn reaches besides its own. The Background key is one only
+# on a primary turn, whose fetch inherits it. With no Background default saved,
+# the Background slot is the primary key on either turn (``saved_default_model``),
+# and that is the turn's own model either way, so never a role.
+_ROLE_PREF_KEYS = {
+    "primary": tuple(k for k in _MODEL_PREF_KEYS if k != "preferred_model"),
+    "background": tuple(
+        k
+        for k in _MODEL_PREF_KEYS
+        if k not in ("preferred_model", "preferred_background_model")
+    ),
+}
+
+
+#: Values of ``model_preference.background_follows``: what an unset Background
+#: default runs. Absent is ``primary``.
+BACKGROUND_FOLLOWS = frozenset({"primary", "deployment"})
+
+
+def saved_default_model(model_pref: dict, slot: str) -> str | None:
+    """The default the user saved for ``slot``; None runs the deployment's.
+
+    An unset Background default is the primary one, as Settings says ("Same as
+    Primary model"), unless the user chose Auto for it, which keeps the
+    deployment's Background model even beside a saved primary.
+    """
+    saved = model_pref.get(_SLOT_MODEL_MAP[slot][1])
+    if saved or slot != "background" or model_pref.get("background_follows") == "deployment":
+        return saved or None
+    return model_pref.get("preferred_model") or None
+
+
+def system_default_models() -> dict[str, str]:
+    """The deployment's default models, as the models API publishes them."""
+    from src.server.services.agent_config_state import get_agent_config
+
+    agent_config = get_agent_config()
+    llm = agent_config.llm if agent_config and agent_config.llm else None
+    return {
+        "default_model": llm.name if llm else "",
+        "background_model": (llm.background or "") if llm else "",
+    }
+
+
+# ---------------------------------------------------------------------------
+# Resolution stages. ``resolve_llm_config`` sequences these; each owns one
+# question and mutates the request-scoped config copy in place.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class ModelSelection:
+    """Which model this turn runs, and the ``LLMConfig`` field that named it."""
+
+    effective_model: str
+    model_field: str
+
+
+def select_model(
+    config, model_pref: dict, slot: str, request_model: str | None
+) -> ModelSelection:
+    """Settle this turn's model and the other slots that follow from it.
+
+    Priority is per-request > user preference > deployment default; slot picks
+    which config field and preference key that means (see ``_SLOT_MODEL_MAP``).
+    """
+    from src.config.runtime import LLMConfig
+
+    model_field, pref_key = _SLOT_MODEL_MAP[slot]
+    saved = saved_default_model(model_pref, slot)
+
+    if config.llm is None:
+        # Bootstrap when agent_config.yaml has llm: null. The user must have
+        # configured a model via the UI or a per-request param.
+        resolved_name = request_model or saved
+        if not resolved_name:
+            raise ValueError(
+                "No model configured. Set llm in agent_config.yaml or select a model in Settings."
+            )
+        config.llm = LLMConfig(
+            name=resolved_name if slot == "primary" else "placeholder",
+            background=(
+                resolved_name
+                if slot == "background"
+                else model_pref.get("preferred_background_model")
+            ),
+            compaction=(
+                model_pref.get("compaction_model") or model_pref.get("summarization_model")
+            ),
+            fetch=model_pref.get("fetch_model"),
+            fallback=model_pref.get("fallback_models"),
+        )
+        config.llm_client = None
+        logger.debug(f"[CHAT] No system default LLM; bootstrapped from user preferences: {resolved_name}")
+    elif request_model:
+        setattr(config.llm, model_field, request_model)
+        config.llm_client = None
+        logger.debug(f"[CHAT] Using per-request LLM model: {request_model}")
+    elif saved:
+        setattr(config.llm, model_field, saved)
+        config.llm_client = None
+        logger.debug(f"[CHAT] Using the saved {slot} default: {saved}")
+    else:
+        logger.debug(
+            f"[CHAT] No {pref_key} set, using system default: {slot_model(config.llm, slot)}"
+        )
+
+    # A primary turn never runs the Background model, but fetch defaults to it,
+    # so the user's Background default reaches ``llm.background`` here too, by
+    # the rule a Background turn runs on: an unset one is the saved primary.
+    if slot != "background" and (
+        background_default := saved_default_model(model_pref, "background")
+    ):
+        config.llm.background = background_default
+
+    # Both "compaction_model" (new) and "summarization_model" (legacy) map to
+    # the renamed ``compaction`` field; legacy is read so existing rows keep
+    # working. Order matters: legacy first, so the new key wins when both are set.
+    for other_key, config_field in (
+        ("summarization_model", "compaction"),
+        ("compaction_model", "compaction"),
+        ("fetch_model", "fetch"),
+    ):
+        user_val = model_pref.get(other_key)
+        if user_val:
+            setattr(config.llm, config_field, user_val)
+
+    # With no model picked for it, a summary runs on the model the turn runs.
+    # Written in, because ``compaction_name`` alone cannot tell a Background
+    # turn's model from the primary one.
+    if not config.llm.compaction:
+        config.llm.compaction = slot_model(config.llm, slot)
+
+    user_fallback = model_pref.get("fallback_models")
+    if user_fallback is not None:
+        config.llm.fallback = user_fallback
+
+    return ModelSelection(
+        effective_model=slot_model(config.llm, slot),
+        model_field=model_field,
+    )
+
+
+def apply_auto_model(config, selection, slot: str):
+    """Resolve an ``auto`` selection to a concrete model and seed its fallbacks.
+
+    The prompt-visible name stays "Auto" on the thread; every turn re-resolves,
+    so a chain entry that loses its key simply drops out of future runs.
+    """
+    from .auto_model import AUTO_MODEL, resolve_auto_model
+
+    if selection.effective_model != AUTO_MODEL:
+        return selection
+    resolved, chain = resolve_auto_model()
+    if not resolved:
+        return selection
+    if slot == "background":
+        config.llm.background = resolved
+    else:
+        config.llm.name = resolved
+    if config.llm.compaction == AUTO_MODEL or not config.llm.compaction:
+        config.llm.compaction = resolved
+    existing = [name for name in (config.llm.fallback or []) if name not in chain]
+    config.llm.fallback = chain + existing
+    logger.info("[CHAT] Auto model resolved to %s (fallbacks: %s)", resolved, chain)
+    return ModelSelection(effective_model=resolved, model_field=selection.model_field)
+
+
+async def load_user_context(
+    config, user_id: str, workspace_id: str | None, model_pref: dict
+) -> None:
+    """Per-user feature flags and skill tier, onto ``config`` in place.
+
+    Resolved once here so every build surface reads ``config.feature_enabled()``
+    instead of global state. ``workspace_id`` scopes the skill tier: workspace
+    rows shadow user rows and workspace disables apply; ``None`` (maintenance
+    paths) resolves the user tier alone.
+    """
+    from src.server.services.user_skills import load_user_skill_bundle
+
+    # Reuses this turn's prefs read; plan gates fetch the platform tier lazily
+    # inside the flag resolver, only when a plan feature exists.
+    overrides = model_pref.get("feature_overrides")
+    config.features = await effective_flags_for_user(
+        user_id, overrides if isinstance(overrides, dict) else {}
+    )
+
+    # One query + the prefs read above; a skill-less user costs a single
+    # indexed SELECT and sets nothing.
+    bundle = await load_user_skill_bundle(user_id, workspace_id)
+    config.user_skills = list(bundle.skills)
+    config.disabled_skills = bundle.disabled_builtins
+    config.user_skill_dir = bundle.dir
+    config.workspace_skill_dir = bundle.workspace_dir
+    config.skill_command_overrides = dict(bundle.command_overrides)
+
+
+def apply_compaction(config, tuning: Tuning, entry: dict[str, Any] | None) -> None:
+    """Apply the named compaction preset (aggressive/moderate/extended/relaxed).
+
+    The user's choice wins; failing that the model answers for itself, by
+    declaration or by the band its context window falls in. Only a model that
+    states no window keeps the YAML default, which is one number for every
+    model and so is right for almost none of them.
+    """
+    from src.config.runtime.agent import COMPACTION_PROFILES
+
+    profile = tuning.compaction_profile
+    if not isinstance(profile, str):
+        profile = compaction_profile_for(entry)
+    preset = COMPACTION_PROFILES.get(profile) if isinstance(profile, str) else None
+    if not preset:
+        return
+    for field, value in preset.items():
+        setattr(config.compaction, field, value)
+    config.compaction.profile = profile
+
+
+def apply_fetch_override(config) -> None:
+    """Propagate fetch model / client overrides from *config* into context vars.
+
+    A blank fetch means the turn's Background model, the same default
+    ``role_registry`` resolves a client for. Without the name override,
+    web_fetch would fall back to re-reading agent_config.yaml and miss the
+    user's own Background model.
+    """
+    fetch_client = config.subsidiary_llm_clients.get("fetch")
+    if fetch_client:
+        fetch_llm_client_override.set(fetch_client)
+    fetch_model = config.llm and config.llm.fetch_name
+    if fetch_model:
+        fetch_model_override.set(fetch_model)
+
+
+async def check_model_available(
+    config, user_id: str, model_pref: dict, effective_model: str,
+    request_model: str | None, *, is_byok: bool, scrub: bool = True,
+) -> bool:
+    """Fail loudly when this turn's model cannot be served; report whether the
+    name is user-defined.
+
+    Returns True for a custom model or a custom-provider slug, which the client
+    resolver needs to tell "no usable key" from "no client wanted yet".
+    """
+    # Classify via the single entry point. System and custom share a flat
+    # namespace (enforced by ``_validate_custom_models``), so one call answers
+    # the question for the entire downstream flow.
+    source, resolved_config = await user_models.classify_model(
+        user_id, effective_model, _pref_cache=model_pref
+    )
+    is_custom = source == user_models.ModelSource.CUSTOM
+    # ``is_custom_provider`` only matters when the model name didn't classify
+    # as a known custom model — catches the case where the user typed a
+    # custom *provider* slug as the model preference.
+    is_custom_provider = source == user_models.ModelSource.UNKNOWN and (
+        await user_models.get_custom_provider_config(
+            user_id, effective_model, _pref_cache=model_pref
+        )
+        is not None
+    )
+
+    # Custom model/provider requires BYOK. No silent fallback — raise a clear
+    # error so the frontend can show a CTA linking to Settings.
+    if (is_custom or is_custom_provider) and not is_byok:
+        raise_byok_key_required(effective_model)
+
+    # Stale-model recovery. Scrub prefs if the user's saved name is the
+    # culprit; raise a user-facing CTA either way. YAML-default UNKNOWN
+    # falls through so the downstream error surfaces the config bug.
+    if source == user_models.ModelSource.UNKNOWN and not is_custom_provider:
+        # Only the five scalar keys feed ``effective_model`` — fallback_models
+        # is resolved separately in ``_resolve_fallback_clients`` and never
+        # flows through here, so it's intentionally excluded from this
+        # attribution check (the scrub in ``cleanup_stale_model_preferences``
+        # still filters fallback_models once it fires).
+        if any(model_pref.get(k) == effective_model for k in _MODEL_PREF_KEYS):
+            removed = await cleanup_stale_model_preferences(user_id) if scrub else []
+            raise_model_removed(effective_model, removed)
+        elif request_model == effective_model:
+            raise_model_removed(effective_model, [])
+
+    if is_custom and resolved_config.get("input_modalities"):
+        config.input_modalities = resolved_config["input_modalities"]
+
+    return is_custom or is_custom_provider
+
+
+async def resolve_llm_config(
+    base_config,
+    user_id: str,
+    request_model: str | None,
+    is_byok: bool | None = None,
+    slot: str = "primary",
+    reasoning_effort: str | None = None,
+    fast_mode: bool | None = None,
+    thread_id: str | None = None,
+    *,
+    enabled_subagents: list[str] | None = None,
+    workspace_id: str | None = None,
+    user_facing: bool = True,
+    role: AgentRole = "generalist",
+):
+    """Resolve the final LLM config for one turn: which model runs, how it is
+    tuned, what it is allowed to reach, and every client it can call.
+
+    ``is_byok=None`` self-resolves via ``is_byok_active`` (guards future entry
+    points; all current callers pass it explicitly). ``enabled_subagents``
+    narrows the user's subagents to the request's list; ``None`` is all of
+    them, and ``role`` is the agent the turn builds, whose subagents alone get
+    clients. ``user_facing=False`` is a call no user is waiting on (a title, memo
+    metadata): nobody would see the ``model_removed`` CTA, so its own saved
+    model is read like a role and nothing is scrubbed.
+    """
+    # The user's own subagents, for a build that compiles any. Their reads
+    # depend on nothing below, so they start now and the merge waits for them.
+    reads = (
+        asyncio.create_task(read_user_subagents(user_id, base_config.subagents))
+        if slot == "primary" and user_facing
+        else None
+    )
+    try:
+        if is_byok is None:
+            from src.server.database.api_keys import is_byok_active
+
+            is_byok = await is_byok_active(user_id)
+
+        # One copy up front. Everything below mutates the request's own config, so
+        # nothing has to reason about whether it is still aliased to the caller's.
+        config = base_config.model_copy(deep=True)
+        saved_pref = await user_models.get_model_preference(user_id)
+
+        # A role or fallback saved as a model this manifest lacks resolves as if
+        # never set: without this a platform user's role reaches the name-based
+        # factory and every turn fails at graph build. The view is read-only.
+        # "Absent here" is not "retired" (a rollback or an older worker knows fewer
+        # models), so nothing is deleted on the strength of it. The turn's own key
+        # is not a role; a dead one there is refused below with a CTA instead.
+        role_keys = _ROLE_PREF_KEYS[slot] if user_facing else _MODEL_PREF_KEYS
+        model_pref, dropped = drop_dead_models(saved_pref, role_keys)
+        if dropped:
+            logger.info(f"[CHAT] Ignoring saved models not in the manifest for user={user_id}: {dropped}")
+
+        await load_user_context(config, user_id, workspace_id, model_pref)
+        selection = select_model(config, model_pref, slot, request_model)
+        selection = apply_auto_model(config, selection, slot)
+
+        # The model running this turn is settled here: everything below tunes it
+        # rather than choosing it. Tuning reads go through the per-model resolver so
+        # a profile beats the account-wide value; reading the account-wide value
+        # directly is what applied one compaction threshold to both a 200k-context
+        # model and a 1M one.
+        tuning = resolve_tuning(model_pref, selection.effective_model)
+        config.prompt_guidance = user_models.guidance_for(model_pref, selection.effective_model)
+        apply_compaction(config, tuning, user_models.model_entry(model_pref, selection.effective_model))
+        permits = await gate_capabilities(config, user_id, model_pref)
+
+        # After the gate, whose tier check the merge reuses, and before the
+        # clients, which read the merged definitions for their roles.
+        if reads is not None:
+            config.subagents.resolved = await resolve_user_subagents(
+                user_id, await reads, model_pref=model_pref, permits=permits,
+                is_byok=is_byok, search_api=config.search_api,
+                search_depth=config.search_depth, requested=enabled_subagents,
+            )
+    finally:
+        # A stage above that raises must not leave the reads running, or let
+        # their own failure go unretrieved.
+        if reads is not None:
+            await cancel_and_join(reads)
+
+    # The saved prefs, not the view: attribution asks whether the refused name
+    # is one the user saved, and a dropped role may be that name.
+    user_defined = await check_model_available(
+        config, user_id, saved_pref, selection.effective_model,
+        request_model, is_byok=is_byok, scrub=user_facing,
+    )
+
+    # Only a PTC build compiles subagents, so only it builds their clients.
+    roles = (
+        subagent_roles(turn_roster(config.subagents), model_pref, selection.effective_model, role=role)
+        if slot == "primary"
+        else []
+    )
+
+    # The request's overrides go down whole. Per-request > per-model profile >
+    # account-wide is applied per client by ``resolve_clients``, because each
+    # one runs a different model and a level only means something against the
+    # ladder of the model that will honor it. An unsupported level degrades in
+    # ``LLM.__init__``, the one place that sees both the request and the ladder.
+    await resolve_clients(
+        config, user_id, selection.effective_model, model_pref, roles,
+        is_byok=is_byok, thread_id=thread_id,
+        reasoning_effort=reasoning_effort,
+        fast_mode=fast_mode,
+        user_defined=user_defined,
+    )
+    demote_clientless(config)
+
+    # A dispatch-level model override (Task's `model`) resolves through the
+    # same credential ladder as the turn's main model: OAuth first, then the
+    # user's BYOK key, then a platform key for system models. Built here so
+    # the agent package never imports the server.
+    async def _dispatch_model_client(model_name: str):
+        from .clients import resolve_model_client
+
+        resolved = await resolve_model_client(
+            user_id,
+            model_name,
+            is_byok=is_byok,
+            cache_key=thread_id or None,
+            allow_platform_fallback=True,
+        )
+        if resolved.client is None:
+            raise ValueError(
+                f"model '{model_name}' is not available with this account"
+            )
+        return resolved.client
+
+    config.dispatch_model_resolver = _dispatch_model_client
+
+    return config

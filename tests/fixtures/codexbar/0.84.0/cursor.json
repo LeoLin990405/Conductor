@@ -1,0 +1,62 @@
+[
+  {
+    "pace": {
+      "primary": {
+        "deltaPercent": 18,
+        "etaSeconds": 304533,
+        "expectedUsedPercent": 68,
+        "stage": "farAhead",
+        "summary": "18% in deficit | Expected 68% used | Runs out in 3d 12h",
+        "willLastToReset": false
+      },
+      "secondary": {
+        "deltaPercent": 17,
+        "etaSeconds": 316973,
+        "expectedUsedPercent": 68,
+        "stage": "farAhead",
+        "summary": "17% in deficit | Expected 68% used | Runs out in 3d 16h",
+        "willLastToReset": false
+      }
+    },
+    "provider": "cursor",
+    "rateWindowLabels": {
+      "primary": "Total",
+      "secondary": "Cursor",
+      "tertiary": "Third Party"
+    },
+    "source": "web",
+    "usage": {
+      "extraRateWindows": [
+        {
+          "id": "cursor-grok-bot",
+          "title": "Grok Bot",
+          "window": {
+            "resetDescription": "Resets Nov 12 at 1:12AM",
+            "resetsAt": "2026-11-12T07:12:35Z",
+            "usedPercent": 4.925967,
+            "windowMinutes": 10080
+          }
+        }
+      ],
+      "primary": {
+        "resetDescription": "Resets Nov 20 at 1:11AM",
+        "resetsAt": "2026-11-20T07:11:08Z",
+        "usedPercent": 85.62193548387097,
+        "windowMinutes": 44640
+      },
+      "secondary": {
+        "resetDescription": "Resets Nov 20 at 1:11AM",
+        "resetsAt": "2026-11-20T07:11:08Z",
+        "usedPercent": 85.122,
+        "windowMinutes": 44640
+      },
+      "tertiary": {
+        "resetDescription": "Resets Nov 20 at 1:11AM",
+        "resetsAt": "2026-11-20T07:11:08Z",
+        "usedPercent": 100,
+        "windowMinutes": 44640
+      },
+      "updatedAt": "2026-11-10T06:56:15Z"
+    }
+  }
+]

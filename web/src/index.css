@@ -1,0 +1,172 @@
+/* ============================================
+   Entry Point - Tailwind + Global Styles
+   ============================================ */
+
+/* Tokens + global styles first, then Tailwind's pieces in v3's order: theme
+   (with the v3 defaults v4 changed laid over it), preflight, the app's base
+   rules on top of preflight, utilities last.
+
+   Tailwind is imported piece by piece rather than as `@import 'tailwindcss'`
+   because that form puts preflight and every utility in a cascade layer, and
+   an unlayered rule beats a layered one whatever its specificity. The
+   component stylesheets are unlayered, so layered utilities would lose every
+   tie they win today, and the focus-defaults layer in tokens.css is built on
+   Tailwind's rules sitting outside any layer (see the note there). Only the
+   theme variables go in a layer; tokens.css declares the values that matter. */
+@import './styles/terminal-native.css';
+@import './styles/tokens.css';
+@import './styles/animations.css';
+@import './styles/chrome.css';
+@import './styles/dotGrid.css';
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import './styles/tailwind-v3-theme.css';
+@import 'tailwindcss/preflight.css';
+@import './styles/base.css';
+@import 'tailwindcss/utilities.css' source(none);
+
+/* The app's own files, as v3's `content` listed them. Automatic detection would
+   also read e2e/, scripts/ and the docs, and v4 reads more words as classes
+   than v3 did (a test's `row-1` test id became a grid-row rule), so the unit
+   tests are left out too: nothing they render ships. */
+@source '../index.html';
+@source './**/*.{js,ts,jsx,tsx}';
+@source not './**/__tests__/**';
+@source not './**/*.test.{js,ts,jsx,tsx}';
+
+/* v3 `darkMode: ['class']`. The theme switch stamps `data-theme` on <html> and
+   never adds a `.dark` class, so these variants match nothing today; kept as
+   they were rather than silently switched on. */
+@custom-variant dark (&:is(.dark *));
+
+/* `inline` so a utility compiles to `var(--primary)` (token-backed full colour)
+   at the point of use, instead of reading a variable resolved once on :root. */
+@theme inline {
+  /* Terminal-native surfaces → bg-surface-*, text-surface-*, … */
+  --color-surface-page: var(--surface-page);
+  --color-surface-canvas: var(--surface-canvas);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-selection: var(--surface-selection);
+  --color-surface-accent: var(--surface-accent);
+
+  /* Terminal-native ink → text-ink-*, bg-ink-*, … */
+  --color-ink-fg: var(--ink-fg);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-baton: var(--ink-baton);
+  --color-ink-tempo: var(--ink-tempo);
+  --color-ink-ok: var(--ink-ok);
+  --color-ink-hold: var(--ink-hold);
+  --color-ink-error: var(--ink-error);
+  --color-ink-on-accent: var(--ink-on-accent);
+  --color-ink-focus: var(--ink-focus);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-rule: var(--ink-rule);
+
+  /* Spacing from tokens.json space.* under a non-colliding namespace.
+     `--spacing-5` / `--spacing-6` would override Tailwind's numeric scale
+     (p-5 20px→24px, w-6 24px→32px) on every unconverted page. */
+  --spacing-space-0: var(--space-0);
+  --spacing-space-1: var(--space-1);
+  --spacing-space-2: var(--space-2);
+  --spacing-space-3: var(--space-3);
+  --spacing-space-4: var(--space-4);
+  --spacing-space-5: var(--space-5);
+  --spacing-space-6: var(--space-6);
+
+  /* Motion from tokens.json motion.* — Tailwind duration-* utilities read
+     --transition-duration-*, not --duration-*. Ease/radius/font-mono are
+     exposed via @utility / the default theme below so @theme does not emit
+     self-referential `--x: var(--x)` cycles into the theme layer. */
+  --transition-duration-quick: var(--duration-quick);
+  --transition-duration-fold: var(--duration-fold);
+  --transition-duration-enter: var(--duration-enter);
+  --transition-duration-exit: var(--duration-exit);
+  --transition-duration-reveal: var(--duration-reveal);
+  --transition-duration-spinner: var(--duration-spinner);
+
+  /* Full token colours — Chrome 111 has no relative-colour channel syntax. */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-fade-in: fade-in 0.2s ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Token-backed utilities that would cycle if registered as `--name: var(--name)`
+   inside @theme (Tailwind also writes that into the theme layer on :root).
+   `font-mono` already reads var(--font-mono); terminal-native.css owns the stack. */
+@utility rounded-control {
+  border-radius: var(--radius-control);
+}
+
+@utility ease-standard {
+  transition-timing-function: var(--ease-standard);
+}
+
+@utility ease-reveal {
+  transition-timing-function: var(--ease-reveal);
+}
+
+/* Morph loading animation keyframes (compact — 3-5px travel for inline use) */
+@keyframes morph-0 {
+  0%, 100% { transform: translate(0, 0) scale(1); border-radius: 0%; }
+  25% { transform: translate(3px, -3px) scale(1.2); border-radius: 50%; }
+  50% { transform: translate(5px, 0) scale(0.8); border-radius: 25%; }
+  75% { transform: translate(3px, 3px) scale(1.1); border-radius: 75%; }
+}
+@keyframes morph-1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 0%; }
+  25% { transform: translate(-3px, -3px) scale(1.3) rotate(90deg); border-radius: 50%; }
+  50% { transform: translate(-5px, 0) scale(0.7) rotate(180deg); border-radius: 25%; }
+  75% { transform: translate(-3px, 3px) scale(1.2) rotate(270deg); border-radius: 75%; }
+}
+@keyframes morph-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); border-radius: 0%; }
+  25% { transform: translate(-3px, 3px) scale(0.9); border-radius: 100%; }
+  50% { transform: translate(0, 5px) scale(1.4); border-radius: 0%; }
+  75% { transform: translate(3px, 3px) scale(0.8); border-radius: 50%; }
+}
+@keyframes morph-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 0%; }
+  25% { transform: translate(3px, 3px) scale(1.1) rotate(-90deg); border-radius: 25%; }
+  50% { transform: translate(0, -5px) scale(1.3) rotate(-180deg); border-radius: 100%; }
+  75% { transform: translate(-3px, -3px) scale(0.9) rotate(-270deg); border-radius: 75%; }
+}

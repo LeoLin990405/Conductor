@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatch · terminal-native web mockups</title>
+<style>
+/* ===========================================================================
+   Terminal-native web mockups — dispatch
+   Every colour in this file is copied from
+   docs/design/terminal-native/system/tokens.json (themes.dark / themes.light).
+   Softer tints are color-mix() of those same inks; no new hex is introduced.
+   =========================================================================== */
+
+:root,
+[data-theme="dark"]{
+  /* colour — themes.dark */
+  --surface-page:#0F1115;
+  --surface-canvas:#1E1E1E;
+  --surface-elevated:#282C34;
+  --surface-selection:#1A2140;
+  --surface-accent:#8B9CFF;
+  --ink-fg:#E6E8EE;
+  --ink-muted:#9AA3B5;
+  --ink-baton:#8B9CFF;
+  --ink-tempo:#56C7D9;
+  --ink-ok:#5BD38A;
+  --ink-hold:#F2B544;
+  --ink-error:#FF7A7A;
+  --ink-on-accent:#0F1115;
+  --ink-focus:#8B9CFF;
+  --ink-faint:#2A2F3A;
+  --ink-rule:#3A4150;
+
+  /* typography */
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --font-prose:Geist,"Noto Sans SC",var(--font-mono); /* Geist absent → mono */
+  --size-chrome:12px;
+  --lh-chrome:1.45;
+  --size-prose:15px;
+  --lh-prose:1.65;
+  --weight-label:500;
+  --weight-value:400;
+
+  /* space */
+  --space-0:0px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+
+  /* radius */
+  --radius-none:0px;
+  --radius-control:2px;
+  --radius-card:3px;
+  --radius-overlay:6px;
+
+  /* border */
+  --border-hairline:1px;
+  --border-focus:2px;
+  --focus-offset:2px;
+
+  /* elevation — 1 is only the palette, menus and dialogs */
+  --elevation-0:none;
+  --elevation-1:0 8px 24px rgba(15,17,21,0.45);
+
+  /* motion */
+  --ease-standard:cubic-bezier(0.16,1,0.3,1);
+  --duration-quick:160ms;
+  --duration-fold:240ms;
+  --duration-enter:280ms;
+  --duration-exit:140ms;
+  --duration-reveal:360ms;
+  --duration-spinner:100ms;
+}
+
+[data-theme="light"]{
+  /* colour — themes.light */
+  --surface-page:#FFFFFF;
+  --surface-canvas:#F5F4F1;
+  --surface-elevated:#FDF6E3;
+  --surface-selection:#DCE3FF;
+  --surface-accent:#3F4FC8;
+  --ink-fg:#1B1E26;
+  --ink-muted:#5B6272;
+  --ink-baton:#3F4FC8;
+  --ink-tempo:#0E7A8C;
+  --ink-ok:#1A7F37;
+  --ink-hold:#9A4A06;
+  --ink-error:#C93838;
+  --ink-on-accent:#FFFFFF;
+  --ink-focus:#3F4FC8;
+  --ink-faint:#C9CCD4;
+  --ink-rule:#C9CCD4;
+  --elevation-1:0 8px 24px rgba(27,30,38,0.12);
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--surface-page);
+  color:var(--ink-fg);
+  font-family:var(--font-mono);
+  font-size:var(--size-chrome);
+  line-height:var(--lh-chrome);
+  font-weight:var(--weight-value);
+}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:var(--ink-baton);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+img{max-width:100%}
+
+/* ---------- focus: 2px ink.focus ring, offset 2px ---------- */
+:where(a,button,input,select,textarea,[tabindex],[role="option"]):focus-visible{
+  outline:var(--border-focus) solid var(--ink-focus);
+  outline-offset:var(--focus-offset);
+}
+.tix-row:focus-visible{outline-offset:calc(var(--focus-offset) * -1)}
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;align-items:center;gap:var(--space-4);
+  padding:var(--space-2) var(--space-4);
+  background:var(--surface-page);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.brand{display:flex;align-items:baseline;gap:var(--space-2);font-weight:var(--weight-label)}
+.brand .mark{color:var(--ink-baton)}
+.brand .sub{color:var(--ink-muted);font-weight:var(--weight-value)}
+.nav{display:flex;gap:var(--space-3);margin-inline-start:auto}
+.nav a{padding:var(--space-1) var(--space-2);border-radius:var(--radius-control)}
+.nav a[aria-current="page"]{color:var(--ink-fg);background:var(--surface-canvas)}
+.nav a[aria-current="page"]::before{content:"› ";color:var(--ink-baton)}
+.tools{display:flex;align-items:center;gap:var(--space-2)}
+.kbd{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+  cursor:pointer;
+}
+.kbd b{color:var(--ink-baton);font-weight:var(--weight-label)}
+.kbd:hover{color:var(--ink-fg)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  min-height:32px;
+  padding:var(--space-1) var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);
+  cursor:pointer;
+}
+.btn:hover{border-color:var(--ink-muted)}
+.btn-primary{background:var(--surface-accent);color:var(--ink-on-accent);border-color:var(--surface-accent)}
+.btn-primary:hover{border-color:var(--ink-fg)}
+.btn-danger{color:var(--ink-error)}
+.btn-danger:hover{border-color:var(--ink-error)}
+.btn-sm{min-height:24px;padding:var(--space-1) var(--space-2)}
+.btn[aria-disabled="true"]{color:var(--ink-muted);cursor:not-allowed}
+
+/* ---------- page frame ---------- */
+.shell{max-width:1440px;margin-inline:auto;padding:var(--space-5) var(--space-4) var(--space-6)}
+.page-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-3);margin-bottom:var(--space-4)}
+.page-head h1{font-size:var(--size-prose);font-weight:var(--weight-label);line-height:var(--lh-prose)}
+.page-head .zh{font-family:var(--font-prose);color:var(--ink-muted);font-size:var(--size-prose);line-height:var(--lh-prose)}
+.lede{max-width:76ch;color:var(--ink-muted);font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);margin-bottom:var(--space-5)}
+.section{margin-bottom:var(--space-6)}
+.section > h2{
+  display:flex;align-items:baseline;gap:var(--space-3);flex-wrap:wrap;
+  font-size:var(--size-chrome);font-weight:var(--weight-label);
+  color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.08em;
+  padding-bottom:var(--space-1);border-bottom:var(--border-hairline) solid var(--ink-rule);
+  margin-bottom:var(--space-3);
+}
+.card{
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+  padding:var(--space-4);
+}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4)}
+.mono-id{font-variant-numeric:tabular-nums;color:var(--ink-muted)}
+.prose{font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose)}
+.provider{color:var(--ink-baton)}
+.nowrap{white-space:nowrap}
+
+/* ---------- status marks ---------- */
+.st{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.st .glyph{width:1ch;text-align:center}
+.st-queued .glyph{color:var(--ink-muted)}
+.st-running .glyph{color:var(--ink-tempo)}
+.st-blocked .glyph{color:var(--ink-hold)}
+.st-needs-you .glyph{color:var(--ink-hold)}
+.st-failed .glyph{color:var(--ink-error)}
+.st-completed .glyph{color:var(--ink-ok)}
+.st-archived .glyph{color:var(--ink-muted)}
+.st-queued .glyph::before{content:"○"}
+.st-running .glyph::before{content:"●"}
+.st-blocked .glyph::before{content:"▣"}
+.st-needs-you .glyph::before{content:"◆"}
+.st-failed .glyph::before{content:"✖"}
+.st-completed .glyph::before{content:"✔"}
+.st-archived .glyph::before{content:"⊘"}
+.st .label{color:var(--ink-muted)}
+.glyph:has(.spin)::before{content:none}   /* the spinner span draws the running mark itself */
+[data-motion="off"] .spin::before{content:"●"}
+.spin::before{content:"●"}
+@media (prefers-reduced-motion:no-preference){
+  .spin::before{content:none}
+}
+
+/* verdicts */
+.verdict{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.verdict .mark{width:1ch;text-align:center;font-weight:var(--weight-label)}
+.verdict-merge .mark{color:var(--ink-ok)}
+.verdict-block .mark{color:var(--ink-error)}
+.verdict-pending .mark{color:var(--ink-muted)}
+.verdict-merge .mark::before{content:"✔"}
+.verdict-block .mark::before{content:"✖"}
+.verdict-pending .mark::before{content:"○"}
+.verdict .label{color:var(--ink-muted)}
+
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --duration-quick:0ms;--duration-fold:0ms;--duration-enter:0ms;
+    --duration-exit:0ms;--duration-reveal:0ms;--duration-spinner:0ms;
+  }
+}
+
+/* ===========================================================================
+   dispatch page
+   =========================================================================== */
+/* ---- lines L1-L4 ---- */
+.line-card{display:flex;flex-direction:column;gap:var(--space-3)}
+.line-card .head{display:flex;align-items:baseline;gap:var(--space-2);flex-wrap:wrap}
+.line-card .name{color:var(--ink-fg);font-weight:var(--weight-label)}
+.line-card .branch{color:var(--ink-baton)}
+.kv{display:grid;grid-template-columns:10ch minmax(0,1fr);gap:var(--space-1) var(--space-3)}
+.kv dt{color:var(--ink-muted)}
+.kv dd{color:var(--ink-fg);min-width:0;overflow-wrap:anywhere}
+/* a 24px hit area at 390px, without moving the baseline */
+.kv dd a{display:flex;align-items:center;min-height:24px}
+.kv dd .mono-id{color:var(--ink-muted)}
+
+/* ---- models ---- */
+.tix{width:100%;border-collapse:collapse}
+.tix th{
+  text-align:start;font-weight:var(--weight-label);color:var(--ink-muted);
+  padding:var(--space-1) var(--space-2);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+  white-space:nowrap;
+}
+.tix td{
+  vertical-align:top;
+  padding:var(--space-2) var(--space-2);
+  border-bottom:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent);
+}
+.tix tr:last-child td{border-bottom:0}
+.tix-row:hover{background:var(--surface-page)}
+.tix-row[aria-selected="true"]{background:var(--surface-selection)}
+.dot{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.dot::before{content:"●";color:var(--ink-ok)}
+.dot.open::before{color:var(--ink-hold)}
+.dot.half::before{color:var(--ink-hold)}
+
+/* ---- the G0..G6 timeline ---- */
+.axis{display:flex;flex-wrap:wrap;gap:var(--space-2);list-style:none;margin:0;padding:0}
+.axis li{
+  display:flex;align-items:center;gap:var(--space-2);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+}
+.axis li .slot{color:var(--ink-fg);font-weight:var(--weight-label)}
+.axis li.done{color:var(--ink-muted)}
+.axis li.done .slot::before{content:"✔ ";color:var(--ink-ok)}
+.axis li.current{border-color:var(--ink-hold);color:var(--ink-fg)}
+.axis li.current .slot::before{content:"◆ ";color:var(--ink-hold)}
+.axis li.unreached .slot{color:var(--ink-muted)}
+.axis li.unreached .slot::before{content:"○ ";color:var(--ink-muted)}
+.axis li.na{color:var(--ink-muted)}
+.axis li.na .slot::before{content:"– ";color:var(--ink-muted)}
+
+/* ---- the decision panel ---- */
+.decision{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:var(--space-4)}
+.decision .dhead{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-3)}
+.decision .did{color:var(--ink-baton);font-weight:var(--weight-label)}
+.diffstat{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);color:var(--ink-muted)}
+.diffstat b{color:var(--ink-fg);font-weight:var(--weight-label)}
+.findings{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
+.findings li{
+  display:grid;grid-template-columns:2ch minmax(0,1fr);gap:var(--space-2);
+  font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);
+  color:var(--ink-fg);
+}
+.findings .mark{color:var(--ink-error)}
+.findings .mark.ok{color:var(--ink-ok)}
+.verb{
+  display:flex;flex-wrap:wrap;gap:var(--space-2);
+  padding:var(--space-3);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+}
+.verb code{color:var(--ink-baton)}
+/* the id inside a button inherits the button's ink: ink.baton on the accent
+   background would be 1.00:1, so a primary button keeps ink.onAccent and a
+   danger button keeps ink.error */
+.verb .btn code{color:inherit}
+.verb .btn-primary,.verb .btn-primary code{color:var(--ink-on-accent)}  /* ink.onAccent: 7.47:1 dark, 6.64:1 light */
+.verb .mono-id{flex-basis:100%}
+.ask{
+  font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);
+  color:var(--ink-fg);
+  border-inline-start:var(--border-focus) solid var(--ink-hold);
+  padding-inline-start:var(--space-3);
+  margin-top:var(--space-3);
+}
+
+/* ---- roster ---- */
+.roster{display:grid;gap:var(--space-2)}
+.roster .row{
+  display:grid;grid-template-columns:16ch minmax(0,1fr) 16ch auto;gap:var(--space-2);
+  align-items:center;padding:var(--space-2);
+  border:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  border-radius:var(--radius-control);
+}
+.roster .row[aria-selected="true"]{background:var(--surface-selection)}
+.roster .row .mono-id{text-align:end}
+
+/* ---------- responsive: 1440 designed, usable at 390 ---------- */
+@media (max-width:1200px){
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .grid-2,.grid-4,.decision{grid-template-columns:minmax(0,1fr)}
+  .kv{grid-template-columns:8ch minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .shell{padding-inline:var(--space-3)}
+  .topbar{flex-wrap:wrap;gap:var(--space-2);padding-inline:var(--space-3)}
+  .nav{order:3;width:100%;margin-inline-start:0;overflow-x:auto}
+  .tools{margin-inline-start:auto}
+  .card{padding:var(--space-3)}
+  .tix{display:block}
+  .tix thead{display:none}
+  .tix tbody{display:block}
+  .tix tr{display:block;padding:var(--space-2) 0;border-bottom:var(--border-hairline) solid var(--ink-rule)}
+  .tix td{display:flex;gap:var(--space-3);justify-content:space-between;align-items:baseline;padding:var(--space-1) 0;border-bottom:0}
+  .tix td::before{content:attr(data-label);color:var(--ink-muted);flex:0 0 auto}
+  .roster .row{grid-template-columns:minmax(0,1fr);row-gap:var(--space-1)}
+  .roster .row .mono-id{text-align:start}
+  .axis li{flex-basis:100%}
+}
+
+/* ---------- shared chrome: mode chip, composers, long-string wrap (same block on all five pages) ---------- */
+main,footer{overflow-wrap:anywhere}              /* long zh-CN runs and ids wrap instead of scrolling the page */
+.shell{min-width:0}
+[hidden]{display:none !important}
+.topbar{flex-wrap:wrap;row-gap:var(--space-2)}
+.topbar .brand,.topbar .nav a,.topbar .tools > *{white-space:nowrap;overflow-wrap:normal}
+.topbar .tools{flex-wrap:wrap}
+.mode-chip{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  min-height:32px;padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);cursor:pointer;white-space:nowrap;
+}
+.mode-chip b{color:var(--ink-fg);font-weight:var(--weight-label)}
+.mode-chip:hover{border-color:var(--ink-muted)}
+.mode-hint{color:var(--ink-muted);white-space:nowrap}
+.composer-box{
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-2);
+  margin-top:var(--space-3);padding:var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+}
+.composer-box > *{min-width:0}
+.composer-box .prompt{color:var(--ink-baton);font-weight:var(--weight-label);padding-top:var(--space-1)}
+.composer-box .mono-id{flex-basis:100%}
+textarea.composer-input{
+  flex:1 1 260px;min-width:0;min-height:32px;resize:vertical;
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);font:inherit;line-height:var(--lh-chrome);
+}
+textarea.composer-input::placeholder{color:var(--ink-muted)}
+@media (max-width:640px){ .mode-hint{display:none} }
+/* ---------- end shared chrome ---------- */
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="mark">▍</span><span>conductor</span><span class="sub">terminal-native / web mockups</span></div>
+  <nav class="nav" aria-label="Mockups">
+    <a href="home.html">home</a>
+    <a href="tickets.html">tickets</a>
+    <a href="dispatch.html" aria-current="page">dispatch</a>
+    <a href="ticket.html">ticket</a>
+    <a href="palette.html">palette</a>
+  </nav>
+  <div class="tools">
+    <button class="mode-chip" id="mode-chip" type="button" aria-keyshortcuts="Alt+M" title="alt+m mode">mode <b id="mode-val">auto</b></button>
+    <span class="mode-hint mono-id" aria-hidden="true">alt+m mode</span>
+    <a class="kbd" href="palette.html"><b>Ctrl</b>+<b>K</b> palette</a>
+    <button class="btn" id="theme-toggle" type="button" aria-pressed="false">theme: dark</button>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="page-head">
+    <h1>Dispatch</h1>
+    <span class="zh">派发 · 线、模型、评审结论与人工审批</span>
+  </div>
+  <p class="lede">
+    A dispatch owns up to four lines. Each line is one branch/worktree pair with its own worker and reviewer —
+    a line never reviews itself, and the reviewer is never the model being replaced. The roster ends at
+    <span class="mono-id">G6 人工</span>, the only place a person decides.
+  </p>
+
+  <!-- ==================== lines ==================== -->
+  <section class="section" aria-labelledby="lines">
+    <h2 id="lines">Lines <span class="mono-id">L1–L4</span></h2>
+    <div class="grid-4">
+
+      <article class="card line-card">
+        <div class="head">
+          <span class="name">L1</span><span class="mono-id">autonomy-scheduler</span>
+          <span class="st st-completed"><span class="glyph"></span><span class="label">merged</span></span>
+        </div>
+        <div class="branch mono-id">line/autonomy-scheduler</div>
+        <dl class="kv">
+          <dt>worktree</dt><dd class="mono-id">~/.conductor/dispatch/ws/autonomy-scheduler</dd>
+          <dt>ticket</dt><dd><a href="ticket.html">#55 dispatch 计划重试时保留 lines 对象</a></dd>
+          <dt>worker</dt><dd><span class="provider">stepfun</span> <span class="mono-id">step-3.7-flash</span></dd>
+          <dt>reviewer</dt><dd><span class="provider">codex</span> <span class="mono-id">gpt-5.3-codex-spark-oauth</span></dd>
+          <dt>verdict</dt><dd><span class="verdict verdict-merge"><span class="mark"></span><span class="label">merge · 主审 + 副审</span></span></dd>
+          <dt>landed</dt><dd class="mono-id">9a2c6f30 · 3h ago</dd>
+        </dl>
+      </article>
+
+      <article class="card line-card">
+        <div class="head">
+          <span class="name">L2</span><span class="mono-id">review-merge</span>
+          <span class="st st-needs-you"><span class="glyph"></span><span class="label">awaiting_human</span></span>
+        </div>
+        <div class="branch mono-id">line/review-merge</div>
+        <dl class="kv">
+          <dt>worktree</dt><dd class="mono-id">~/.conductor/dispatch/ws/review-merge</dd>
+          <dt>ticket</dt><dd><a href="ticket.html">#57 合并彩排在 throwaway worktree 中运行测试</a></dd>
+          <dt>worker</dt><dd><span class="provider">deepseek-dsh</span> <span class="mono-id">deepseek-v4-pro</span></dd>
+          <dt>reviewer</dt><dd><span class="provider">kimi</span> <span class="mono-id">kimi-k3.1-pro-coding</span></dd>
+          <dt>verdict</dt><dd><span class="verdict verdict-block"><span class="mark"></span><span class="label">block · 副审</span></span></dd>
+          <dt>pinned</dt><dd class="mono-id">7f3a91c2 · 12m ago</dd>
+        </dl>
+      </article>
+
+      <article class="card line-card">
+        <div class="head">
+          <span class="name">L3</span><span class="mono-id">native-cli</span>
+          <span class="st st-running"><span class="glyph"><span class="spin"></span></span><span class="label">secondary_review</span></span>
+        </div>
+        <div class="branch mono-id">line/native-cli</div>
+        <dl class="kv">
+          <dt>worktree</dt><dd class="mono-id">~/.conductor/dispatch/ws/native-cli</dd>
+          <dt>ticket</dt><dd><a href="ticket.html">#58 原生 CLI worker 的上下文轮换不丢失 handoff</a></dd>
+          <dt>worker</dt><dd><span class="provider">cursor</span> <span class="mono-id">composer-1</span></dd>
+          <dt>reviewer</dt><dd><span class="provider">grok</span> <span class="mono-id">grok-4.7-oauth</span></dd>
+          <dt>verdict</dt><dd><span class="verdict verdict-pending"><span class="mark"></span><span class="label">pending · 主审 passed</span></span></dd>
+          <dt>switch</dt><dd class="mono-id">kimi-k3-coding → composer-1</dd>
+        </dl>
+      </article>
+
+      <article class="card line-card">
+        <div class="head">
+          <span class="name">L4</span><span class="mono-id">web-palette</span>
+          <span class="st st-blocked"><span class="glyph"></span><span class="label">fixing</span></span>
+        </div>
+        <div class="branch mono-id">line/web-palette</div>
+        <dl class="kv">
+          <dt>worktree</dt><dd class="mono-id">~/.conductor/dispatch/ws/web-palette</dd>
+          <dt>ticket</dt><dd><a href="ticket.html">#56 调色板查询框里 j/k 始终是字符，只在结果列表或 Alt+N 导航模式下移动高亮</a></dd>
+          <dt>worker</dt><dd><span class="provider">kimi</span> <span class="mono-id">kimi-k3-coding</span></dd>
+          <dt>reviewer</dt><dd><span class="provider">stepfun</span> <span class="mono-id">step-3.7-flash</span></dd>
+          <dt>verdict</dt><dd><span class="verdict verdict-block"><span class="mark"></span><span class="label">block · 主审 fix_resubmitted</span></span></dd>
+          <dt>blocker</dt><dd class="mono-id">context_window_exhausted · 2 rotations</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== models ==================== -->
+  <section class="section" aria-labelledby="models">
+    <h2 id="models">Models <span class="mono-id">/model</span></h2>
+    <div class="card">
+      <table class="tix">
+        <caption class="prose" style="text-align:start;color:var(--ink-muted);padding-bottom:var(--space-3)">
+          The Router model and the configured providers. A provider whose breaker is open is skipped by the switch policy until the cooldown ends.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">provider</th>
+            <th scope="col">model</th>
+            <th scope="col">role</th>
+            <th scope="col">context</th>
+            <th scope="col">slots</th>
+            <th scope="col">breaker</th>
+            <th scope="col">last turn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">router</span></td>
+            <td data-label="model" class="mono-id">doubao-seed-2-1-pro</td>
+            <td data-label="role">Router</td>
+            <td data-label="context" class="mono-id">256k</td>
+            <td data-label="slots" class="mono-id">1</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">40s</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">codex</span></td>
+            <td data-label="model" class="mono-id">gpt-5.3-codex-spark-oauth</td>
+            <td data-label="role">reviewer · L1</td>
+            <td data-label="context" class="mono-id">272k</td>
+            <td data-label="slots" class="mono-id">2</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">6m</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">kimi</span></td>
+            <td data-label="model" class="mono-id">kimi-k3.1-pro-coding</td>
+            <td data-label="role">worker · L2, L4</td>
+            <td data-label="context" class="mono-id">256k</td>
+            <td data-label="slots" class="mono-id">3</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">1m</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">cursor</span></td>
+            <td data-label="model" class="mono-id">composer-1</td>
+            <td data-label="role">worker · L3</td>
+            <td data-label="context" class="mono-id">200k</td>
+            <td data-label="slots" class="mono-id">1</td>
+            <td data-label="breaker"><span class="dot half">half-open</span></td>
+            <td data-label="last turn" class="mono-id">3m</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">grok</span></td>
+            <td data-label="model" class="mono-id">grok-4.7-oauth</td>
+            <td data-label="role">reviewer · L3</td>
+            <td data-label="context" class="mono-id">256k</td>
+            <td data-label="slots" class="mono-id">2</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">8m</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">minimax</span></td>
+            <td data-label="model" class="mono-id">minimax-m3</td>
+            <td data-label="role">worker · L2</td>
+            <td data-label="context" class="mono-id">204k</td>
+            <td data-label="slots" class="mono-id">2</td>
+            <td data-label="breaker"><span class="dot open">open · 4m</span></td>
+            <td data-label="last turn" class="mono-id">21m</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">deepseek-dsh</span></td>
+            <td data-label="model" class="mono-id">deepseek-v4-pro</td>
+            <td data-label="role">worker · L2</td>
+            <td data-label="context" class="mono-id">128k</td>
+            <td data-label="slots" class="mono-id">4</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">30s</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">zcode</span></td>
+            <td data-label="model" class="mono-id">glm-5.3-cn-coding</td>
+            <td data-label="role">worker · L3</td>
+            <td data-label="context" class="mono-id">200k</td>
+            <td data-label="slots" class="mono-id">2</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">2d</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="provider"><span class="provider">stepfun</span></td>
+            <td data-label="model" class="mono-id">step-3.7-flash</td>
+            <td data-label="role">worker · L1 · reviewer L4</td>
+            <td data-label="context" class="mono-id">128k</td>
+            <td data-label="slots" class="mono-id">3</td>
+            <td data-label="breaker"><span class="dot">closed</span></td>
+            <td data-label="last turn" class="mono-id">3h</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== review verdicts ==================== -->
+  <section class="section" aria-labelledby="verdicts">
+    <h2 id="verdicts">Review verdicts</h2>
+    <div class="card">
+      <table class="tix">
+        <thead>
+          <tr>
+            <th scope="col">line</th>
+            <th scope="col">gate</th>
+            <th scope="col">reviewer</th>
+            <th scope="col">verdict</th>
+            <th scope="col">pinned commit</th>
+            <th scope="col">findings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tix-row">
+            <td data-label="line" class="nowrap">L2</td>
+            <td data-label="gate" class="nowrap">G2 聚焦测试</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">deepseek-dsh</span> <span class="mono-id">self</span></td>
+            <td data-label="verdict"><span class="verdict verdict-merge"><span class="mark"></span><span class="label">pass · 6 tests</span></span></td>
+            <td data-label="pinned commit" class="mono-id">3419e39e</td>
+            <td data-label="findings" class="mono-id">0 blocking</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="line" class="nowrap">L2</td>
+            <td data-label="gate" class="nowrap">主审</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">kimi</span> <span class="mono-id">kimi-k3.1-pro-coding</span></td>
+            <td data-label="verdict"><span class="verdict verdict-merge"><span class="mark"></span><span class="label">merge</span></span></td>
+            <td data-label="pinned commit" class="mono-id">3419e39e</td>
+            <td data-label="findings" class="mono-id">2 notes</td>
+          </tr>
+          <tr class="tix-row" aria-selected="true">
+            <td data-label="line" class="nowrap">L2</td>
+            <td data-label="gate" class="nowrap">副审</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">codex</span> <span class="mono-id">gpt-5.3-codex-spark-oauth</span></td>
+            <td data-label="verdict"><span class="verdict verdict-block"><span class="mark"></span><span class="label">block</span></span></td>
+            <td data-label="pinned commit" class="mono-id">3419e39e</td>
+            <td data-label="findings" class="mono-id">1 blocking</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="line" class="nowrap">L3</td>
+            <td data-label="gate" class="nowrap">主审</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">grok</span> <span class="mono-id">grok-4.7-oauth</span></td>
+            <td data-label="verdict"><span class="verdict verdict-merge"><span class="mark"></span><span class="label">merge</span></span></td>
+            <td data-label="pinned commit" class="mono-id">b0f4d218</td>
+            <td data-label="findings" class="mono-id">1 note</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="line" class="nowrap">L3</td>
+            <td data-label="gate" class="nowrap">副审</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">kimi</span> <span class="mono-id">kimi-k3-coding</span></td>
+            <td data-label="verdict"><span class="verdict verdict-pending"><span class="mark"></span><span class="label">running</span></span></td>
+            <td data-label="pinned commit" class="mono-id">b0f4d218</td>
+            <td data-label="findings" class="mono-id">—</td>
+          </tr>
+          <tr class="tix-row">
+            <td data-label="line" class="nowrap">L4</td>
+            <td data-label="gate" class="nowrap">G5 集成</td>
+            <td data-label="reviewer" class="nowrap"><span class="provider">stepfun</span> <span class="mono-id">step-3.7-flash</span></td>
+            <td data-label="verdict"><span class="verdict verdict-block"><span class="mark"></span><span class="label">block · typecheck</span></span></td>
+            <td data-label="pinned commit" class="mono-id">7c1e0a44</td>
+            <td data-label="findings" class="mono-id">3 blocking</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="prose" style="margin-top:var(--space-3);color:var(--ink-muted)">
+        A verdict is stamped on the commit it reviewed. A line never reviews itself, so the G2 self-check row above is
+        marked <span class="mono-id">self</span> and does not count as a cross-review; the cross-reviewer is the one whose
+        verdict lands.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== approve / reject ==================== -->
+  <section class="section" aria-labelledby="decide">
+    <h2 id="decide">Approve / reject <span class="mono-id">G6 人工</span></h2>
+    <div class="card">
+      <ol class="axis" aria-label="Dispatch timeline">
+        <li class="done"><span class="slot">G0 SPEC</span><span class="mono-id">passed</span></li>
+        <li class="done"><span class="slot">D1 DAG</span><span class="mono-id">4 lines</span></li>
+        <li class="done"><span class="slot">实现中</span><span class="mono-id">4/4</span></li>
+        <li class="done"><span class="slot">G2 聚焦测试</span><span class="mono-id">6 tests</span></li>
+        <li class="done"><span class="slot">主审</span><span class="mono-id">merge</span></li>
+        <li><span class="slot">副审</span><span class="mono-id">block</span></li>
+        <li class="done"><span class="slot">G5 集成</span><span class="mono-id">rehearsed</span></li>
+        <li class="current"><span class="slot">G6 人工</span><span class="mono-id">awaiting_human</span></li>
+      </ol>
+
+      <div class="decision" style="margin-top:var(--space-4)">
+        <div>
+          <div class="dhead">
+            <span class="did">7f3a91c2</span>
+            <span class="st st-needs-you"><span class="glyph"></span><span class="label">awaiting_human</span></span>
+            <span class="mono-id">line L2 · review-merge</span>
+            <span class="mono-id">ticket #57</span>
+          </div>
+          <p class="prose" style="margin-top:var(--space-3);color:var(--ink-fg)">
+            主审放行，副审以「彩排里跑的是旧提交」为由拦住。彩排已经重跑，落地的只有彩排通过的那一个提交。
+          </p>
+          <div class="diffstat" style="margin-top:var(--space-3)">
+            <span><b>4</b> files</span><span><b>+128</b> <b>−31</b></span>
+            <span>rehearsal <b>throwaway worktree</b></span>
+            <span>tests <b>6 passed</b></span>
+            <span>pinned <b>3419e39e</b></span>
+          </div>
+          <ul class="findings">
+            <li><span class="mark">✖</span><span>副审：彩排读取的是 <span class="mono-id">HEAD</span> 而不是被评审的提交，compare-and-swap 可能落到另一个 sha。The rehearsal read HEAD instead of the reviewed commit.</span></li>
+            <li><span class="mark ok">✔</span><span>主审：彩改后重跑通过，测试在一次性 worktree 中完成，未被污染的索引不会进入目标分支。</span></li>
+            <li><span class="mark ok">✔</span><span>G5 集成：<span class="mono-id">git update-ref</span> 只接受彩排通过的那个提交。</span></li>
+          </ul>
+          <p class="ask">
+            批准会把 <span class="mono-id">3419e39e</span> 合入 <span class="mono-id">line/review-merge</span>；拒绝会把这条线退回
+            <span class="mono-id">fixing</span>，并保留副审的结论。Approve lands the rehearsed commit; reject returns the line to fixing and keeps the verdict.
+          </p>
+        </div>
+
+        <div>
+          <div class="roster" role="listbox" aria-label="Dispatch roster — j/k move" data-keylist="roving">
+            <div class="row" role="option" aria-selected="true" data-keyrow tabindex="0">
+              <span class="provider">7f3a91c2</span>
+              <span>L2 · review-merge · <span class="mono-id">awaiting_human</span></span>
+              <span class="mono-id">12m</span>
+              <span class="mono-id">G6</span>
+            </div>
+            <div class="row" role="option" aria-selected="false" data-keyrow tabindex="-1">
+              <span class="provider">4b8e0d17</span>
+              <span>L3 · native-cli · <span class="mono-id">secondary_review</span></span>
+              <span class="mono-id">3m</span>
+              <span class="mono-id">副审</span>
+            </div>
+            <div class="row" role="option" aria-selected="false" data-keyrow tabindex="-1">
+              <span class="provider">91cc6a40</span>
+              <span>L1 · autonomy-scheduler · <span class="mono-id">g2</span></span>
+              <span class="mono-id">8m</span>
+              <span class="mono-id">G2</span>
+            </div>
+            <div class="row" role="option" aria-selected="false" data-keyrow tabindex="-1">
+              <span class="provider">7c77be05</span>
+              <span>L4 · web-palette · <span class="mono-id">fixing</span></span>
+              <span class="mono-id">21m</span>
+              <span class="mono-id">主审</span>
+            </div>
+          </div>
+
+          <div class="verb" style="margin-top:var(--space-4)">
+            <button class="btn btn-primary" type="button">approve <code>7f3a91c2</code></button>
+            <button class="btn btn-danger" type="button">reject <code>7f3a91c2</code></button>
+            <span class="mono-id">
+              <code>approve</code> and <code>reject</code> have no slash name. They complete only ids whose phase is
+              <span class="mono-id">awaiting_human</span>; the other three roster rows stay disabled here.
+            </span>
+          </div>
+
+          <div class="verb" style="margin-top:var(--space-2)">
+            <button class="btn btn-sm" type="button" aria-disabled="true">approve 4b8e0d17</button>
+            <button class="btn btn-sm" type="button" aria-disabled="true">reject 4b8e0d17</button>
+            <span class="mono-id">phase <span class="mono-id">secondary_review</span> — not awaiting a person yet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="shell" style="padding-block-start:0">
+  <p class="mono-id">Designed at 1440px, usable at 390px. Dark is primary; light has its own hex. Colours: tokens.json.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+
+  /* ---- theme ---- */
+  var params = new URLSearchParams(location.search);
+  if (params.get("theme") === "light" || params.get("theme") === "dark"){
+    root.setAttribute("data-theme", params.get("theme"));
+  }
+  var themeBtn = document.getElementById("theme-toggle");
+  function paintTheme(){
+    var light = root.getAttribute("data-theme") === "light";
+    themeBtn.textContent = "theme: " + (light ? "light" : "dark");
+    themeBtn.setAttribute("aria-pressed", light ? "true" : "false");
+  }
+  themeBtn.addEventListener("click", function(){
+    root.setAttribute("data-theme", root.getAttribute("data-theme") === "light" ? "dark" : "light");
+    paintTheme();
+  });
+  paintTheme();
+
+  /* ---- reduced motion: prefers-reduced-motion, plus the TUI env predicate ---- */
+  var mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+  var forced = ["1","true","yes","on"].indexOf((params.get("reduced") || "").toLowerCase()) > -1;
+  var motion = mq.matches && !forced;
+
+  /* ---- spinner frames ♪ ♫ ♬ ♫, one frame per 100ms ---- */
+  var FRAMES = ["\u266a","\u266b","\u266c","\u266b"];
+  var spins = Array.prototype.slice.call(document.querySelectorAll(".spin"));
+  if (!motion) root.setAttribute("data-motion", "off");
+  if (motion && spins.length){
+    var tick = 0;
+    for (var s = 0; s < spins.length; s++) spins[s].textContent = FRAMES[0];
+    setInterval(function(){
+      tick = (tick + 1) % FRAMES.length;
+      for (var i = 0; i < spins.length; i++) spins[i].textContent = FRAMES[tick];
+    }, 100);
+  }
+
+  /* ---- shared chrome (same block on all five pages) ----
+     D3: Alt+M cycles mode auto → dispatch → read-only (keydown, Alt the only
+     modifier, code KeyM, preventDefault — the Alt+N handling). Shift+Tab is
+     never bound. In a composer textarea Enter sends, Shift+Enter (or Ctrl+J)
+     is a newline, / at column 0 opens the palette prefilled with /, and Escape
+     returns focus to the element the composer was opened from. */
+  var MODES = ["auto", "dispatch", "read-only"];
+  var modeBtn = document.getElementById("mode-chip");
+  var modeVal = document.getElementById("mode-val");
+  var modeAt = 0;
+  function paintMode(){
+    modeVal.textContent = MODES[modeAt];
+    modeBtn.setAttribute("aria-label", "mode " + MODES[modeAt] + " — Alt+M cycles");
+  }
+  function cycleMode(){ modeAt = (modeAt + 1) % MODES.length; paintMode(); }
+  modeBtn.addEventListener("click", cycleMode);
+  paintMode();
+  var hasPalette = !!document.getElementById("palette");
+  document.addEventListener("keydown", function(e){
+    if (e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.code === "KeyM"){
+      e.preventDefault();
+      if (!document.querySelector("[data-permission-pending]")) cycleMode();  /* suppressed while a permission is pending */
+      return;
+    }
+    if (!hasPalette && (e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k"){
+      e.preventDefault(); location.href = "palette.html";
+      return;
+    }
+    /* Escape inside an open tool block closes it and returns focus to its summary (the opener) */
+    if (e.key === "Escape" && document.activeElement){
+      var d = document.activeElement.closest && document.activeElement.closest("details[open]");
+      if (d && !e.defaultPrevented){ e.preventDefault(); d.open = false; d.querySelector("summary").focus(); }
+    }
+  });
+  function insertAtCaret(ta, text){
+    var a = ta.selectionStart, b = ta.selectionEnd;
+    ta.value = ta.value.slice(0, a) + text + ta.value.slice(b);
+    ta.selectionStart = ta.selectionEnd = a + text.length;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-composer]"), function(ta){
+    var out = document.getElementById(ta.getAttribute("data-status"));
+    var box = ta.closest("[data-composer-box]") || ta.parentNode;
+    var sendBtn = box.querySelector("[data-send]");
+    function send(){
+      var text = ta.value.replace(/\s+$/, "");
+      if (out) out.textContent = text ? "sent " + text.split("\n").length + " line(s) · Enter sends · Shift+Enter newline"
+                                      : "nothing to send · Enter sends · Shift+Enter newline";
+    }
+    if (sendBtn) sendBtn.addEventListener("click", send);
+    ta.addEventListener("keydown", function(e){
+      if (e.key === "Enter" && e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) return;  /* newline: browser default */
+      if (e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && (e.key === "j" || e.key === "J")){
+        e.preventDefault(); insertAtCaret(ta, "\n"); return;
+      }
+      if (e.key === "Enter" && !e.ctrlKey && !e.altKey && !e.metaKey){ e.preventDefault(); send(); return; }
+      var a = ta.selectionStart;
+      if (e.key === "/" && a === ta.selectionEnd && (a === 0 || ta.value.charAt(a - 1) === "\n") && !hasPalette){
+        e.preventDefault(); location.href = "palette.html?q=%2F"; return;
+      }
+      if (e.key === "Escape"){
+        var back = document.getElementById(ta.getAttribute("data-return") || "");
+        if (back){ e.preventDefault(); back.focus(); }
+      }
+    });
+  });
+  /* j/k (and ↓/↑) move between the rows of a focused list; Enter follows the row's link */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-keylist]"), function(listEl){
+    listEl.addEventListener("keydown", function(e){
+      var row = e.target.closest && e.target.closest("[data-keyrow]");
+      if (!row || e.ctrlKey || e.metaKey || e.altKey) return;
+      var all = Array.prototype.slice.call(listEl.querySelectorAll("[data-keyrow]"));
+      var at = all.indexOf(row), next = null;
+      if (e.key === "j" || e.key === "ArrowDown") next = all[at + 1];
+      else if (e.key === "k" || e.key === "ArrowUp") next = all[at - 1];
+      else if (e.key === "Enter" && e.target === row){
+        var link = row.querySelector("a[href]"); if (link){ e.preventDefault(); link.click(); }
+        return;
+      } else return;
+      e.preventDefault();
+      if (next){
+        var roving = listEl.getAttribute("data-keylist") === "roving";
+        all.forEach(function(r){
+          if (r.hasAttribute("aria-selected")) r.setAttribute("aria-selected", r === next ? "true" : "false");
+          if (roving) r.setAttribute("tabindex", r === next ? "0" : "-1");
+        });
+        next.focus();
+      }
+    });
+  });
+  /* j/k on a focused transcript scroll one row; PageUp/PageDown are the browser's */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-transcript]"), function(t){
+    t.addEventListener("keydown", function(e){
+      if (e.target !== t || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "j"){ e.preventDefault(); window.scrollBy(0, 20); }
+      if (e.key === "k"){ e.preventDefault(); window.scrollBy(0, -20); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_create.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "acceptance": {
+      "items": {
+        "maxLength": 500,
+        "type": "string"
+      },
+      "maxItems": 20,
+      "type": "array"
+    },
+    "body": {
+      "maxLength": 8000,
+      "type": "string"
+    },
+    "parent_ref": {
+      "maxLength": 200,
+      "pattern": "^(^t:[0-9a-f-]{36}$|^d:[A-Za-z0-9_-]{1,64}:[A-Za-z0-9_-]{1,64}$)$",
+      "type": "string"
+    },
+    "repo": {
+      "maxLength": 200,
+      "type": "string"
+    },
+    "suggest_app_claimable": {
+      "default": false,
+      "type": "boolean"
+    },
+    "title": {
+      "maxLength": 200,
+      "minLength": 3,
+      "type": "string"
+    },
+    "write_scope": {
+      "items": {
+        "maxLength": 200,
+        "type": "string"
+      },
+      "maxItems": 50,
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "body",
+    "repo"
+  ],
+  "title": "task_create_input",
+  "type": "object"
+}

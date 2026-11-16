@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ◆ 2 need you — /jobs --attention
+  ✔  Completed  Read the adapter registry  kimi      12s     09:41  /jobs 1
+  ◆  Needs you  Needs a host with bash     deepseek  2h05m   09:12  /reply 2
+  ✖  Failed     Sandbox denied             cursor    7h57m   01:35  /retry 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  commands
+  ▸ tickets       /jobs       list Tickets; /jobs <id> shows one; /jobs watch <id> follows it
+    reply         /reply      answer the Ticket that needs you
+    retry         /retry      retry a failed or waiting Ticket
+    help          /help       show the TUI key map and commands
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                                                        ◆ 2 · shift+enter newline · alt+m mode · ? help

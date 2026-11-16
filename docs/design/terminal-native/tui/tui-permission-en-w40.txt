@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  Describe a task and press Enter. It
+  runs as a Ticket on Home.
+
+  ◆ permission: merge feat/tui
+    action: local-merge
+    into integrate/r2
+    [a]llow once  [s]ession allow
+    [d]eny
+  commands
+  ▸ approve       approve a dispatch…
+    reject        reject a dispatch…
+    help          show the TUI key map…
+❯ Describe a task, / for commands
+ ◆ merge…  a allow · s session · d deny

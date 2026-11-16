@@ -1,0 +1,43 @@
+/*
+ * The 2px ink.focus ring the primitives in this folder wear.
+ *
+ * The layer is the point. `styles/tokens.css` keeps the baseline
+ * `:focus-visible` ring inside `@layer focus-defaults` for a reason: the layer
+ * holds the defaults, so a surface that answers focus in its own language --
+ * the auth surface, which clears the outline and paints its own ember -- still
+ * wins, because an unlayered rule beats every layered one whatever its
+ * specificity.
+ *
+ * A Tailwind `focus-visible:outline-*` utility would be unlayered. A primitive
+ * that named the ring that way would take the ring away from the sign-in page
+ * the moment it rendered an <Input>, which is a page the app has already
+ * decided answers focus differently. So the ring lives here instead, in the
+ * same layer as the baseline: a default, in the place defaults live, that a
+ * page can still refuse.
+ *
+ * The values are tokens, never literals: --border-focus is 2px and
+ * --color-focus-ring is ink.focus. The outset offset is left to the layer's
+ * own rule (--focus-offset, 2px), and a box that clips the ring asks for it
+ * inward.
+ */
+@layer focus-defaults {
+  .ui-focus-ring:focus-visible {
+    outline-style: solid;
+    outline-width: var(--border-focus);
+    outline-color: var(--color-focus-ring);
+  }
+
+  /*
+   * The same ring, drawn inward, for a control inside a box that clips the
+   * outset one -- a menu panel, a segmented control, a row of a list. The
+   * `[class]` outranks the later, equally specific role-based menuitem rule
+   * in styles/tokens.css, which would otherwise replace ink.focus with
+   * currentColor.
+   */
+  .ui-focus-ring-inward[class]:focus-visible {
+    outline-style: solid;
+    outline-width: var(--border-focus);
+    outline-color: var(--color-focus-ring);
+    outline-offset: -2px;
+  }
+}

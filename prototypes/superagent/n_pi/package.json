@@ -1,0 +1,15 @@
+{
+  "name": "superagent-n-pi",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Prototype N: Super-agent loop on pi-agent-core, reached over the contract bridge.",
+  "type": "module",
+  "main": "service.mjs",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "1.5.2",
+    "@earendil-works/pi-ai": "1.5.2"
+  }
+}

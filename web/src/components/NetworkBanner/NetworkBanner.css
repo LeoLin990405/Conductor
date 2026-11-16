@@ -1,0 +1,22 @@
+/* One chrome hairline, token ink: offline is a state, not an alarm. */
+
+.network-banner {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface-canvas);
+  border-bottom: var(--border-hairline) solid var(--ink-rule);
+  color: var(--ink-hold);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  overflow-wrap: anywhere;
+}
+
+.network-banner svg {
+  flex: 0 0 auto;
+  color: var(--ink-hold);
+}

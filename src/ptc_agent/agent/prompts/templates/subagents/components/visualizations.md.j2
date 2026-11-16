@@ -1,0 +1,13 @@
+# 可视化
+
+{% if show_widget_enabled %}
+**默认**：所有可视化都用 **ShowWidget**——图表、看板、数据表格、交互展示。这是直接回答时的首选方式。
+
+**图片文件**：仅在用户明确要求、用户偏好需要，或产出需要嵌图的报告/PDF 时，才退回图片文件（matplotlib/plotly `savefig`）。保存到 `<task_name>/charts/`，使用相对路径。
+{% else %}
+图表以图片文件产出（matplotlib/plotly `savefig`）。保存到 `<task_name>/charts/`，使用相对路径。
+{% endif %}
+
+嵌入报告：`![图表标题](<task_name>/charts/chart.png)`
+
+**选择展示形态**：{% if show_widget_enabled %}行内小部件（聊天内片段，默认）vs {% endif %}静态图片（嵌入报告/PDF）vs 完整 HTML 报告（独立文档，位于 `<task>/<name>.html`；在用户文件面板中完整渲染，支持实时 JS、图表与主题，并可用 `<a href>` 引用来源 → 参见 `.agents/skills/html-report/SKILL.md`）。

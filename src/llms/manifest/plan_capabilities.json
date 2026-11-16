@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-26",
+  "description": "Product-level plan and API-region capability matrix for the provider picker. Keeps Token Plan vs Agent Plan distinct from the wire access_type (api_key/coding_plan/oauth/local).",
+  "aliases": {
+    "z-ai-cn": "z-ai",
+    "z-ai-cn-coding": "z-ai",
+    "dashscope-intl": "dashscope",
+    "minimax-intl": "minimax",
+    "kimi-oauth": "moonshot",
+    "doubao-coding": "volcengine",
+    "doubao-plan": "volcengine",
+    "mimo-oauth": "mimo",
+    "gemini-oauth": "gemini",
+    "claude-oauth": "anthropic",
+    "codex-oauth": "openai",
+    "grok-oauth": "xai",
+    "deepseek-account": "deepseek",
+    "dashscope-token-plan": "dashscope",
+    "stepfun-intl": "stepfun",
+    "stepfun-plan-intl": "stepfun",
+    "moonshot-cn": "moonshot"
+  },
+  "families": {
+    "deepseek": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["global"],
+      "source": "https://api-docs.deepseek.com/quick_start/pricing"
+    },
+    "z-ai": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["cn", "intl"],
+      "source": "https://docs.z.ai/devpack/quick-start"
+    },
+    "moonshot": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["cn", "intl"],
+      "source": "https://www.kimi.com/code/docs/kimi-code/membership.html"
+    },
+    "dashscope": {
+      "token_plan": true,
+      "agent_plan": false,
+      "api_regions": ["cn", "intl"],
+      "source": "https://docs.modelstudio.console.alibabacloud.com/en/model-studio/token-plan-personal-overview"
+    },
+    "minimax": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["cn", "intl"],
+      "source": "https://platform.minimax.io/docs/m-plan/intro"
+    },
+    "mimo": {
+      "token_plan": true,
+      "agent_plan": false,
+      "api_regions": ["cn", "intl"],
+      "source": "https://mimo.mi.com/docs/zh-CN/tokenplan/Token Plan/quick-access"
+    },
+    "stepfun": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["cn", "intl"],
+      "source": "https://platform.stepfun.ai/docs/en/step-plan/overview.md"
+    },
+    "volcengine": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["cn"],
+      "source": "https://docs.volcengine.com/docs/ark/agent-plan-personal-plan-overview"
+    },
+    "openai": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["global"],
+      "source": "https://platform.openai.com/docs"
+    },
+    "anthropic": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["global"],
+      "source": "https://docs.anthropic.com"
+    },
+    "gemini": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["global"],
+      "source": "https://ai.google.dev/gemini-api/docs"
+    },
+    "xai": {
+      "token_plan": false,
+      "agent_plan": true,
+      "api_regions": ["global"],
+      "source": "https://docs.x.ai"
+    },
+    "openrouter": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["global"],
+      "source": "https://openrouter.ai/docs"
+    },
+    "groq": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["global"],
+      "source": "https://console.groq.com/docs"
+    },
+    "cerebras": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["global"],
+      "source": "https://inference-docs.cerebras.ai"
+    },
+    "deepinfra": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["global"],
+      "source": "https://deepinfra.com/docs"
+    },
+    "ollama": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["local"],
+      "source": "https://docs.ollama.com"
+    },
+    "lm-studio": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["local"],
+      "source": "https://lmstudio.ai/docs"
+    },
+    "vllm": {
+      "token_plan": false,
+      "agent_plan": false,
+      "api_regions": ["local"],
+      "source": "https://docs.vllm.ai"
+    }
+  },
+  "plans": {
+    "moonshot-coding": { "kind": "agent", "name": "Kimi Code" },
+    "z-ai-coding": { "kind": "agent", "name": "GLM Coding Plan" },
+    "z-ai-cn-coding": { "kind": "agent", "name": "GLM Coding Plan" },
+    "minimax-coding": { "kind": "agent", "name": "M Plan" },
+    "mimo": { "kind": "token", "name": "Token Plan" },
+    "stepfun-plan": { "kind": "agent", "name": "Step Plan" },
+    "doubao-coding": { "kind": "agent", "name": "Coding Plan" },
+    "doubao-plan": { "kind": "agent", "name": "Agent Plan" },
+    "dashscope-token-plan": { "kind": "token", "name": "Token Plan" },
+    "stepfun-plan-intl": { "kind": "agent", "name": "Step Plan" }
+  }
+}

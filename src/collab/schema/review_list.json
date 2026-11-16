@@ -1,0 +1,19 @@
+{
+  "$id": "https://conductor.local/collab/schema/review_list.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "for_me": {
+      "default": true,
+      "type": "boolean"
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "title": "review_list_input",
+  "type": "object"
+}

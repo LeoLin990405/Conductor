@@ -1,0 +1,24 @@
+❯ Run the sandbox command.
+
+✖ Failed
+summary: The shell was refused on this worker.
+error: Worker exited 1: sandbox-exec denied
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                               shift+enter newline · alt+m mode

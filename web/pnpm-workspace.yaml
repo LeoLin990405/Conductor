@@ -1,0 +1,34 @@
+overrides:
+  # GHSA-g3hv-75wg-m249 (moderate, fixed in 11.0.1) covers minimatch >=7.0.0
+  # <11.0.1, which is what eslint, @eslint/config-array and typescript-estree ask
+  # for (^10). The selector is the advisory's own range on purpose: minimatch 11
+  # no longer builds RegExp parts in Minimatch#set, and glob 7.2.3 (exceljs >
+  # archiver, unzipper > fstream > rimraf) matches directory entries against
+  # them, so a bare override would make patterns like *.js throw in it. Out of
+  # the range, glob 7 and readdir-glob stay on their own ^3 and ^5 lines.
+  # Drop this once eslint and typescript-eslint depend on minimatch 11.
+  "minimatch@>=7.0.0 <11.0.1": ^11.0.1
+  # monaco-editor 0.57.0 (latest stable) pins dompurify 3.4.15 exactly and no
+  # monaco release carries a patched one, so the floor lives here: 3.4.17 is the
+  # first release past GHSA-cg2g-xh64-v4q7 (critical), GHSA-mrv2-3pqr-j5jr (high)
+  # and GHSA-c6gr-qvv4-5v3f (low). Nothing in web/src imports monaco-editor, so
+  # this clears the lockfile, not shipped code; drop it with monaco-editor.
+  dompurify: ^3.4.17
+  # exceljs 4.4.0 (latest, unmaintained) pins uuid ^8.3.0, and no 8.x-10.x line
+  # carries the v3/v5/v6 buffer-bounds fix. It only calls v4(); the override
+  # moves it to the first patched release. Only exceljs's Node entry resolves
+  # this (its browser bundle embeds its own uuid), and nothing in web/src imports
+  # exceljs. Drop it once exceljs drops uuid 8, or with exceljs.
+  uuid@<11.1.1: ^11.1.1
+  # rehype-katex 7.0.1 declares katex ^0.16, and 0.18 prefixes KaTeX's internal
+  # classes, so the renderer has to be the version the stylesheet was built for.
+  # Drop this once rehype-katex accepts ^0.18.
+  katex: ^0.18.9
+
+patchedDependencies:
+  exceljs@4.4.0: patches/exceljs@4.4.0.patch
+
+allowBuilds:
+  core-js: false
+  es5-ext: false
+  esbuild: true

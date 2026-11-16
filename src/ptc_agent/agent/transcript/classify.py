@@ -1,0 +1,112 @@
+"""What a checkpointed HumanMessage is: input someone sent, or a stamp.
+
+Replay and the transcript both open a turn (a task's run) on real input only,
+so both classify here. Every stamp a writer puts on a HumanMessage must be
+registered: ``plain`` is the fallback, so an unregistered stamp would open a
+turn it only landed inside.
+"""
+
+from __future__ import annotations
+
+from typing import Literal
+
+from langchain_core.messages import AnyMessage, HumanMessage
+
+HumanKind = Literal[
+    "plain",
+    "steering",
+    "summarization",
+    "credit-gate",
+    "runtime-context",
+    "orchestrator",
+]
+
+#: How mid-turn input opens: the user's, and an orchestrator's follow-up to a
+#: background task.
+STEERING_MARKERS = (
+    "[Steering from User]\n",
+    "[Follow-up Instructions from Orchestrator]\n",
+)
+
+# Written by src/server/utils/credit_resume_context.py: the record of
+# gate-stopped background tasks injected when a credit-paused turn resumes.
+_CREDIT_GATE_SOURCE = "credit_gate"
+
+# How middleware/compaction/ opened a summary before it said which side wins a
+# disagreement, as summaries already in checkpoints still do: all a summary
+# written before the lc_source stamp has to be known by, and an opening
+# parse_summary_message strips like the current one.
+LEGACY_SUMMARY_PREFIX = (
+    "[Context Summary]\n"
+    "This session is being continued from a previous conversation "
+    "that ran out of context. The conversation is summarized below:\n\n"
+)
+
+# Written by middleware/runtime_context/: the tail envelope carrier and the
+# durable rows it renders.
+_RUNTIME_CONTEXT_SOURCES = frozenset({"runtime_context", "runtime_update"})
+
+# Written by middleware/task_runtime/orchestrator.py: the trigger that
+# re-invokes the agent for pending steering, and background-task notices.
+# Checkpoints from before the stamp carry only the message name.
+ORCHESTRATOR_SOURCE = "orchestrator"
+#: The steering trigger's whole text for the user's steers, and every
+#: trigger's text before it named the sender. It only routes the graph back to
+#: the agent; the steering message that follows it carries the words.
+STEERING_TRIGGER = "User sent additional instructions."
+_TRIGGER_TAIL = " sent additional instructions."
+_TRIGGER_NAMES = {"user": "User"}
+
+
+def reentry_trigger(senders: list[str]) -> str:
+    """The trigger that routes the graph back to the agent for its steers."""
+    return steering_trigger(senders)
+
+
+def steering_trigger(senders: list[str]) -> str:
+    """The trigger naming who sent the steers waiting, in the order given."""
+    names = [
+        _TRIGGER_NAMES.get(sender) or sender.replace("_", " ").title()
+        for sender in dict.fromkeys(senders or ["user"])
+    ]
+    return " and ".join(names) + _TRIGGER_TAIL
+
+
+def is_steering_trigger(content: object) -> bool:
+    return isinstance(content, str) and content.endswith(_TRIGGER_TAIL)
+
+
+def human_kind(message: HumanMessage) -> HumanKind:
+    """Classify a HumanMessage by its injection stamp; ``plain`` is real input."""
+    kwargs = message.additional_kwargs or {}
+    source = kwargs.get("lc_source")
+    content = message.content if isinstance(message.content, str) else ""
+    if source == "steering" or content.startswith(STEERING_MARKERS):
+        return "steering"
+    if source == "summarization":
+        return "summarization"
+    if source == _CREDIT_GATE_SOURCE:
+        return "credit-gate"
+    if source in _RUNTIME_CONTEXT_SOURCES:
+        return "runtime-context"
+    if source == ORCHESTRATOR_SOURCE or message.name == ORCHESTRATOR_SOURCE:
+        return "orchestrator"
+    return "plain"
+
+
+def is_run_boundary_message(message: AnyMessage) -> bool:
+    """A plain HumanMessage opens a turn, or a run in a task namespace (the
+    spawn or resume input); stamped injections land mid-run and never open one."""
+    return isinstance(message, HumanMessage) and human_kind(message) == "plain"
+
+
+def is_summary_message(message: AnyMessage) -> bool:
+    """A compaction summary, which heads the view after a compaction.
+
+    One written before summaries were stamped is known by its opening alone,
+    so the next compaction keeps it whole rather than trimming it as input.
+    """
+    if not isinstance(message, HumanMessage):
+        return False
+    content = message.content if isinstance(message.content, str) else ""
+    return human_kind(message) == "summarization" or content.startswith(LEGACY_SUMMARY_PREFIX)

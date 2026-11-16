@@ -1,0 +1,86 @@
+.agent-network {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.agent-network__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 42% 48%, black 20%, transparent 78%);
+}
+
+.agent-network__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.agent-network__edges path {
+  stroke-dasharray: 6 10;
+  animation: agent-edge-flow 7s linear infinite;
+}
+
+.agent-network__hub {
+  fill: var(--login-ember, #ffa85c);
+  filter: drop-shadow(0 0 16px var(--login-ember, #ffa85c));
+}
+
+.agent-network__hub-ring {
+  fill: none;
+  stroke: var(--login-ember, #ffa85c);
+  stroke-opacity: 0.35;
+  stroke-dasharray: 2 6;
+  animation: agent-hub-spin 26s linear infinite;
+  transform-origin: 300px 370px;
+}
+
+.agent-network__node {
+  fill: var(--color-bg-page, #0a0e14);
+  stroke: var(--login-ember, #ffa85c);
+  stroke-width: 1.5;
+  animation: agent-node-pulse 4.4s ease-in-out infinite;
+}
+
+.agent-network__halo {
+  fill: var(--login-ember, #ffa85c);
+  opacity: 0.08;
+  animation: agent-node-pulse 4.4s ease-in-out infinite;
+}
+
+.agent-network__labels {
+  position: absolute;
+  right: 2.4rem;
+  bottom: 2.4rem;
+  display: flex;
+  gap: 1.25rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  color: var(--color-text-tertiary, #7a8798);
+}
+
+@keyframes agent-edge-flow {
+  to { stroke-dashoffset: -160; }
+}
+@keyframes agent-hub-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes agent-node-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-network__edges path,
+  .agent-network__hub-ring,
+  .agent-network__node,
+  .agent-network__halo { animation: none; }
+}

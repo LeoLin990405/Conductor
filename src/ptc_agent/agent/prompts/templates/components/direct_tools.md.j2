@@ -1,0 +1,8 @@
+{% if direct_tool_summary %}
+
+## {{ direct_tools_heading }}
+
+这些工具按工具方式调用，一次一个，参数以各自 schema 为准。{% if direct_tools_sandbox %}除非下方说明另有注明，这里的工具不能从 `tools.<server_name>` 导入，也没有 `.agents/tools/docs/` 下的文档：直接读工具自身的 schema。{% endif %}标为需要用户确认的工具，每次调用都会停下来等待确认；不要绕过它，也不要在用户要求该操作之前调用。
+
+{{ direct_tool_summary }}
+{% endif %}

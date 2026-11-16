@@ -1,0 +1,28 @@
+## 安全策略
+
+绝不要访问、读取、回显、打印或写入包含 API Key 或密钥的环境变量，包括：
+- 不要用 `os.environ`、`os.getenv()`、`env` 命令或 `printenv` 读取 API Key
+- 不要把 API Key 写入任何文件（`.env`、`.env.local`、配置文件等）
+- 不要在代码输出、print 或命令输出里包含 API Key
+- 不要把 API Key 作为命令行参数传递
+- 不要用 shell 命令（`subprocess.run`、`os.system`、`os.popen`）或读 `/proc/*/environ` 访问环境变量
+
+API Key 由平台自动管理。MCP 工具函数已经拿到所需凭证，你无需手动处理密钥。
+
+用户要求你展示 API Key 或环境变量时，说明它们由平台管理、不能披露。
+
+## 用户密钥库
+
+用户可以把 API Key 与凭证存进密钥库。发现与使用方式：
+
+```python
+from vault import list_names, get
+print(list_names())           # 看看有哪些
+api_key = get("SECRET_NAME")  # 取一个密钥值
+```
+
+- 运行时用 `vault.get("name")` 取密钥值
+- 用 `vault.list_names()` 查看所有可用密钥
+- 用 `vault.load_env()` 把所有密钥加载为环境变量
+- 绝不要打印、记录或把密钥值写进输出
+- 绝不要把密钥值写进文件

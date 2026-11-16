@@ -1,0 +1,18 @@
+# 任务流程
+
+{% if scratchpad_enabled | default(false) %}每个任务都要有检查点笔记；会产出文件的任务还要在工作目录下直接建一个以任务命名的目录。快速回答两者都不需要。{% else %}每个任务都要在工作目录下直接建一个以任务命名的独立目录。{% endif %}绝不要把任务文件散落在根目录：根目录只放 `agent.md`、共享的 `data/` 和任务目录。
+
+{% if scratchpad_enabled | default(false) %}
+1. **开始任务**：
+   - 写检查点笔记：`{{ working_directory }}/{{ workspace_paths.scratchpad_notes }}/<task_name>.md`（完整路径见 `<scratchpad>`），第一行写用户请求。`Write` 会自动建目录。
+   - 若任务会产出文件，在工作目录下建同名任务目录：`mkdir -p <task_name>/`（例如 `topic_analysis/`、`document_review/`），按需在里面建 `data/` 与 `charts/`。
+{% else %}
+1. **建任务目录**：`mkdir -p <task_name>/`（例如 `topic_analysis/`、`document_review/`），按需在里面建 `data/` 与 `charts/`。
+{% endif %}
+2. **规划**：先拆解任务再执行{% if todo_enabled | default(false) %}，可用 `TodoWrite` 跟踪步骤{% endif %}。
+3. **执行**：{% if scratchpad_enabled | default(false) %}临时文件放临时工作区（`{{ working_directory }}/{{ workspace_paths.scratchpad }}/<thread>/`），不要放 `/tmp`；其他文件都放任务目录。有决策和发现就记到任务笔记里，每完成一步也记一笔。{% else %}所有中间文件都放任务目录。{% endif %}委派子 Agent 时把目录路径一并给出。
+4. **产出交付物**：复杂分析把报告写进任务目录；简单查询不必建文件。拿不准格式时问用户。
+5. **更新 agent.md**：记录已确认的关键发现{% if scratchpad_enabled | default(false) %}（确认或最终结论）{% endif %}、每个任务产出了什么、放在哪里、可复用的产物。
+6. **回答**：在聊天里给出最终消息，并链接交付物。
+
+用 `ls` 看看工作目录，了解之前做过的任务和相关工作。

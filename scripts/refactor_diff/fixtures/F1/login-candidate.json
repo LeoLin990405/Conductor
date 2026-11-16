@@ -1,0 +1,80 @@
+{
+  "flow": "F1",
+  "revision": "synthetic-candidate",
+  "app_revision": "candidate",
+  "captured_at": "2026-10-26T00:00:00Z",
+  "synthetic": true,
+  "http": [
+    {
+      "method": "GET",
+      "path": "/api/v1/oauth/providers",
+      "status": 200,
+      "request": {
+        "headers": {
+          "authorization": "[REDACTED]"
+        }
+      },
+      "response": {
+        "providers": [
+          {
+            "id": "kimi-oauth",
+            "login_supported": true,
+            "kind": "device"
+          },
+          {
+            "id": "mimo-oauth",
+            "login_supported": true,
+            "kind": "paste"
+          },
+          {
+            "id": "dashscope",
+            "login_supported": false,
+            "kind": "api_key_only"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/oauth/kimi/status",
+      "status": 200,
+      "request": {},
+      "response": {
+        "connected": false,
+        "account_id": null,
+        "email": null,
+        "plan_type": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me/api-keys",
+      "status": 200,
+      "request": {},
+      "response": {
+        "enabled": true,
+        "providers": [
+          {
+            "provider": "moonshot-coding",
+            "has_key": true
+          }
+        ]
+      }
+    }
+  ],
+  "sse": [],
+  "db": [
+    {
+      "table": "user_api_keys",
+      "keys": [
+        "provider"
+      ],
+      "rows": [
+        {
+          "provider": "moonshot-coding",
+          "has_key": true
+        }
+      ]
+    }
+  ]
+}

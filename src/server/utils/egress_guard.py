@@ -1,0 +1,261 @@
+"""Resolution-time SSRF guard for host-originated egress to user-configured URLs.
+
+``validate_remote_url`` (models/mcp_server.py) is the static write-time policy;
+it documents DNS rebinding as an accepted residual because the sandbox is the
+caller. Host-side egress (OAuth discovery/DCR/token hops, the egress relay's
+vendor dial) has no such excuse: this module resolves the host itself, rejects
+any non-global address, and pins the connection to a validated IP — the URL is
+rewritten to the IP while TLS SNI and the Host header keep the original
+hostname, so a rebinding resolver cannot swap the target between check and
+connect.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import ipaddress
+import socket
+from collections.abc import Mapping
+from dataclasses import dataclass
+from urllib.parse import urlsplit, urlunsplit
+
+__all__ = [
+    "EgressBlockedError",
+    "MCP_PROTOCOL_HEADERS",
+    "PinnedTarget",
+    "RESERVED_HEADERS",
+    "RESERVED_REQUEST_HEADERS",
+    "pin_public_url",
+    "resolve_public_ips",
+    "strip_configured_headers",
+    "strip_reserved_headers",
+]
+
+# Headers no caller may supply: framing and hop-by-hop fields belong to the
+# client that frames the request, and ``Host`` is the pin itself. A dict is
+# case-sensitive where HTTP is not, so a lowercase ``host`` from a config row
+# would ride alongside the pinned one and put two on the wire.
+RESERVED_REQUEST_HEADERS = frozenset({
+    "host",
+    "content-length",
+    "transfer-encoding",
+    "connection",
+    "te",
+    "upgrade",
+    "expect",
+    "content-encoding",
+})
+
+
+# Names the MCP protocol owns, on top of the framing ones. Whoever negotiated
+# the session frames these, never configuration: a row spelling the version
+# desyncs the wire header from the body ``_meta`` it has to match, and one
+# spelling a session id forges a session the server never issued.
+MCP_PROTOCOL_HEADERS = frozenset({
+    "mcp-protocol-version",
+    "mcp-method",
+    "mcp-name",
+    "mcp-session-id",
+})
+
+# What a user-configured header map may never carry. The host probe, the egress
+# relay and the sandbox runtime each merge a row's headers into a request they
+# framed themselves, so all three drop exactly this set. Split any of them and
+# the same row probes green on one path and fails on another.
+RESERVED_HEADERS = RESERVED_REQUEST_HEADERS | MCP_PROTOCOL_HEADERS
+
+
+def strip_reserved_headers(headers: Mapping[str, str] | None) -> dict[str, str]:
+    """Drop every :data:`RESERVED_REQUEST_HEADERS` key, matched case-folded.
+
+    The transport's own strip, for a map it is about to re-frame. A caller
+    holding a *configured* map wants :func:`strip_configured_headers` instead:
+    the protocol names this one keeps are ones the transport itself is
+    entitled to send.
+    """
+    return {
+        k: v
+        for k, v in (headers or {}).items()
+        if k.lower() not in RESERVED_REQUEST_HEADERS
+    }
+
+
+def strip_configured_headers(headers: Mapping[str, str] | None) -> dict[str, str]:
+    """Drop every :data:`RESERVED_HEADERS` key, matched case-folded."""
+    return {
+        k: v
+        for k, v in (headers or {}).items()
+        if k.lower() not in RESERVED_HEADERS
+    }
+
+
+class EgressBlockedError(ValueError):
+    """The target host failed egress policy (scheme, resolution, or IP range).
+
+    ``str(e)`` quotes the host or the parse error, which a log wants. ``reason``
+    is the same refusal with none of the URL's text, for a response a caller
+    reads: the URL is often the caller's own, and a credential pasted into its
+    host or port would come back in the sentence. A refusal raised without a
+    reason says only that the policy refused, never the URL.
+    """
+
+    def __init__(
+        self, message: str, *, reason: str = "the address is refused by the egress policy"
+    ) -> None:
+        super().__init__(message)
+        self.reason = reason
+
+
+@dataclass(frozen=True)
+class PinnedTarget:
+    """A URL rewritten to a validated IP, plus what the transport must restore.
+
+    ``url`` carries the IP in the netloc; ``host`` is the original hostname used
+    as the TLS ``sni_hostname`` extension so certificate verification still runs
+    against the real name. ``authority`` is what the caller must send as the
+    ``Host`` header — the hostname plus a non-default port (bracketed for IPv6),
+    since a server routing or validating the full authority rejects a bare host.
+    """
+
+    url: str
+    host: str
+    ip: str
+    authority: str
+
+    def pinned_kwargs(
+        self, headers: Mapping[str, str] | None = None
+    ) -> tuple[str, dict[str, str], dict[str, str]]:
+        """The (url, headers, extensions) triple that keeps the pin intact.
+
+        Every caller must apply all three together — sending the pinned URL
+        without the restored Host/SNI reaches the right IP under the wrong
+        name, and sending the original URL re-resolves the hostname.
+        """
+        sent = strip_reserved_headers(headers)
+        sent["Host"] = self.authority
+        return self.url, sent, {"sni_hostname": self.host}
+
+
+def _classify(ip: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    # is_global covers private/loopback/link-local/reserved/multicast/
+    # unspecified AND CGNAT — same predicate as the write-time validator.
+    return ip.is_global
+
+
+async def resolve_public_ips(
+    host: str,
+    *,
+    port: int = 443,
+    allow_non_global: bool = False,
+) -> list[str]:
+    """Resolve ``host`` and return its addresses, rejecting non-global ones.
+
+    Every resolved address must pass — a name that maps to one public and one
+    private address is an attack shape, not a configuration.
+    """
+    candidate = host.lower().rstrip(".").strip("[]")
+    try:
+        literal = ipaddress.ip_address(candidate)
+    except ValueError:
+        literal = None
+    if literal is not None:
+        if not allow_non_global and not _classify(literal):
+            raise EgressBlockedError(
+                f"egress to {host!r} is blocked: non-global address",
+                reason="the host is not a public address",
+            )
+        return [str(literal)]
+
+    loop = asyncio.get_running_loop()
+    try:
+        infos = await loop.getaddrinfo(
+            candidate, port, type=socket.SOCK_STREAM, proto=socket.IPPROTO_TCP
+        )
+    except OSError as exc:
+        raise EgressBlockedError(
+            f"egress to {host!r} is blocked: DNS resolution failed",
+            reason="the host name did not resolve",
+        ) from exc
+    ips: list[str] = []
+    for _family, _type, _proto, _canon, sockaddr in infos:
+        addr = ipaddress.ip_address(sockaddr[0])
+        if not allow_non_global and not _classify(addr):
+            raise EgressBlockedError(
+                f"egress to {host!r} is blocked: resolves to a non-global address",
+                reason="the host name resolves to a non-public address",
+            )
+        if str(addr) not in ips:
+            ips.append(str(addr))
+    if not ips:
+        raise EgressBlockedError(
+            f"egress to {host!r} is blocked: no addresses resolved",
+            reason="the host name resolved to no address",
+        )
+    return ips
+
+
+async def pin_public_url(
+    url: str,
+    *,
+    allow_non_global: bool = False,
+    require_https: bool = True,
+) -> PinnedTarget:
+    """Validate ``url`` and return it pinned to one validated resolved IP.
+
+    Callers send the request with ``PinnedTarget.pinned_kwargs()``, which
+    carries the pinned URL, the restored Host authority and the SNI extension.
+    """
+    try:
+        parts = urlsplit(url)
+    except ValueError as e:
+        # The url is third-party in every caller (a manifest field, a
+        # handshake icon, an upstream Location), so unparseable is an ordinary
+        # input, not a fault. ``http://[bad`` raises here rather than
+        # returning something to reject.
+        raise EgressBlockedError(
+            f"egress url is not parseable: {e}", reason="the URL is not parseable"
+        ) from e
+    if require_https and parts.scheme != "https":
+        raise EgressBlockedError("egress requires https", reason="the URL must be https")
+    if parts.scheme not in ("https", "http"):
+        raise EgressBlockedError(
+            f"egress scheme {parts.scheme!r} is not allowed",
+            reason="the URL's scheme is not allowed",
+        )
+    if parts.username or parts.password:
+        raise EgressBlockedError(
+            "egress url must not contain userinfo credentials",
+            reason="the URL must not contain credentials",
+        )
+    host = parts.hostname
+    if not host:
+        raise EgressBlockedError(
+            "egress url must include a host", reason="the URL must include a host"
+        )
+
+    default_port = 443 if parts.scheme == "https" else 80
+    try:
+        port = parts.port or default_port
+    except ValueError as e:
+        # ``parts.port`` parses lazily, so a port that is out of range or not
+        # a number survives urlsplit and raises on this read instead.
+        raise EgressBlockedError(
+            f"egress url has an unusable port: {e}",
+            reason="the URL's port is not a number from 0 to 65535",
+        ) from e
+    ips = await resolve_public_ips(host, port=port, allow_non_global=allow_non_global)
+    ip = ips[0]
+
+    ip_netloc = f"[{ip}]" if ":" in ip else ip
+    if parts.port is not None:
+        ip_netloc = f"{ip_netloc}:{parts.port}"
+    pinned = urlunsplit((parts.scheme, ip_netloc, parts.path, parts.query, ""))
+    # The Host authority keeps the original hostname (bracketed for IPv6) and
+    # carries a non-default port; SNI/cert verification still use the bare host.
+    host_netloc = f"[{host}]" if ":" in host else host
+    authority = (
+        f"{host_netloc}:{parts.port}"
+        if parts.port is not None and parts.port != default_port
+        else host_netloc
+    )
+    return PinnedTarget(url=pinned, host=host, ip=ip, authority=authority)

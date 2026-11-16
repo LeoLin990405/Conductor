@@ -1,0 +1,120 @@
+/* Terminal-native design tokens.
+   Source: docs/design/terminal-native/system/tokens.json
+   Each custom property is the kebab-case of its token path (colour group
+   dropped for surfaces/ink). Dark is the default on :root; light overrides
+   colour + elevation under [data-theme=light]. */
+
+:root {
+  /* themes.dark.surfaces / themes.dark.ink */
+  --surface-page: #0F1115;
+  --surface-canvas: #1E1E1E;
+  --surface-elevated: #282C34;
+  --surface-selection: #1A2140;
+  --surface-accent: #8B9CFF;
+  --ink-fg: #E6E8EE;
+  --ink-muted: #9AA3B5;
+  --ink-baton: #8B9CFF;
+  --ink-tempo: #56C7D9;
+  --ink-ok: #5BD38A;
+  --ink-hold: #F2B544;
+  --ink-error: #FF7A7A;
+  --ink-on-accent: #0F1115;
+  --ink-focus: #8B9CFF;
+  --ink-faint: #2A2F3A;
+  --ink-rule: #3A4150;
+
+  /* typography */
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-prose: Geist, "Noto Sans SC", system-ui, sans-serif;
+  --size-chrome: 12px;
+  --lh-chrome: 1.45;
+  --size-prose: 15px;
+  --lh-prose: 1.65;
+  --weight-label: 500;
+  --weight-value: 400;
+
+  /* Theme-invariant sheet (always light surface.page / light ink.fg) so
+     workbook fills chosen against white stay readable in either chrome theme. */
+  --sheet-paper: #FFFFFF;
+  --sheet-ink: #1B1E26;
+
+  /* space */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* radius */
+  --radius-none: 0px;
+  --radius-control: 2px;
+  --radius-card: 3px;
+  --radius-overlay: 6px;
+
+  /* border */
+  --border-hairline: 1px;
+  --border-focus: 2px;
+  --focus-offset: 2px;
+
+  /* elevation — themes.dark */
+  --elevation-0: none;
+  --elevation-1: 0 8px 24px rgba(15, 17, 21, 0.45);
+
+  /* motion */
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-reveal: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-quick: 160ms;
+  --duration-fold: 240ms;
+  --duration-enter: 280ms;
+  --duration-exit: 140ms;
+  --duration-reveal: 360ms;
+  --duration-spinner: 100ms;
+}
+
+[data-theme="light"] {
+  /* themes.light.surfaces / themes.light.ink */
+  --surface-page: #FFFFFF;
+  --surface-canvas: #F5F4F1;
+  --surface-elevated: #FDF6E3;
+  --surface-selection: #DCE3FF;
+  --surface-accent: #3F4FC8;
+  --ink-fg: #1B1E26;
+  --ink-muted: #5B6272;
+  --ink-baton: #3F4FC8;
+  --ink-tempo: #0E7A8C;
+  --ink-ok: #1A7F37;
+  --ink-hold: #9A4A06;
+  --ink-error: #C93838;
+  --ink-on-accent: #FFFFFF;
+  --ink-focus: #3F4FC8;
+  --ink-faint: #C9CCD4;
+  --ink-rule: #C9CCD4;
+
+  /* elevation — themes.light */
+  --elevation-1: 0 8px 24px rgba(27, 30, 38, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-quick: 0ms;
+    --duration-fold: 0ms;
+    --duration-enter: 0ms;
+    --duration-exit: 0ms;
+    --duration-reveal: 0ms;
+    --duration-spinner: 0ms;
+  }
+
+  /* Zero hard-coded transitions/animations (e.g. .app-main 250ms) as well as
+     anything that still reads the duration custom properties. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

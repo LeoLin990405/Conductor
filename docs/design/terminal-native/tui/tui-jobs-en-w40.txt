@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ idle
+
+
+
+
+
+
+  jobs
+        title
+  ▸  ✔  Read the adapter registry
+    Completed · /jobs 1 · 7f782add
+    kimi · 12s · 1
+     ◆  Needs a host with bash
+    Needs you · /reply 2 · 6bfa630f
+    deepseek · 2h05m · 2
+     ✖  Sandbox denied
+    Failed · /retry 3 · 4b2f7803
+    cursor · 7h57m · 3
+     ●  Add the review queue screen
+    Running · /jobs watch 4 · 1a91c0de
+    minimax · 4m12s · 4
+     ○  Audit the token contrast
+    Queued · /jobs 5 · 0c73ab19 · — · —
+    5
+  5 Tickets · 1 needs you · 1 running
+  commands
+  ▸ tickets       list Tickets; /jobs…
+    reply         answer the Ticket…
+    retry         retry a failed or…
+    cancel        stop a running Ticket…
+❯ Describe a task, / for commands
+auto · ● 3 online                    ◆ 2

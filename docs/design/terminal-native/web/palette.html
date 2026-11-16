@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palette · terminal-native web mockups</title>
+<style>
+/* ===========================================================================
+   Terminal-native web mockups — palette
+   Every colour in this file is copied from
+   docs/design/terminal-native/system/tokens.json (themes.dark / themes.light).
+   Softer tints are color-mix() of those same inks; no new hex is introduced.
+   =========================================================================== */
+
+:root{
+  /* colour — themes.dark */
+  --surface-page:#0F1115;
+  --surface-canvas:#1E1E1E;
+  --surface-elevated:#282C34;
+  --surface-selection:#1A2140;
+  --surface-accent:#8B9CFF;
+  --ink-fg:#E6E8EE;
+  --ink-muted:#9AA3B5;
+  --ink-baton:#8B9CFF;
+  --ink-tempo:#56C7D9;
+  --ink-ok:#5BD38A;
+  --ink-hold:#F2B544;
+  --ink-error:#FF7A7A;
+  --ink-on-accent:#0F1115;
+  --ink-focus:#8B9CFF;
+  --ink-faint:#2A2F3A;
+  --ink-rule:#3A4150;
+
+  /* typography */
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --font-prose:Geist,"Noto Sans SC",var(--font-mono); /* Geist absent → mono */
+  --size-chrome:12px;
+  --lh-chrome:1.45;
+  --size-prose:15px;
+  --lh-prose:1.65;
+  --weight-label:500;
+  --weight-value:400;
+
+  /* space */
+  --space-0:0px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+
+  /* radius */
+  --radius-none:0px;
+  --radius-control:2px;
+  --radius-card:3px;
+  --radius-overlay:6px;
+
+  /* border */
+  --border-hairline:1px;
+  --border-focus:2px;
+  --focus-offset:2px;
+
+  /* elevation — 1 is only the palette, menus and dialogs */
+  --elevation-0:none;
+  --elevation-1:0 8px 24px rgba(15,17,21,0.45);
+
+  /* motion */
+  --ease-standard:cubic-bezier(0.16,1,0.3,1);
+  --duration-quick:160ms;
+  --duration-fold:240ms;
+  --duration-enter:280ms;
+  --duration-exit:140ms;
+  --duration-reveal:360ms;
+  --duration-spinner:100ms;
+}
+
+[data-theme="light"]{
+  /* colour — themes.light */
+  --surface-page:#FFFFFF;
+  --surface-canvas:#F5F4F1;
+  --surface-elevated:#FDF6E3;
+  --surface-selection:#DCE3FF;
+  --surface-accent:#3F4FC8;
+  --ink-fg:#1B1E26;
+  --ink-muted:#5B6272;
+  --ink-baton:#3F4FC8;
+  --ink-tempo:#0E7A8C;
+  --ink-ok:#1A7F37;
+  --ink-hold:#9A4A06;
+  --ink-error:#C93838;
+  --ink-on-accent:#FFFFFF;
+  --ink-focus:#3F4FC8;
+  --ink-faint:#C9CCD4;
+  --ink-rule:#C9CCD4;
+  --elevation-1:0 8px 24px rgba(27,30,38,0.12);
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--surface-page);
+  color:var(--ink-fg);
+  font-family:var(--font-mono);
+  font-size:var(--size-chrome);
+  line-height:var(--lh-chrome);
+  font-weight:var(--weight-value);
+}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:var(--ink-baton);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select{font:inherit;color:inherit}
+img{max-width:100%}
+
+/* ---------- focus: 2px ink.focus ring, offset 2px ---------- */
+:where(a,button,input,select,textarea,[tabindex],[role="option"]):focus-visible{
+  outline:var(--border-focus) solid var(--ink-focus);
+  outline-offset:var(--focus-offset);
+}
+.row:focus-visible{outline-offset:calc(var(--focus-offset) * -1)}
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;align-items:center;gap:var(--space-4);
+  padding:var(--space-2) var(--space-4);
+  background:var(--surface-page);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.brand{display:flex;align-items:baseline;gap:var(--space-2);font-weight:var(--weight-label)}
+.brand .mark{color:var(--ink-baton)}
+.brand .sub{color:var(--ink-muted);font-weight:var(--weight-value)}
+.nav{display:flex;gap:var(--space-3);margin-inline-start:auto}
+.nav a{padding:var(--space-1) var(--space-2);border-radius:var(--radius-control)}
+.nav a[aria-current="page"]{color:var(--ink-fg);background:var(--surface-canvas)}
+.nav a[aria-current="page"]::before{content:"› ";color:var(--ink-baton)}
+.tools{display:flex;align-items:center;gap:var(--space-2)}
+.kbd{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+  cursor:pointer;
+}
+.kbd b{color:var(--ink-baton);font-weight:var(--weight-label)}
+.kbd:hover{color:var(--ink-fg)}
+.btn{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  min-height:32px;
+  padding:var(--space-1) var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);
+  cursor:pointer;
+}
+.btn:hover{border-color:var(--ink-muted)}
+.btn-primary{background:var(--surface-accent);color:var(--ink-on-accent);border-color:var(--surface-accent)}
+.btn-primary:hover{border-color:var(--ink-fg)}
+.btn-danger{color:var(--ink-error)}
+.btn-danger:hover{border-color:var(--ink-error)}
+.btn[aria-disabled="true"]{color:var(--ink-muted);cursor:not-allowed}
+
+/* ---------- page frame ---------- */
+.shell{max-width:1440px;margin-inline:auto;padding:var(--space-5) var(--space-4) var(--space-6)}
+.page-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-3);margin-bottom:var(--space-4)}
+.page-head h1{font-size:var(--size-prose);font-weight:var(--weight-label);line-height:var(--lh-prose)}
+.page-head .zh{font-family:var(--font-prose);color:var(--ink-muted);font-size:var(--size-prose);line-height:var(--lh-prose)}
+.lede{max-width:76ch;color:var(--ink-muted);font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);margin-bottom:var(--space-5)}
+.section{margin-bottom:var(--space-6)}
+.section > h2{
+  font-size:var(--size-chrome);font-weight:var(--weight-label);
+  color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.08em;
+  padding-bottom:var(--space-1);border-bottom:var(--border-hairline) solid var(--ink-rule);
+  margin-bottom:var(--space-3);
+}
+.card{
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+  padding:var(--space-4);
+}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+.mono-id{font-variant-numeric:tabular-nums;color:var(--ink-muted)}
+.prose{font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose)}
+
+/* ---------- status marks ---------- */
+.st{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.st .glyph{width:1ch;text-align:center}
+.st-queued .glyph{color:var(--ink-muted)}
+.st-running .glyph{color:var(--ink-tempo)}
+.st-blocked .glyph{color:var(--ink-hold)}
+.st-needs-you .glyph{color:var(--ink-hold)}
+.st-failed .glyph{color:var(--ink-error)}
+.st-completed .glyph{color:var(--ink-ok)}
+.st-archived .glyph{color:var(--ink-muted)}
+.st-queued .glyph::before{content:"○"}
+.st-running .glyph::before{content:"●"}
+.st-blocked .glyph::before{content:"▣"}
+.st-needs-you .glyph::before{content:"◆"}
+.st-failed .glyph::before{content:"✖"}
+.st-completed .glyph::before{content:"✔"}
+.st-archived .glyph::before{content:"⊘"}
+/* the spinner advances only while motion is allowed */
+.glyph:has(.spin)::before{content:none}   /* the spinner span draws the running mark itself */
+[data-motion="off"] .spin::before{content:"●"}
+.spin::before{content:"●"}
+@media (prefers-reduced-motion:no-preference){
+  .spin::before{content:none}
+}
+.chip{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+}
+.chip-on{color:var(--ink-fg);border-color:var(--ink-muted)}
+.provider{color:var(--ink-baton)}
+
+/* ---------- list rows ---------- */
+.list{border:var(--border-hairline) solid var(--ink-rule);border-radius:var(--radius-card);background:var(--surface-canvas)}
+.row{
+  display:grid;grid-template-columns:14ch minmax(0,1fr) auto;
+  align-items:center;gap:var(--space-2);
+  width:100%;
+  padding:var(--space-1) var(--space-2);
+  padding-inline-start:var(--space-1); /* the web inset is space.1 */
+  background:none;border:0;border-radius:var(--radius-control);
+  text-align:start;cursor:pointer;
+}
+.row + .row{border-top:var(--border-hairline) solid var(--ink-rule)}
+.row:hover{background:var(--surface-page)}
+.row[aria-selected="true"]{background:var(--surface-selection)}
+.row[aria-selected="true"] .row-title{font-weight:var(--weight-label)}
+.row-title{color:var(--ink-fg)}
+.row-hint{color:var(--ink-muted)}
+.row-meta{color:var(--ink-muted);font-variant-numeric:tabular-nums;text-align:end}
+
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --duration-quick:0ms;--duration-fold:0ms;--duration-enter:0ms;
+    --duration-exit:0ms;--duration-reveal:0ms;--duration-spinner:0ms;
+  }
+}
+
+/* ===========================================================================
+   palette page
+   =========================================================================== */
+.stage{position:relative;border-radius:var(--radius-card);overflow:hidden;min-height:440px}
+.stage .home-behind{min-height:440px}
+.home-behind{
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+  padding:var(--space-4);
+  filter:saturate(0.85);
+}
+.stage.is-open .home-behind{filter:saturate(0.6)}
+.behind-bar{
+  display:flex;gap:var(--space-3);flex-wrap:wrap;
+  padding-bottom:var(--space-2);margin-bottom:var(--space-3);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.behind-body{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--space-4)}
+.behind-h{
+  color:var(--ink-muted);letter-spacing:0.08em;
+  padding-bottom:var(--space-1);margin-bottom:var(--space-1);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.behind-row{
+  display:grid;grid-template-columns:2ch minmax(0,1fr) auto;gap:var(--space-2);
+  align-items:center;padding-block:var(--space-1);
+  border-bottom:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  color:var(--ink-fg);
+}
+.behind-row .st{gap:var(--space-1)}
+.behind-row-2{grid-template-columns:minmax(0,1fr) auto}
+.behind-input{
+  padding:var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+  margin-bottom:var(--space-3);
+}
+
+/* the scrim is a color-mix of surface.page, not a new hex */
+.scrim{
+  position:absolute;inset:0;
+  background:color-mix(in srgb, var(--surface-page) 74%, transparent);
+  animation:fade var(--duration-quick) var(--ease-standard);
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.palette{
+  position:absolute;top:var(--space-5);left:50%;transform:translateX(-50%);
+  width:min(720px, calc(100% - 2 * var(--space-4)));
+  background:var(--surface-elevated);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-overlay);
+  box-shadow:var(--elevation-1);
+  animation:palette-in var(--duration-enter) var(--ease-standard);
+}
+@keyframes palette-in{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
+.palette-query{
+  display:flex;align-items:center;gap:var(--space-2);
+  padding:var(--space-2) var(--space-3);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.palette-query .prompt{color:var(--ink-baton);font-weight:var(--weight-label)}
+.palette-query input{
+  flex:1 1 auto;min-width:0;min-height:32px;
+  background:none;border:0;outline-offset:var(--focus-offset);
+  color:var(--ink-fg);
+}
+.palette-query input::placeholder{color:var(--ink-muted)}
+.palette-list-wrap{max-height:264px;overflow:auto;padding:var(--space-1)}
+.palette-list:focus-visible{outline-offset:calc(var(--focus-offset) * -1);border-radius:var(--radius-control)}
+.prow{
+  display:grid;grid-template-columns:14ch minmax(0,1fr) auto;gap:var(--space-2);
+  align-items:center;
+  padding:var(--space-1) var(--space-2);
+  padding-inline-start:var(--space-1);
+  border-radius:var(--radius-control);
+  cursor:pointer;
+}
+.prow[aria-selected="true"]{background:var(--surface-selection)}
+.prow[aria-selected="true"] .pname{color:var(--ink-fg);font-weight:var(--weight-label)}
+.prow .pname{color:var(--ink-baton)}
+.prow .pname b{color:var(--ink-fg);font-weight:var(--weight-label)}
+.prow .phint{color:var(--ink-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prow .mono-id{white-space:nowrap}
+.prow .pname{overflow-wrap:anywhere}
+/* an argument row carries a longer token (a UUID, a flag) in the first column */
+.prow[data-kind="arg"]{grid-template-columns:24ch minmax(0,1fr) auto}
+.pempty{color:var(--ink-muted);cursor:default;display:block;overflow-wrap:anywhere}
+.perror{color:var(--ink-error)}
+.perror::before{content:"✖ ";}
+.palette-foot{
+  display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;
+  padding:var(--space-2) var(--space-3);
+  border-top:var(--border-hairline) solid var(--ink-rule);
+  color:var(--ink-muted);
+}
+
+/* specimens */
+.spec-title{color:var(--ink-muted);margin-bottom:var(--space-3)}
+.args{display:grid;grid-template-columns:16ch minmax(0,1fr);gap:var(--space-2) var(--space-3)}
+.args dt{color:var(--ink-baton);font-weight:var(--weight-label)}
+.args dd{color:var(--ink-muted)}
+.args dd .mono-id{color:var(--ink-fg)}
+.idle li{
+  display:grid;grid-template-columns:12ch minmax(0,1fr) 10ch;gap:var(--space-2);
+  align-items:center;padding-block:var(--space-1);
+  border-bottom:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent);
+}
+.idle li:last-child{border-bottom:0}
+.idle .name{color:var(--ink-fg);font-weight:var(--weight-label)}
+.idle .name.muted{color:var(--ink-muted);font-weight:var(--weight-value)}
+.idle .hint{color:var(--ink-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.idle .mono-id{text-align:end}
+.keys{width:100%;border-collapse:collapse}
+.keys caption{text-align:start;padding-bottom:var(--space-3);color:var(--ink-muted)}
+.keys th,.keys td{
+  text-align:start;vertical-align:top;
+  padding:var(--space-1) var(--space-2);
+  border-bottom:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent);
+}
+.keys th{width:16ch;white-space:nowrap;font-weight:var(--weight-value)}
+.keys td{color:var(--ink-muted)}
+.keys tr:last-child th,.keys tr:last-child td{border-bottom:0}
+.kbd-inline{
+  display:inline-block;padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);
+}
+
+/* ---------- responsive: 1440 designed, usable at 390 ---------- */
+@media (max-width:900px){
+  .grid-2,.grid-3{grid-template-columns:minmax(0,1fr)}
+  .behind-body{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .shell{padding-inline:var(--space-3)}
+  .topbar{flex-wrap:wrap;gap:var(--space-2);padding-inline:var(--space-3)}
+  .nav{order:3;width:100%;margin-inline-start:0;overflow-x:auto}
+  .tools{margin-inline-start:auto}
+  .args{grid-template-columns:minmax(0,1fr)}
+  .args dt{margin-top:var(--space-2)}
+  .idle li{grid-template-columns:minmax(0,1fr);gap:0}
+  .idle .mono-id{text-align:start}
+  .keys th{width:auto;display:block;border-bottom:0;padding-bottom:0}
+  .keys td{display:block;padding-top:0}
+  .palette{top:var(--space-3);width:calc(100% - 2 * var(--space-3))}
+  .palette-list-wrap{max-height:40vh}
+  .prow{grid-template-columns:12ch minmax(0,1fr);row-gap:0}
+  .prow[data-kind="arg"]{grid-template-columns:minmax(0,1fr)}
+  .prow .mono-id{display:none}
+}
+
+.idle .zh-hint{font-family:var(--font-prose);white-space:normal;overflow-wrap:anywhere}
+/* ---------- shared chrome: mode chip, composers, long-string wrap (same block on all five pages) ---------- */
+main,footer{overflow-wrap:anywhere}              /* long zh-CN runs and ids wrap instead of scrolling the page */
+.shell{min-width:0}
+[hidden]{display:none !important}
+.topbar{flex-wrap:wrap;row-gap:var(--space-2)}
+.topbar .brand,.topbar .nav a,.topbar .tools > *{white-space:nowrap;overflow-wrap:normal}
+.topbar .tools{flex-wrap:wrap}
+.mode-chip{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  min-height:32px;padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);cursor:pointer;white-space:nowrap;
+}
+.mode-chip b{color:var(--ink-fg);font-weight:var(--weight-label)}
+.mode-chip:hover{border-color:var(--ink-muted)}
+.mode-hint{color:var(--ink-muted);white-space:nowrap}
+.composer-box{
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-2);
+  margin-top:var(--space-3);padding:var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+}
+.composer-box > *{min-width:0}
+.composer-box .prompt{color:var(--ink-baton);font-weight:var(--weight-label);padding-top:var(--space-1)}
+.composer-box .mono-id{flex-basis:100%}
+textarea.composer-input{
+  flex:1 1 260px;min-width:0;min-height:32px;resize:vertical;
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);font:inherit;line-height:var(--lh-chrome);
+}
+textarea.composer-input::placeholder{color:var(--ink-muted)}
+@media (max-width:640px){ .mode-hint{display:none} }
+/* ---------- end shared chrome ---------- */
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="mark">▍</span><span>conductor</span><span class="sub">terminal-native / web mockups</span></div>
+  <nav class="nav" aria-label="Mockups">
+    <a href="home.html">home</a>
+    <a href="tickets.html">tickets</a>
+    <a href="dispatch.html">dispatch</a>
+    <a href="ticket.html">ticket</a>
+    <a href="palette.html" aria-current="page">palette</a>
+  </nav>
+  <div class="tools">
+    <button class="mode-chip" id="mode-chip" type="button" aria-keyshortcuts="Alt+M" title="alt+m mode">mode <b id="mode-val">auto</b></button>
+    <span class="mode-hint mono-id" aria-hidden="true">alt+m mode</span>
+    <button class="kbd" id="palette-open" type="button" aria-haspopup="dialog"><b>Ctrl</b>+<b>K</b> palette</button>
+    <button class="btn" id="theme-toggle" type="button" aria-pressed="false">theme: dark</button>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="page-head">
+    <h1>The palette</h1>
+    <span class="zh">命令面板 · 主页之上的浮层</span>
+  </div>
+  <p class="lede">
+    One grammar for the palette and the slash menu. The idle list follows the insertion order of
+    <span class="mono-id">SLASH_COMMANDS</span>; a non-empty query is a <b>case-insensitive</b> subsequence — needle
+    and haystack are both lower-cased, the characters appear in order and need not be contiguous — matched
+    against the canonical name, the slash name without its slash, or an alias with one leading slash stripped.
+    Matches rank by exact haystack, prefix haystack, gap cost, start index, then canonical name, and the menu
+    shows at most 60 rows. Arguments are a different rule: a case-sensitive unique <b>prefix</b> of an id or name.
+    Open it with <b>Ctrl+K</b>, or with <b>/</b> when the composer caret is at column 0.
+  </p>
+
+  <!-- ============ the scene: palette over home ============ -->
+  <section class="section" aria-label="Palette over the home surface">
+    <div class="stage is-open" id="stage">
+      <div class="home-behind" aria-hidden="true">
+        <div class="behind-bar">
+          <span class="provider">▍conductor</span>
+          <span class="mono-id">home · workspace lin-family</span>
+          <span class="mono-id">dark</span>
+        </div>
+        <div class="behind-body">
+          <div class="behind-col">
+            <div class="behind-h">NEEDS YOU</div>
+            <div class="behind-row"><span class="st st-needs-you"><span class="glyph"></span></span><span>#56 调色板查询框里 j/k 始终是字符，只在结果列表或 Alt+N 导航模式下移动高亮</span><span class="mono-id">kimi</span></div>
+            <div class="behind-row"><span class="st st-needs-you"><span class="glyph"></span></span><span>#58 原生 CLI worker 的上下文轮换不丢失 handoff</span><span class="mono-id">cursor</span></div>
+            <div class="behind-h">RUNNING</div>
+            <div class="behind-row"><span class="st st-running"><span class="glyph"></span></span><span>#57 合并彩排在 throwaway worktree 中运行测试</span><span class="mono-id">deepseek-dsh</span></div>
+          </div>
+          <div class="behind-col">
+            <div class="behind-h">COMPOSER</div>
+            <div class="behind-input">Ask the Router, or press / at column 0…</div>
+            <div class="behind-h">STATUS</div>
+            <div class="behind-row behind-row-2"><span class="mono-id">L2 · review-merge</span><span class="mono-id">G5 集成 · 4/6</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrim" id="scrim"></div>
+
+      <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="palette-query">
+          <span class="prompt" aria-hidden="true">›</span>
+          <input id="palette-input" type="text" role="combobox" aria-expanded="true"
+                 aria-controls="palette-list" aria-autocomplete="list" autocomplete="off" autofocus
+                 spellcheck="false" placeholder="type a command, or / for the slash menu" value="dsp">
+          <span class="chip" id="palette-nav" hidden title="alt+n navigation mode">nav</span>
+          <span class="mono-id" id="palette-count">1 of 28</span>
+        </div>
+        <div class="palette-list-wrap">
+          <ul id="palette-list" role="listbox" tabindex="0" aria-label="Matches"></ul>
+        </div>
+        <div class="palette-foot">
+          <span id="palette-status" class="mono-id" role="status">Enter runs a complete form, or inserts the highlighted argument. Tab inserts the highlighted token and a trailing space only when another argument is required.</span>
+          <span class="mono-id">Esc clears and closes</span>
+        </div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:var(--space-3)">
+      The query above holds <span class="mono-id">dsp</span> — a subsequence, so <b>dispatch</b> is the single match
+      (d at 0, s at 2, p at 3; gap cost 1); <span class="mono-id">DSP</span> finds it too. <b>Tab</b> inserts
+      <span class="mono-id">dispatch</span>; type a space and argument completion lists the four active dispatch ids,
+      <b>Tab</b> inserts the highlighted one, and typing <span class="mono-id">9</span> narrows to the unique
+      prefix. Try <span class="mono-id">approve&nbsp;</span>: only the <span class="mono-id">awaiting_human</span> id is
+      offered and <b>Enter</b> inserts it rather than running a bare <span class="mono-id">approve</span>;
+      <span class="mono-id">approve 4</span> shows the error hint. <b>↑</b>/<b>↓</b> move the highlight; <b>j</b> and
+      <b>k</b> are typed unless <b>Alt+N</b> navigation mode is on (the chrome shows <span class="mono-id">nav</span>).
+      Click any row: a command row does what Enter would, an argument row inserts its token. <b>Esc</b> clears the
+      query and returns focus to the opener — the <b>Ctrl+K</b> button.
+    </p>
+  </section>
+
+  <!-- ============ fuzzy specimens ============ -->
+  <section class="section">
+    <h2>Fuzzy matches</h2>
+    <div class="card">
+      <table class="keys">
+        <caption class="mono-id">
+          A case-insensitive subsequence over three haystacks: the canonical name, the slash name without its
+          slash, and each alias with one leading slash stripped — needle and haystacks lower-cased. Rank: exact
+          haystack, prefix haystack, lower gap cost, earlier start index, canonical name. The gap cost is
+          end − start − (needle − 1), so a contiguous run costs 0. Each command ranks by its best haystack.
+        </caption>
+        <tbody>
+          <tr><th scope="row"><span class="kbd-inline">dsp</span></th><td><b>dispatch</b> — d at 0, s at 2, p at 3; gap cost 1; nothing else matches</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">DSP</span></th><td><b>dispatch</b> — folded to <span class="mono-id">dsp</span> first, so the same row and the same indexes</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Disp</span></th><td><b>dispatch</b> first — a prefix of the canonical name, gap cost 0</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">jobs</span></th><td><b>tickets</b> — matched on the alias <span class="mono-id">jobs</span> (exact), not on the canonical name</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">tkt</span></th><td><b>tickets</b> — t at 0, k at 3, t at 5; gap cost 3</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">apv</span></th><td><b>approve</b> — a at 0, p at 1, v at 5; gap cost 3</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">me</span></th><td><b>memory</b>, <b>merge</b> (prefix hits), then <b>resume</b> (m at 4, e at 5; gap cost 0) and <b>model</b> (m at 0, e at 3; gap cost 2)</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">zzz</span></th><td>no rows — the list shows the empty state <span class="mono-id">no command matches · 没有匹配的命令</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ specimens ============ -->
+  <section class="section">
+    <h2>Argument completion</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="spec-title">after the command token and a space — a case-sensitive unique <b>prefix</b>, never fuzzy</div>
+        <dl class="args">
+          <dt><span class="provider">dispatch</span></dt>
+          <dd><span class="mono-id">7f3a91c2</span> L2 · awaiting_human<br><span class="mono-id">4b8e0d17</span> L3 · secondary_review<br><span class="mono-id">91cc6a40</span> L1 · g2<br><span class="mono-id">7c77be05</span> L4 · fixing — all phases; bare <span class="mono-id">dispatch</span> is complete (the roster)</dd>
+          <dt><span class="provider">approve</span> / <span class="provider">reject</span></dt>
+          <dd><span class="mono-id">7f3a91c2</span> — only ids whose phase is <span class="mono-id">awaiting_human</span>. Without an id the form is incomplete: Enter inserts the offered id and never runs bare; with nothing offered the row shows <span class="mono-id">approve needs a dispatch id · approve 需要一个 dispatch id</span></dd>
+          <dt>a partial argument</dt>
+          <dd><span class="mono-id">dispatch dsp-</span> lists all four (ambiguous — nothing is inserted); <span class="mono-id">dispatch 9</span> narrows to <span class="mono-id">91cc6a40</span>; <span class="mono-id">dispatch DSP-9</span> matches nothing — hex ids are case-sensitive</dd>
+          <dt><span class="provider">tickets</span> / <span class="provider">retry</span> / <span class="provider">stop</span></dt>
+          <dd><span class="mono-id">1 2 3 4 5</span> list index, then known ids; <span class="mono-id">9f2c1ab</span> lists two ids, <span class="mono-id">9f2c1ab7</span> narrows to one</dd>
+          <dt><span class="provider">review run</span></dt>
+          <dd><span class="mono-id">L1 L2 L3 L4</span>, then <span class="mono-id">--by</span>, then the other three lines</dd>
+          <dt><span class="provider">merge</span></dt>
+          <dd><span class="mono-id">L1 L2 L3 L4</span>, then <span class="mono-id">--into</span>, then the branch</dd>
+          <dt><span class="provider">reply</span>, <span class="provider">memory recall</span></dt>
+          <dd>free text — nothing is offered</dd>
+          <dt><span class="provider">status</span> and the other no-argument commands</dt>
+          <dd><span class="mono-id">Tab</span> inserts the bare token and <span class="mono-id">Enter</span> runs it</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="spec-title">idle list — insertion order, first 8 of 28</div>
+        <ul class="idle" id="idle-specimen">
+          <li><span class="name">workers</span><span class="hint">show which worker has the current Ticket</span><span class="mono-id">/worker</span></li>
+          <li><span class="name">dispatch</span><span class="hint">dispatch roster; /dispatch &lt;id&gt; reads one</span><span class="mono-id">/dispatch</span></li>
+          <li><span class="name">approve</span><span class="hint">approve a dispatch that is waiting for a person</span><span class="mono-id">no slash</span></li>
+          <li><span class="name">reject</span><span class="hint">reject a dispatch that is waiting for a person</span><span class="mono-id">no slash</span></li>
+          <li><span class="name">tickets</span><span class="hint">list Tickets; /jobs &lt;id&gt; shows one; /jobs watch &lt;id&gt; follows it</span><span class="mono-id">/jobs</span></li>
+          <li><span class="name">workspace</span><span class="hint">switch the Home workspace</span><span class="mono-id">/workspace</span></li>
+          <li><span class="name">reply</span><span class="hint">answer the Ticket that needs you</span><span class="mono-id">/reply</span></li>
+          <li><span class="name">retry</span><span class="hint">retry a failed or waiting Ticket</span><span class="mono-id">/retry</span></li>
+          <li aria-hidden="true"><span class="name muted">… 20 more</span><span class="hint">resume · status · help · quit · skills · mcp · memory · agents · review · merge · stop · signals · clear · details · model · compact · expand · collapse · new</span><span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ zh-CN hints ============ -->
+  <section class="section">
+    <h2>zh-CN hints</h2>
+    <div class="card" lang="zh-CN">
+      <div class="spec-title">idle list in zh-CN — the TUI's zh-CN hint strings; command names, slash names and the matcher stay the same</div>
+      <ul class="idle">
+          <li><span class="name">workers</span><span class="hint zh-hint">显示当前 Ticket 由哪个 worker 执行</span><span class="mono-id">/worker</span></li>
+          <li><span class="name">dispatch</span><span class="hint zh-hint">派发名册；/dispatch &lt;id&gt; 查看一个</span><span class="mono-id">/dispatch</span></li>
+          <li><span class="name">approve</span><span class="hint zh-hint">批准一个等待人工的派发</span><span class="mono-id">no slash</span></li>
+          <li><span class="name">reject</span><span class="hint zh-hint">驳回一个等待人工的派发</span><span class="mono-id">no slash</span></li>
+          <li><span class="name">tickets</span><span class="hint zh-hint">列出 Ticket；/jobs &lt;id&gt; 查看一个；/jobs watch &lt;id&gt; 跟随它</span><span class="mono-id">/jobs</span></li>
+          <li><span class="name">workspace</span><span class="hint zh-hint">切换 Home 工作区</span><span class="mono-id">/workspace</span></li>
+          <li><span class="name">reply</span><span class="hint zh-hint">回复需要你的 Ticket</span><span class="mono-id">/reply</span></li>
+          <li><span class="name">retry</span><span class="hint zh-hint">重试失败或等待中的 Ticket</span><span class="mono-id">/retry</span></li>
+          <li aria-hidden="true"><span class="name muted">… 还有 20 个</span><span class="hint zh-hint">没有匹配时显示「没有匹配的命令」；approve 缺少 id 时显示「approve 需要一个 dispatch id」</span><span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ keyboard ============ -->
+  <section class="section">
+    <h2>Keyboard model</h2>
+    <div class="card">
+      <table class="keys">
+        <caption class="mono-id">One model for the web and the TUI. The open palette is a focus trap: the query, then the result list.</caption>
+        <tbody>
+          <tr><th scope="row"><span class="kbd-inline">Ctrl+K</span></th><td>Open the palette from anywhere that is not already inside the palette.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">/</span></th><td>Open the palette, prefilled with <span class="mono-id">/</span>, when the composer caret is at column 0.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Esc</span></th><td>Close the palette, clear its query, and return focus to the opener.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">↓</span> <span class="kbd-inline">↑</span></th><td>Move the highlight while the query has the caret; next/previous row in a focused list.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">j</span> <span class="kbd-inline">k</span></th><td>Next/previous row when the result list (or another list) is focused, or in navigation mode. In the query they are the characters j and k.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Alt+N</span></th><td>Toggle palette navigation mode; the chrome shows <span class="mono-id">nav</span>. Off when the palette opens.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Ctrl+↓</span> <span class="kbd-inline">Ctrl+↑</span></th><td>Move focus query → result list, and back.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Enter</span></th><td>Run a complete form; on an incomplete form insert the highlighted argument, or show the error hint. In a composer, send.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Tab</span></th><td>Next stop in the focus order. Inside the open palette, accept the highlighted token (plus a space when the form still needs an argument); never leaves the palette.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Shift+Tab</span></th><td>Previous stop in the focus order — never rebound. Inside the open palette it is inert.</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Alt+M</span></th><td>Cycle mode auto → dispatch → read-only; the chip in the top bar shows it (hint <span class="mono-id">alt+m mode</span>, was <span class="mono-id">shift+tab mode</span>).</td></tr>
+          <tr><th scope="row"><span class="kbd-inline">Shift+Enter</span></th><td>Newline in a composer (<span class="mono-id">Ctrl+J</span> also works). Enter sends.</td></tr>
+        </tbody>
+      </table>
+      <p class="prose" style="margin-top:var(--space-3);color:var(--ink-muted)">
+        j 和 k 在查询框里永远是字符（即使查询为空），因为命令本身含有 j 和 k（<span class="mono-id">jobs</span>、<span class="mono-id">reject</span>）；
+        用 ↑/↓ 移动高亮，或按 Alt+N 进入导航模式。焦点顺序：主列表（或转录）→ 输入框；Shift+Tab 反向移动，从不被改绑。
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="shell" style="padding-block-start:0">
+  <p class="mono-id">Designed at 1440px, usable at 390px. Dark is primary; light has its own hex. Colours: tokens.json.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+
+  /* ---- theme ---- */
+  var params0 = new URLSearchParams(location.search);
+  if (params0.get("theme") === "light" || params0.get("theme") === "dark"){
+    root.setAttribute("data-theme", params0.get("theme"));
+  }
+  var themeBtn = document.getElementById("theme-toggle");
+  function paintTheme(){
+    var light = root.getAttribute("data-theme") === "light";
+    themeBtn.textContent = "theme: " + (light ? "light" : "dark");
+    themeBtn.setAttribute("aria-pressed", light ? "true" : "false");
+  }
+  themeBtn.addEventListener("click", function(){
+    root.setAttribute("data-theme", root.getAttribute("data-theme") === "light" ? "dark" : "light");
+    paintTheme();
+  });
+  paintTheme();
+
+  /* ---- reduced motion: prefers-reduced-motion, plus the TUI env predicate ---- */
+  var mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+  var forced = ["1","true","yes","on"].indexOf((params0.get("reduced") || "").toLowerCase()) > -1;
+  var motion = mq.matches && !forced;
+
+  /* ---- spinner frames ♪ ♫ ♬ ♫, 100ms ---- */
+  var FRAMES = ["\u266a","\u266b","\u266c","\u266b"];
+  var spins = Array.prototype.slice.call(document.querySelectorAll(".spin"));
+  var tick = 0;
+  if (!motion) root.setAttribute("data-motion", "off");
+  if (motion && spins.length){
+    setInterval(function(){
+      tick = (tick + 1) % FRAMES.length;
+      for (var i = 0; i < spins.length; i++) spins[i].textContent = FRAMES[tick];
+    }, 100);
+  }
+
+  /* ---- the palette ---- */
+  var CMDS = [
+    ["workers","/worker","show which worker has the current Ticket","worker"],
+    ["dispatch","/dispatch","dispatch roster; /dispatch <id> reads one",""],
+    ["approve",null,"approve a dispatch that is waiting for a person",""],
+    ["reject",null,"reject a dispatch that is waiting for a person",""],
+    ["tickets","/jobs","list Tickets; /jobs <id> shows one; /jobs watch <id> follows it","/j jobs /attach"],
+    ["workspace","/workspace","switch the Home workspace",""],
+    ["reply","/reply","answer the Ticket that needs you",""],
+    ["retry","/retry","retry a failed or waiting Ticket",""],
+    ["cancel","/cancel","stop a running Ticket (/cancel <id|index>)",""],
+    ["resume","/resume","list saved sessions; /resume <id> reopens one",""],
+    ["status","/status","reread Supervisor progress for the current Ticket",""],
+    ["help","/help","show the TUI key map and commands","?"],
+    ["quit","/quit","quit the TUI","/exit /q exit"],
+    ["skills","/skills","local skills status",""],
+    ["mcp","/mcp","local MCP server status",""],
+    ["memory","/memory","browse remembered memory",""],
+    ["agents","/agents","local fleet, native runtimes, daemons",""],
+    ["review","/review","queue a local cross-review (/review run <line> --by <line>)",""],
+    ["merge","/merge","merge a line locally after its tests (/merge <line> --into <branch>)",""],
+    ["stop","/stop","stop a running Ticket (/stop <id|index>)",""],
+    ["signals","/signals","Sources and job counts",""],
+    ["clear","/clear","clear the conversation",""],
+    ["details","/details","toggle Worker details (default: Supervisor view)",""],
+    ["model","/model","show the Router model and configured providers",""],
+    ["compact","/compact","drop activity noise and duplicate rows from the transcript",""],
+    ["expand","/expand","expand every tool block",""],
+    ["collapse","/collapse","collapse every tool block",""],
+    ["new","/new","start a fresh session (persisted)",""]
+  ];
+  var LIMIT = 60;                                   /* palette.completionLimit */
+  var TOTAL = CMDS.length;
+  var BY_NAME = {};
+  CMDS.forEach(function(c){ BY_NAME[c[0]] = c; });
+  /* `/attach <target>` is `tickets watch <target>` */
+  function canonical(token){
+    var t = token.replace(/^\//, "").toLowerCase(), i, c;
+    if (BY_NAME[t]) return t;
+    for (i = 0; i < CMDS.length; i++){
+      c = CMDS[i];
+      if (c[1] && c[1].slice(1).toLowerCase() === t) return c[0];
+      if (c[3] && c[3].split(/\s+/).some(function(a){ return a.replace(/^\//, "").toLowerCase() === t; })) return c[0];
+    }
+    return null;
+  }
+
+  /* ---- argument data (realistic: issues #55-#59, the eight providers) ---- */
+  var DISPATCH = [
+    {t:"7f3a91c2", phase:"awaiting_human",   h:"L2 · review-merge · awaiting_human · G6 人工"},
+    {t:"4b8e0d17", phase:"secondary_review", h:"L3 · secondary_review · grok 副审"},
+    {t:"91cc6a40", phase:"g2",               h:"L1 · autonomy-scheduler · g2"},
+    {t:"7c77be05", phase:"fixing",           h:"L4 · web-palette · fixing · minimax"}
+  ];
+  var TARGETS = [
+    {t:"1", h:"#56 调色板查询框里 j/k 始终是字符，只在结果列表或 Alt+N 导航模式下移动高亮 · needs-you · kimi"},
+    {t:"2", h:"#57 合并彩排在 throwaway worktree 中运行测试 · running · deepseek-dsh"},
+    {t:"3", h:"#58 原生 CLI worker 的上下文轮换不丢失 handoff · queued · cursor"},
+    {t:"4", h:"#59 桌面端 Electron 壳不打包 web bundle，并在离线时回退到本地静态页面而不是白屏 · blocked · stepfun"},
+    {t:"5", h:"#55 复查合并只落在彩排过的 commit 上 · completed · codex"},
+    {t:"3419e39e-ca69-4838-844d-547da6333dfc", h:"full Ticket UUID · #57"},
+    {t:"9f2c1ab7-0d4e-4b91-a2c3-55e0b7d1c9aa", h:"known id · #58 — a unique prefix of 8+ hex digits resolves it"},
+    {t:"9f2c1ab3-71de-4a0c-8f19-0c3b2e6d4f10", h:"known id · #59 — shares 9f2c1ab with the row above"}
+  ];
+  var WORKERS = [
+    {t:"w-2f9c41ab", h:"#56 · kimi"},
+    {t:"w-71c0de33", h:"#57 · deepseek-dsh"},
+    {t:"w-0a4b8d21", h:"#58 · cursor"},
+    {t:"w-58e0c744", h:"#55 · codex"},
+    {t:"w-6d31aa90", h:"#59 · stepfun"}
+  ];
+  var SESSIONS = [
+    {t:"ses-91ab77c0", h:"saved session · line-1 · 2026-11-09"},
+    {t:"ses-44de0b18", h:"saved session · line-2 · 2026-11-08"}
+  ];
+  var LINES = ["L1","L2","L3","L4"].map(function(l){ return {t:l, h:"worktree line"}; });
+  var PROPOSALS = [
+    {t:"mp-44d1e9", h:"pending proposal · 把彩排失败记为阻塞而不是失败"},
+    {t:"mp-7b02c5a", h:"pending proposal · remember the 390px palette inset"}
+  ];
+  var BRANCHES = [
+    {t:"main", h:"the integration branch"},
+    {t:"line-1", h:"this line's branch"},
+    {t:"line-2", h:"the neighbouring line"}
+  ];
+  function awaiting(){ return DISPATCH.filter(function(d){ return d.phase === "awaiting_human"; }); }
+
+  /* ---- argument forms (system/SPEC.md → Palette grammar) ----
+     spec(cmd, args) describes what may follow the tokens already typed:
+       null                     the command takes no argument at all
+       {done:1}                 the form is complete; nothing more is offered
+       {free:1, required}       free text, never completes
+       {opts:[...], required}   completions, matched by unique PREFIX
+     `required` means the form is incomplete without one more token.
+     `need` / `needZh` is the bilingual error hint shown when nothing is offered. */
+  function spec(cmd, args){
+    var n = args.length, a0 = args[0];
+    switch (cmd){
+      case "workers":  return n ? {done:1} : {opts:WORKERS};
+      case "dispatch": return n ? {done:1} : {opts:DISPATCH};
+      case "approve":
+      case "reject":
+        return n ? {done:1} : {opts:awaiting(), required:1,
+          need: cmd + " needs a dispatch id", needZh: cmd + " 需要一个 dispatch id"};
+      case "tickets":
+        if (!n) return {opts:TARGETS.slice(0, 5).concat(
+          [{t:"--attention", h:"list the Tickets that need you"},
+           {t:"watch", h:"follow one Ticket; /attach is the same form"}], TARGETS.slice(5))};
+        if (a0 === "watch") return n === 1 ? {opts:TARGETS, required:1,
+          need:"tickets watch needs a target", needZh:"tickets watch 需要一个 target"} : {done:1};
+        return {done:1};
+      case "reply":
+        return n ? {done:1} : {free:1, required:1, need:"reply needs text", needZh:"reply 需要回复内容"};
+      case "retry":
+      case "cancel":   return n ? {done:1} : {opts:TARGETS};
+      case "stop":     return n ? {done:1} : {opts:TARGETS, required:1,
+                         need:"stop needs a target", needZh:"stop 需要一个 target"};
+      case "resume":   return n ? {done:1} : {opts:SESSIONS};
+      case "review":
+        if (!n) return {opts:[{t:"run", h:"review run <line> --by <line>"},
+                              {t:"status", h:"review status [line]"}], required:1,
+                        need:"review needs run or status", needZh:"review 需要 run 或 status"};
+        if (a0 === "run"){
+          if (n === 1) return {opts:LINES, required:1, need:"review run needs a line", needZh:"review run 需要一条 line"};
+          if (n === 2) return {opts:[{t:"--by", h:"the reviewer line"}], required:1,
+                               need:"review run needs --by <line>", needZh:"review run 需要 --by <line>"};
+          if (n === 3) return {opts:LINES.filter(function(l){ return l.t !== args[1]; }), required:1,
+                               need:"--by needs a different line", needZh:"--by 需要另一条 line"};
+          return {done:1};
+        }
+        if (a0 === "status") return n === 1 ? {opts:LINES} : {done:1};
+        return {done:1};
+      case "memory":
+        if (!n) return {opts:[
+          {t:"recall", h:"memory recall <query> — free text"},
+          {t:"propose", h:"memory propose <entry> — free text"},
+          {t:"approve", h:"memory approve <proposal-id>"},
+          {t:"reject", h:"memory reject <proposal-id>"},
+          {t:"export", h:"memory export [--limit <n>] [--include-secret]"}]};
+        if (a0 === "recall" || a0 === "propose") return n === 1 ? {free:1, required:1,
+          need:"memory " + a0 + " needs text", needZh:"memory " + a0 + " 需要文本"} : {done:1};
+        if (a0 === "approve" || a0 === "reject") return n === 1 ? {opts:PROPOSALS, required:1,
+          need:"memory " + a0 + " needs a proposal id", needZh:"memory " + a0 + " 需要一个 proposal id"} : {done:1};
+        if (a0 === "export"){
+          if (args[n - 1] === "--limit") return {free:1, required:1, need:"--limit needs a number", needZh:"--limit 需要一个数字"};
+          return {opts:[{t:"--limit", h:"--limit <n>"}, {t:"--include-secret", h:"explicit opt-in"}]
+            .filter(function(o){ return args.indexOf(o.t) < 0; })};
+        }
+        return {done:1};
+      case "merge":
+        if (!n) return {opts:LINES, required:1, need:"merge needs a line", needZh:"merge 需要一条 line"};
+        if (n === 1) return {opts:[{t:"--into", h:"target branch"}], required:1,
+                             need:"merge needs --into <branch>", needZh:"merge 需要 --into <branch>"};
+        if (n === 2) return {opts:BRANCHES, required:1, need:"--into needs a branch", needZh:"--into 需要一个 branch"};
+        return {done:1};
+      default: return null;                           /* the 15 no-argument commands */
+    }
+  }
+  /* does the form still expect a token after `args` (required or offered)? */
+  function expects(cmd, args){
+    var s = spec(cmd, args);
+    return !!(s && !s.done && (s.free || (s.opts && s.opts.length) || s.required));
+  }
+  function satisfied(cmd, args){
+    var s = spec(cmd, args);
+    return !s || !!s.done || !s.required;
+  }
+
+  var palette = document.getElementById("palette");
+  var scrim = document.getElementById("scrim");
+  var input = document.getElementById("palette-input");
+  var list = document.getElementById("palette-list");
+  var count = document.getElementById("palette-count");
+  var status = document.getElementById("palette-status");
+  var navChip = document.getElementById("palette-nav");
+  var openBtn = document.getElementById("palette-open");
+  var stage = document.getElementById("stage");
+  var rows = [];
+  var index = 0;
+  var view = null;
+  var navMode = false;
+  var opener = openBtn;
+  var say = null;
+
+  /* ---- the command matcher (D1, tokens.json → palette.fuzzy) ----
+     Needle = query with one leading "/" removed, lower-cased. Haystacks = the
+     canonical name, the slash name without "/", each alias with one leading "/"
+     stripped, all lower-cased. A match is a subsequence (greedy leftmost
+     alignment). Rank by first difference: exact > prefix > lower gap cost
+     (end - start - (needle - 1)) > earlier start > canonical name ascending. */
+  function fold(s){ return s.toLowerCase(); }
+  function esc(s){
+    return s.replace(/[<>&]/g, function(c){ return c === "<" ? "&lt;" : c === ">" ? "&gt;" : "&amp;"; });
+  }
+  function markup(text, idx){
+    if (!idx || !idx.length) return esc(text);
+    var out = "", pos = 0, i, run;
+    for (i = 0; i < idx.length; i++){
+      run = 1;                                      /* a contiguous run reads as one bold span */
+      while (i + run < idx.length && idx[i + run] === idx[i] + run) run++;
+      out += esc(text.slice(pos, idx[i])) + "<b>" + esc(text.substr(idx[i], run)) + "</b>";
+      pos = idx[i] + run;
+      i += run - 1;
+    }
+    return out + esc(text.slice(pos));
+  }
+  function haystacks(cmd){
+    var out = [cmd[0]];
+    if (cmd[1]) out.push(cmd[1].replace(/^\//, ""));
+    if (cmd[3]) out = out.concat(cmd[3].split(/\s+/).map(function(a){ return a.replace(/^\//, ""); }));
+    return out;
+  }
+  function fz(needle, hay){
+    var q = fold(needle), h = fold(hay), idx = [], i = 0, j;
+    for (j = 0; j < h.length && i < q.length; j++){
+      if (h.charAt(j) === q.charAt(i)){ idx.push(j); i++; }
+    }
+    if (i < q.length) return null;
+    return {
+      idx: idx,
+      exact: h === q ? 0 : 1,
+      prefix: h.indexOf(q) === 0 ? 0 : 1,
+      gap: idx[idx.length - 1] - idx[0] - (q.length - 1),
+      start: idx[0]
+    };
+  }
+  function cmpScore(a, b){
+    var k = ["exact", "prefix", "gap", "start"], i;
+    for (i = 0; i < k.length; i++) if (a[k[i]] !== b[k[i]]) return a[k[i]] < b[k[i]] ? -1 : 1;
+    return 0;
+  }
+  function bestMatch(q, cmd){
+    var hs = haystacks(cmd), best = null, key = null, i, m;
+    for (i = 0; i < hs.length; i++){
+      m = fz(q, hs[i]);
+      if (m && (!best || cmpScore(m, best) < 0)){ best = m; key = hs[i]; }
+    }
+    return best ? {score: best, key: key} : null;
+  }
+  function rankCommands(q){
+    var out = [], i, c, hit;
+    for (i = 0; i < CMDS.length; i++){
+      c = CMDS[i];
+      if (!q){ out.push({cmd:c, score:null, key:c[0]}); continue; }
+      hit = bestMatch(q, c);
+      if (hit) out.push({cmd:c, score:hit.score, key:hit.key});
+    }
+    if (q) out.sort(function(a, b){
+      return cmpScore(a.score, b.score) || (a.cmd[0] < b.cmd[0] ? -1 : a.cmd[0] > b.cmd[0] ? 1 : 0);
+    });
+    return out;
+  }
+  /* argument match (D2): a PREFIX of the id or name, case-sensitive, not fuzzy */
+  function prefixMatch(partial, opts){
+    return opts.filter(function(o){ return o.t.indexOf(partial) === 0; });
+  }
+
+  /* ---- parsing the line ---- */
+  function parse(){
+    var v = input.value;
+    var parts = v.split(/\s+/).filter(function(s){ return s.length; });
+    var trailing = /\s$/.test(v);
+    if (parts.length > 1 || (parts.length === 1 && trailing)){
+      var raw = parts[0];
+      var cmd = canonical(raw);
+      var args = parts.slice(1);
+      if (cmd === "tickets" && raw.replace(/^\//, "").toLowerCase() === "attach") args.unshift("watch");
+      var partial = (args.length && !trailing) ? args.pop() : "";
+      return {mode:"arg", raw:raw, cmd:cmd, args:args, partial:partial, text:v.replace(/\s+$/, "")};
+    }
+    return {mode:"cmd", query:v.replace(/^\//, "")};
+  }
+
+  /* ---- views ---- */
+  function commandView(q){
+    var ranked = rankCommands(q).map(function(r){
+      var c = r.cmd, onName = r.key === c[0];
+      return {kind:"cmd", cmd:c[0], name:c[0], hint:c[2],
+              meta: onName ? (c[1] || "no slash") : r.key,
+              idx: r.score ? r.score.idx : null, onName:onName};
+    });
+    return {
+      rows: ranked.slice(0, LIMIT),
+      count: ranked.length + " of " + TOTAL,
+      note: ranked.length ? "" : "no command matches · 没有匹配的命令"
+    };
+  }
+  function argumentView(p){
+    if (!p.cmd) return {rows:[], count:"unknown", note:"no command matches " + p.raw + " · 没有匹配的命令"};
+    var s = spec(p.cmd, p.args);
+    var line = [p.cmd].concat(p.args).join(" ");
+    if (!s) return {rows:[], count:"no argument", note: p.cmd + " takes no argument — Enter runs it."};
+    if (s.done) return {rows:[], count:"complete", note: line + (p.partial ? " " + p.partial : "") + " is complete — Enter runs it."};
+    if (s.free){
+      if (p.partial) return {rows:[], count:"free text", note:"free text — nothing to complete; Enter runs it."};
+      return {rows:[], count:"free text", error:true, note: s.need + " · " + s.needZh};
+    }
+    var hits = prefixMatch(p.partial, s.opts).map(function(o){
+      var nextArgs = p.args.concat(o.t);
+      return {kind:"arg", cmd:p.cmd, args:p.args, name:o.t, hint:o.h,
+              idx: p.partial ? range(p.partial.length) : null,
+              more: !satisfied(p.cmd, nextArgs), line: [p.cmd].concat(nextArgs).join(" ")};
+    });
+    var out = {rows: hits.slice(0, LIMIT), count: hits.length + " of " + s.opts.length + (s.required ? " · needs one" : "")};
+    if (!hits.length){
+      out.error = !!s.required;
+      out.note = s.required
+        ? s.need + " · " + s.needZh + (p.partial ? " — nothing starts with " + p.partial : "")
+        : "nothing starts with " + p.partial + " — Enter runs the line as typed";
+    }
+    return out;
+  }
+  function range(n){ var a = [], i; for (i = 0; i < n; i++) a.push(i); return a; }
+
+  function paintRow(d, i){
+    var li = document.createElement("li");
+    li.className = "prow";
+    li.id = "prow-" + i;
+    li.setAttribute("data-i", String(i));            /* the row index lives on the element */
+    li.setAttribute("data-kind", d.kind);
+    li.setAttribute("role", "option");
+    li.setAttribute("aria-selected", i === index ? "true" : "false");
+    var name = document.createElement("span");
+    name.className = "pname";
+    name.innerHTML = markup(d.name, d.idx);
+    var hint = document.createElement("span");
+    hint.className = "phint";
+    hint.textContent = d.hint;
+    var meta = document.createElement("span");
+    meta.className = "mono-id";
+    if (d.kind === "arg") meta.textContent = d.more ? "needs more" : "";
+    else if (d.onName) meta.textContent = d.meta;
+    else meta.innerHTML = "<b>" + esc(d.meta) + "</b>";
+    li.appendChild(name); li.appendChild(hint); li.appendChild(meta);
+    return li;
+  }
+  function render(){
+    var p = parse();
+    view = p.mode === "cmd" ? commandView(p.query) : argumentView(p);
+    rows = view.rows;
+    if (index >= rows.length) index = rows.length ? rows.length - 1 : 0;
+    list.textContent = "";
+    for (var j = 0; j < rows.length; j++) list.appendChild(paintRow(rows[j], j));
+    count.textContent = view.count;
+    if (!rows.length){
+      var empty = document.createElement("li");
+      empty.className = "prow pempty" + (view.error ? " perror" : "");
+      empty.setAttribute("role", "option");
+      empty.setAttribute("aria-disabled", "true");
+      empty.textContent = view.note;
+      list.appendChild(empty);
+    }
+    sync();
+  }
+  function sync(){
+    var i, li, on = rows[index], p = parse();
+    for (i = 0; i < list.children.length; i++){
+      li = list.children[i];
+      if (li.hasAttribute("data-i")) li.setAttribute("aria-selected", +li.getAttribute("data-i") === index ? "true" : "false");
+    }
+    if (on) input.setAttribute("aria-activedescendant", "prow-" + index);
+    else input.removeAttribute("aria-activedescendant");
+    navChip.hidden = !navMode;
+    if (say){ status.textContent = say; say = null; return; }
+    if (!on){
+      status.textContent = view.note || "";
+      return;
+    }
+    if (on.kind === "cmd"){
+      status.textContent = satisfied(on.cmd, [])
+        ? "Enter runs " + on.name + (expects(on.cmd, []) ? ". Tab inserts " + on.name + "; type a space for its arguments." : ". Tab inserts the bare token.")
+        : "Enter inserts " + on.name + " and a space — it needs an argument and does not run bare.";
+    } else {
+      var typedOk = p.mode === "arg" && lineComplete(p);
+      status.textContent = typedOk
+        ? "Enter runs " + p.text + ". Tab inserts " + on.name + (on.more ? " and a space." : ".")
+        : "Enter inserts " + on.name + " — the form is incomplete without it. Tab does the same.";
+    }
+  }
+  function setIndex(i){
+    if (!rows.length) return;
+    index = Math.max(0, Math.min(rows.length - 1, i));
+    sync();
+    var el = document.getElementById("prow-" + index);
+    if (el) el.scrollIntoView({block: "nearest"});
+  }
+  /* is the typed line runnable as it stands? */
+  function lineComplete(p){
+    if (!p.cmd) return false;
+    var s = spec(p.cmd, p.args);
+    if (!p.partial) return satisfied(p.cmd, p.args);
+    if (!s || s.done) return true;
+    if (s.free) return true;
+    var exact = s.opts.some(function(o){ return o.t === p.partial; });
+    return exact ? satisfied(p.cmd, p.args.concat(p.partial)) : false;
+  }
+  /* Tab: accept the highlighted token (+ a trailing space while the form still
+     expects an argument). Never leaves the palette. */
+  function insert(row){
+    if (!row){ say = view && view.note ? view.note : "nothing to complete"; sync(); return; }
+    if (row.kind === "cmd"){
+      var more = !satisfied(row.cmd, []);
+      input.value = row.cmd + (more ? " " : "");
+      var sp = spec(row.cmd, []);
+      say = more ? "inserted " + row.cmd + (sp && sp.free ? " — it needs free text; nothing is offered"
+                                                          : " — it needs an argument; completion offers them")
+                 : "inserted " + row.cmd + (expects(row.cmd, []) ? " — Enter runs it; a space opens argument completion" : " — it takes no argument; Enter runs it");
+    } else {
+      input.value = row.line + (row.more ? " " : "");
+      say = row.more ? "inserted " + row.name + " — the form needs another argument"
+                     : "inserted " + row.name + " — the form is complete; Enter runs it";
+    }
+    index = 0;
+    render();
+    input.focus();
+  }
+  function run(line){
+    say = "ran: " + line;
+    sync();
+  }
+  /* Enter: run a complete form; on an incomplete form insert the highlighted
+     argument; with nothing offered show the error hint and run nothing. */
+  function enterKey(){
+    var p = parse(), on = rows[index];
+    if (p.mode === "cmd"){
+      if (!on){ say = "no command matches · 没有匹配的命令 — nothing to run"; sync(); return; }
+      if (satisfied(on.cmd, [])) run(on.cmd + (on.meta && on.meta !== "no slash" && on.onName ? "  (" + on.meta + ")" : ""));
+      else insert(on);
+      return;
+    }
+    if (lineComplete(p)){ run(p.text); return; }
+    if (on){ insert(on); return; }
+    say = (view.note || "incomplete") + " — nothing ran";
+    sync();
+  }
+
+  function open(from){
+    opener = from && from !== document.body ? from : openBtn;
+    palette.hidden = false;
+    scrim.hidden = false;
+    stage.classList.add("is-open");
+    navMode = false;
+    index = 0;
+    render();
+    input.focus();
+  }
+  function close(){
+    input.value = "";
+    navMode = false;
+    palette.hidden = true;
+    scrim.hidden = true;
+    stage.classList.remove("is-open");
+    (opener && document.contains(opener) ? opener : openBtn).focus();
+  }
+  function printable(e){ return e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey; }
+  function altOnly(e, code){ return e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.code === code; }
+
+  openBtn.addEventListener("click", function(){ open(openBtn); });
+  scrim.addEventListener("click", close);
+  input.addEventListener("input", function(){ index = 0; render(); });
+  input.addEventListener("keydown", function(e){
+    if (e.key === "Escape"){ e.preventDefault(); close(); return; }
+    if (altOnly(e, "KeyN")){ e.preventDefault(); navMode = !navMode; sync(); return; }
+    if (e.ctrlKey && e.key === "ArrowDown"){ e.preventDefault(); list.focus(); return; }
+    if (e.key === "ArrowDown"){ e.preventDefault(); setIndex(index + 1); return; }
+    if (e.key === "ArrowUp"){ e.preventDefault(); setIndex(index - 1); return; }
+    if (navMode && (e.key === "j" || e.key === "k") && printable(e)){
+      e.preventDefault(); setIndex(index + (e.key === "j" ? 1 : -1)); return;
+    }
+    if (navMode && printable(e)){ navMode = false; navChip.hidden = true; }  /* typed as usual */
+    if (e.key === "Tab" && e.shiftKey){ e.preventDefault(); return; }       /* stays in the trap */
+    if (e.key === "Tab"){ e.preventDefault(); insert(rows[index]); return; }
+    if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); enterKey(); return; }
+  });
+  list.addEventListener("keydown", function(e){
+    if (e.key === "Escape"){ e.preventDefault(); close(); return; }
+    if (e.ctrlKey && e.key === "ArrowUp"){ e.preventDefault(); input.focus(); return; }
+    if (altOnly(e, "KeyN")){ e.preventDefault(); navMode = !navMode; sync(); return; }
+    if (e.key === "ArrowDown" || (e.key === "j" && printable(e))){ e.preventDefault(); setIndex(index + 1); return; }
+    if (e.key === "ArrowUp" || (e.key === "k" && printable(e))){ e.preventDefault(); setIndex(index - 1); return; }
+    if (e.key === "Tab" && e.shiftKey){ e.preventDefault(); return; }
+    if (e.key === "Tab"){ e.preventDefault(); insert(rows[index]); return; }
+    if (e.key === "Enter"){ e.preventDefault(); enterKey(); return; }
+    if (printable(e)){                                /* any other character goes back to the query */
+      e.preventDefault();
+      input.focus();
+      input.value += e.key;
+      index = 0;
+      render();
+    }
+  });
+  /* Mouse: one delegated listener reads the row index from the element at
+     click time, so no handler closes over a loop variable or a stale index.
+     Clicking a command row is Enter on that row; clicking an argument row
+     inserts that argument (Tab). mousedown keeps the caret in the query. */
+  list.addEventListener("mousedown", function(e){
+    if (e.target.closest && e.target.closest("li[data-i]")) e.preventDefault();
+  });
+  list.addEventListener("mousemove", function(e){
+    var li = e.target.closest && e.target.closest("li[data-i]");
+    if (li && +li.getAttribute("data-i") !== index){ index = +li.getAttribute("data-i"); sync(); }
+  });
+  list.addEventListener("click", function(e){
+    var li = e.target.closest && e.target.closest("li[data-i]");
+    if (!li) return;
+    index = +li.getAttribute("data-i");
+    var row = rows[index];
+    if (!row) return;
+    if (row.kind === "cmd") enterKey(); else insert(row);
+    input.focus();
+  });
+  document.addEventListener("keydown", function(e){
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k" && palette.hidden){
+      e.preventDefault(); open(document.activeElement);
+    }
+  });
+  var q0 = params0.get("q");
+  if (q0 !== null) input.value = q0;
+  render();
+  input.focus();
+
+  /* exposed for the headless check (check_palette.js) — not used by the page */
+  window.__palette = {rankCommands:rankCommands, fz:fz, spec:spec, prefixMatch:prefixMatch,
+                      parse:parse, lineComplete:lineComplete, render:render, enterKey:enterKey,
+                      insert:insert, rows:function(){ return rows; }, view:function(){ return view; }};
+
+  /* ---- shared chrome (same block on all five pages) ----
+     D3: Alt+M cycles mode auto → dispatch → read-only (keydown, Alt the only
+     modifier, code KeyM, preventDefault — the Alt+N handling). Shift+Tab is
+     never bound. In a composer textarea Enter sends, Shift+Enter (or Ctrl+J)
+     is a newline, / at column 0 opens the palette prefilled with /, and Escape
+     returns focus to the element the composer was opened from. */
+  var MODES = ["auto", "dispatch", "read-only"];
+  var modeBtn = document.getElementById("mode-chip");
+  var modeVal = document.getElementById("mode-val");
+  var modeAt = 0;
+  function paintMode(){
+    modeVal.textContent = MODES[modeAt];
+    modeBtn.setAttribute("aria-label", "mode " + MODES[modeAt] + " — Alt+M cycles");
+  }
+  function cycleMode(){ modeAt = (modeAt + 1) % MODES.length; paintMode(); }
+  modeBtn.addEventListener("click", cycleMode);
+  paintMode();
+  var hasPalette = !!document.getElementById("palette");
+  document.addEventListener("keydown", function(e){
+    if (e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.code === "KeyM"){
+      e.preventDefault();
+      if (!document.querySelector("[data-permission-pending]")) cycleMode();  /* suppressed while a permission is pending */
+      return;
+    }
+    if (!hasPalette && (e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k"){
+      e.preventDefault(); location.href = "palette.html";
+      return;
+    }
+    /* Escape inside an open tool block closes it and returns focus to its summary (the opener) */
+    if (e.key === "Escape" && document.activeElement){
+      var d = document.activeElement.closest && document.activeElement.closest("details[open]");
+      if (d && !e.defaultPrevented){ e.preventDefault(); d.open = false; d.querySelector("summary").focus(); }
+    }
+  });
+  function insertAtCaret(ta, text){
+    var a = ta.selectionStart, b = ta.selectionEnd;
+    ta.value = ta.value.slice(0, a) + text + ta.value.slice(b);
+    ta.selectionStart = ta.selectionEnd = a + text.length;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-composer]"), function(ta){
+    var out = document.getElementById(ta.getAttribute("data-status"));
+    var box = ta.closest("[data-composer-box]") || ta.parentNode;
+    var sendBtn = box.querySelector("[data-send]");
+    function send(){
+      var text = ta.value.replace(/\s+$/, "");
+      if (out) out.textContent = text ? "sent " + text.split("\n").length + " line(s) · Enter sends · Shift+Enter newline"
+                                      : "nothing to send · Enter sends · Shift+Enter newline";
+    }
+    if (sendBtn) sendBtn.addEventListener("click", send);
+    ta.addEventListener("keydown", function(e){
+      if (e.key === "Enter" && e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) return;  /* newline: browser default */
+      if (e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && (e.key === "j" || e.key === "J")){
+        e.preventDefault(); insertAtCaret(ta, "\n"); return;
+      }
+      if (e.key === "Enter" && !e.ctrlKey && !e.altKey && !e.metaKey){ e.preventDefault(); send(); return; }
+      var a = ta.selectionStart;
+      if (e.key === "/" && a === ta.selectionEnd && (a === 0 || ta.value.charAt(a - 1) === "\n") && !hasPalette){
+        e.preventDefault(); location.href = "palette.html?q=%2F"; return;
+      }
+      if (e.key === "Escape"){
+        var back = document.getElementById(ta.getAttribute("data-return") || "");
+        if (back){ e.preventDefault(); back.focus(); }
+      }
+    });
+  });
+  /* j/k (and ↓/↑) move between the rows of a focused list; Enter follows the row's link */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-keylist]"), function(listEl){
+    listEl.addEventListener("keydown", function(e){
+      var row = e.target.closest && e.target.closest("[data-keyrow]");
+      if (!row || e.ctrlKey || e.metaKey || e.altKey) return;
+      var all = Array.prototype.slice.call(listEl.querySelectorAll("[data-keyrow]"));
+      var at = all.indexOf(row), next = null;
+      if (e.key === "j" || e.key === "ArrowDown") next = all[at + 1];
+      else if (e.key === "k" || e.key === "ArrowUp") next = all[at - 1];
+      else if (e.key === "Enter" && e.target === row){
+        var link = row.querySelector("a[href]"); if (link){ e.preventDefault(); link.click(); }
+        return;
+      } else return;
+      e.preventDefault();
+      if (next){
+        var roving = listEl.getAttribute("data-keylist") === "roving";
+        all.forEach(function(r){
+          if (r.hasAttribute("aria-selected")) r.setAttribute("aria-selected", r === next ? "true" : "false");
+          if (roving) r.setAttribute("tabindex", r === next ? "0" : "-1");
+        });
+        next.focus();
+      }
+    });
+  });
+  /* j/k on a focused transcript scroll one row; PageUp/PageDown are the browser's */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-transcript]"), function(t){
+    t.addEventListener("keydown", function(e){
+      if (e.target !== t || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "j"){ e.preventDefault(); window.scrollBy(0, 20); }
+      if (e.key === "k"){ e.preventDefault(); window.scrollBy(0, -20); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

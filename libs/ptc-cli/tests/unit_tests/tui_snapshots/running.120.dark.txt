@@ -1,0 +1,40 @@
+❯ List the registered adapters.
+
+♩ kimi is conducting on branch feat/tui.
+
+▸ read_file [done 1.2s]
+╰ registry.py adapters
+╰ kept the table
+╰ no files changed
+
+♬ Running · kimi · feat/tui · 7f782add · 42.0s
+Worker is executing the Ticket
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                       esc interrupt · shift+enter newline · alt+m mode

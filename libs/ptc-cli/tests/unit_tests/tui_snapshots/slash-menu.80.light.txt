@@ -1,0 +1,24 @@
+  Describe a task and press Enter. It runs as a Ticket on Home.                ^
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3              v
+  palette › /re▏
+  ▸ reject        —           reject a dispatch that is waiting for a person
+    reply         /reply      answer the Ticket that needs you
+    resume        /resume     list saved sessions; /resume <id> reopens one
+    retry         /retry      retry a failed or waiting Ticket
+    review        /review     queue a local cross-review (/review run <line>…
+    merge         /merge      merge a line locally after its tests (/merge…
+    workers       /worker     show which worker has the current Ticket
+    approve       —           approve a dispatch that is waiting for a person
+  9 matches · tab accepts · enter runs
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online            tab accept · ctrl+down list · esc close · alt+n nav

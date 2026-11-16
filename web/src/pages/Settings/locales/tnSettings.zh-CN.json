@@ -1,0 +1,13 @@
+{
+  "tnSettings": {
+    "eyebrow": {
+      "app": "conductor / 设置",
+      "section": "设置 / {{section}}"
+    },
+    "sectionsNav": "设置分区",
+    "providers": {
+      "grokLogin": "Grok（xAI 登录）",
+      "geminiLogin": "Gemini / Antigravity（Google 登录）"
+    }
+  }
+}

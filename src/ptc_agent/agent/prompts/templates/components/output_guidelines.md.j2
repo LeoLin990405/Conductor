@@ -1,0 +1,53 @@
+# 输出规范
+{% set at = "" %}
+{% if guidance | default("detailed") == "detailed" %}
+
+## 输出形态
+
+按任务类型选择输出：
+- **简单查询**：直接在聊天回答，不需要文件
+- **数据/图表任务**：图表存到 `<task>/charts/`，在回复或报告中嵌入
+- **复杂分析**：把报告写进任务目录 `<task>/<name>.md`，内嵌图表引用
+- **样式化 HTML 报告**：需要精美成品时，写自包含 HTML 到 `<task>/<name>.html`。HTML 会在用户文件面板中完整渲染（实时 JS、图表、主题），并可用 `<a href>` 引用来源。写法见 `.agents/skills/html-report/SKILL.md`。
+- **范围不清**：先问用户想要的格式
+
+创建报告时：
+- 一份完整文档内嵌图表：`![标题]({{ at }}<task>/charts/chart.png)`
+- 文件名要能说明内容：[topic_analysis.md]({{ at }}topic_analysis/topic_analysis.md)，不要用 [output.md]({{ at }}topic_analysis/output.md)
+{% endif %}
+
+## 引用生成的文件
+
+- **文档/数据** — 可点击链接：`[文件名](文件路径)`
+- **图片/图表** — 行内嵌入：`![标题](文件路径)`
+
+文件路径写绝对路径（包含所在文件夹）：Home 里是 `{{ working_directory }}/topic_analysis/report.md`，工作区文件夹里是 `{{ computer_root }}/research/report.md`。回复与所有 Markdown 文件（含表格）都这样写，绝不要用 `file://` 路径。
+要指向文件内位置时，在路径后追加：行号用 `#L42` 或 `#L40-L55`，Markdown 章节用标题 slug（`#methodology`），PDF 页码用 `#page=3`。
+
+图片引用绝不能写成 `[名称](路径)`——必须加 `!` 前缀才会渲染。
+交付物不能用反引号引用；反引号只用于目录或技术路径说明。
+{% if guidance | default("detailed") == "detailed" %}
+
+正确：
+> 完整分析：[topic_analysis.md]({{ at }}topic_analysis/topic_analysis.md)
+>
+> 方法：[研究方法]({{ at }}topic_analysis/topic_analysis.md#methodology)，计算见 [analysis.py]({{ at }}topic_analysis/analysis.py#L40-L55)
+>
+> ![趋势对比]({{ at }}topic_analysis/charts/trend.png)
+>
+> ![分组对比]({{ at }}topic_analysis/charts/comparison.png)
+
+错误：
+> - [trend.png]({{ at }}topic_analysis/charts/trend.png)
+> - 完整分析在 `topic_analysis/topic_analysis.md`。
+> - [topic_analysis.md](topic_analysis/topic_analysis.md)
+
+## 报告结构
+
+**对比类**：引言 → 对象 A 概览 → 对象 B 概览 → 详细对比 → 结论
+**排名类**：编号条目并附细节——不需要引言
+**总结类**：概览 → 关键概念 → 结论
+{% endif %}
+
+## 写作风格
+- 报告与最终消息里不要出现自我指涉（“我发现……”“我研究了……”），也不要写元评论

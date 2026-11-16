@@ -1,0 +1,92 @@
+{
+  "$id": "https://conductor.local/collab/schema/envelope.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "data": {
+      "anyOf": [
+        {
+          "$ref": "https://conductor.local/collab/schema/agent_inbox_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/handoff_accept_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/handoff_list_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/handoff_request_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/lease_state.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/message_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/review_list_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/review_request_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/review_submit_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/task_claim_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/task_get_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/task_list_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/task_report_result.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/task_view.json"
+        },
+        {
+          "$ref": "https://conductor.local/collab/schema/whoami_result.json"
+        },
+        {
+          "additionalProperties": false,
+          "type": "object"
+        }
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "redacted": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "retry_after": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "untrusted_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "ok",
+    "code",
+    "data",
+    "untrusted_fields",
+    "redacted"
+  ],
+  "title": "collab_envelope",
+  "type": "object"
+}

@@ -1,0 +1,59 @@
+{
+  "$id": "https://conductor.local/collab/schema/review_submit.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "review_id": {
+      "type": "string"
+    },
+    "verdict": {
+      "additionalProperties": false,
+      "properties": {
+        "blockers": {
+          "items": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "type": "array"
+        },
+        "needed_evidence": {
+          "items": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "type": "array"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "inconclusive"
+          ],
+          "type": "string"
+        },
+        "verdict": {
+          "maxLength": 2000,
+          "type": "string"
+        }
+      },
+      "required": [
+        "passed",
+        "blockers",
+        "verdict"
+      ],
+      "title": "review_verdict",
+      "type": "object"
+    }
+  },
+  "required": [
+    "review_id",
+    "verdict"
+  ],
+  "title": "review_submit_input",
+  "type": "object"
+}

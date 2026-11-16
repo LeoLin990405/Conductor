@@ -1,0 +1,51 @@
+[
+  {
+    "credits": {
+      "balanceIsWorkspace": false,
+      "balanceReadSucceeded": true,
+      "creditsAvailable": true,
+      "remaining": 1000.0,
+      "updatedAt": "2026-11-10T06:56:13Z"
+    },
+    "provider": "codex",
+    "rateWindowLabels": {
+      "secondary": "Weekly"
+    },
+    "resetCredits": {
+      "available": 0
+    },
+    "source": "oauth",
+    "usage": {
+      "codexResetCredits": {
+        "availableCount": 0,
+        "credits": [],
+        "updatedAt": "2026-11-10T06:56:13Z"
+      },
+      "dataConfidence": "exact",
+      "planObservation": {
+        "observedAt": "2026-11-10T06:56:13Z",
+        "rawPlan": "promax",
+        "source": "usage_response"
+      },
+      "primary": null,
+      "providerCost": {
+        "balance": 1000.0,
+        "balanceUpdatedAt": "2026-11-10T06:56:13Z",
+        "currencyCode": "Credits",
+        "limit": 0,
+        "period": "Extra usage",
+        "updatedAt": "2026-11-10T06:56:13Z",
+        "used": 0
+      },
+      "secondary": {
+        "resetDescription": "Nov 15 at 7:58\u202fPM",
+        "resetsAt": "2026-11-16T01:58:24Z",
+        "usedPercent": 100,
+        "windowMinutes": 10080
+      },
+      "tertiary": null,
+      "updatedAt": "2026-11-10T06:56:13Z"
+    },
+    "version": "0.167.0"
+  }
+]

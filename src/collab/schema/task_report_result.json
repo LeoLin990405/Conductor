@@ -1,0 +1,33 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_report_result.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "reconciled": {
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "vetoed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "vetoed",
+        "reason"
+      ],
+      "title": "reconciled",
+      "type": "object"
+    },
+    "ticket_state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "ticket_state",
+    "reconciled"
+  ],
+  "title": "task_report_result",
+  "type": "object"
+}

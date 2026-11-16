@@ -1,0 +1,24 @@
+  /status      reread Supervisor progress for the current Ticket               ^
+  /help        show the TUI key map and commands
+  /quit        quit the TUI
+  /skills      local skills status
+  /mcp         local MCP server status
+  /memory      browse remembered memory
+  /agents      local fleet, native runtimes, daemons
+  /review      queue a local cross-review (/review run <line> --by <line>)
+  /merge       merge a line locally after its tests (/merge <line> --into
+  <branch>)
+  /stop        stop a running Ticket (/stop <id|index>)
+  /signals     Sources and job counts
+  /clear       clear the conversation
+  /details     toggle Worker details (default: Supervisor view)
+  /model       show the Router model and configured providers
+  /compact     drop activity noise and duplicate rows from the transcript
+  /expand      expand every tool block
+  /collapse    collapse every tool block
+  /new         start a fresh session (persisted)
+  /exit        quit the TUI                                                    v
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                      shift+enter newline · alt+m mode · ? help

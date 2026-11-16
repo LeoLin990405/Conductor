@@ -1,0 +1,119 @@
+/* Quiet terminal loading state. One mark, a 1px moving hairline, and the
+ * label, all on the token sheet. The pane variant fills its routed parent;
+ * only the screen variant owns the viewport. */
+
+.page-loading {
+  --pl-accent: var(--ink-baton);
+
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  background: var(--surface-page);
+  color: var(--ink-fg);
+  animation: pl-appear var(--duration-quick) var(--ease-standard) backwards;
+}
+
+/* The route Suspense fallback sits inside a column that already owns the
+ * viewport, so this variant must fill that column instead of starting a new
+ * one. min-height keeps it visible when a parent is momentarily unsized. */
+.page-loading--pane {
+  height: 100%;
+  min-height: 100%;
+  background: transparent;
+}
+
+.page-loading__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  transform: translateY(-2%);
+}
+
+.page-loading__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--weight-label);
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+  text-transform: lowercase;
+}
+
+.page-loading__mark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-control);
+  color: var(--pl-accent);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.page-loading__wordmark {
+  color: var(--ink-fg);
+  letter-spacing: 0.06em;
+}
+
+.page-loading__slash {
+  color: var(--pl-accent);
+}
+
+.page-loading__desk {
+  letter-spacing: 0.08em;
+}
+
+.page-loading__track {
+  position: relative;
+  width: 112px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--ink-rule);
+}
+
+.page-loading__bar {
+  position: absolute;
+  inset: 0;
+  width: 38%;
+  background: var(--pl-accent);
+  animation: pl-run calc(var(--duration-reveal) * 3) var(--ease-standard) infinite;
+}
+
+.page-loading__label {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+@keyframes pl-appear {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The pane variant sits inside a shell that already provides the ground. */
+.page-loading--pane .page-loading__center {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loading {
+    animation: none;
+  }
+
+  .page-loading__bar {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}

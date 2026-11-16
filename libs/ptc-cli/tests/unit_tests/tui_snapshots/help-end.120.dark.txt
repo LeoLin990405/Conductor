@@ -1,0 +1,40 @@
+  Ctrl+C          clear the composer; twice within 1.5s quits                                                          ^
+  PgUp/PgDn       scroll the conversation
+  Up              recall history when the palette is closed
+  Ctrl+T          show the task list
+  Ctrl+O          expand the newest collapsed output
+
+Commands
+  /worker      show which worker has the current Ticket
+  /dispatch    dispatch roster; /dispatch <id> reads one
+  /roles       role registry; /roles set <role> default <name> reason <text>
+  /jobs        list Tickets; /jobs <id> shows one; /jobs watch <id> follows it
+  /attach      follow a Ticket; /attach <id|index> is /jobs watch
+  /workspace   switch the Home workspace
+  /reply       answer the Ticket that needs you
+  /retry       retry a failed or waiting Ticket
+  /cancel      stop a running Ticket (/cancel <id|index>)
+  /resume      list saved sessions; /resume <id> reopens one
+  /status      reread Supervisor progress for the current Ticket
+  /help        show the TUI key map and commands
+  /quit        quit the TUI
+  /skills      local skills status
+  /mcp         local MCP server status
+  /memory      browse remembered memory
+  /agents      local fleet, native runtimes, daemons
+  /review      queue a local cross-review (/review run <line> --by <line>)
+  /merge       merge a line locally after its tests (/merge <line> --into <branch>)
+  /stop        stop a running Ticket (/stop <id|index>)
+  /signals     Sources and job counts
+  /clear       clear the conversation
+  /details     toggle Worker details (default: Supervisor view)
+  /model       show the Router model and configured providers
+  /compact     drop activity noise and duplicate rows from the transcript
+  /expand      expand every tool block
+  /collapse    collapse every tool block
+  /new         start a fresh session (persisted)
+  /exit        quit the TUI                                                                                            v
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                              shift+enter newline · alt+m mode · ? help

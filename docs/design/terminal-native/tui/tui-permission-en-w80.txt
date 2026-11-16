@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+
+  ◆ permission: merge feat/tui
+    action: local-merge
+    into integrate/r2
+    [a]llow once  [s]ession allow  [d]eny
+  commands
+  ▸ approve       —           approve a dispatch that is waiting for a person
+    reject        —           reject a dispatch that is waiting for a person
+    help          /help       show the TUI key map and commands
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ ◆ merge feat/tui (local-merge) — into…  a allow · s session · d deny

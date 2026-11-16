@@ -1,0 +1,10 @@
+{
+  "tnLegal": {
+    "back": "返回 Conductor",
+    "title": "法律与署名",
+    "intro": "Conductor 使用的开源许可证与第三方署名。",
+    "creditsHeading": "其他署名",
+    "creditsBody": "Conductor 构建于 React、Vite、FastAPI、PostgreSQL、Redis 等开源项目之上。完整依赖及其许可证列表见 <repo>Conductor 仓库</repo>。",
+    "privacyBody": "另请参阅我们的<privacy>隐私政策</privacy>。"
+  }
+}

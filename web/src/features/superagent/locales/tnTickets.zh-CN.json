@@ -1,0 +1,56 @@
+{
+  "tnTickets": {
+    "title": "工单",
+    "lede": "来自手动请求、GitHub 和自动化的全部工单。每一行都带有状态符号、文字和颜色。",
+    "filters": {
+      "label": "工单筛选",
+      "search": "搜索标题、范围或来源",
+      "searchPlaceholder": "搜索标题、范围或来源",
+      "worker": "执行者",
+      "workerAny": "全部",
+      "sort": "排序",
+      "sortUpdated": "更新时间 ↓",
+      "sortCreated": "创建时间 ↓",
+      "sortTitle": "标题",
+      "states": "状态筛选",
+      "all": "全部",
+      "attention": "--attention"
+    },
+    "summary": {
+      "showing": "显示",
+      "count": "{{shown}} / {{total}}",
+      "query": "查询",
+      "worker": "执行者",
+      "keys": "j/k 移动 · Enter 打开 · / 筛选"
+    },
+    "columns": {
+      "state": "状态",
+      "ticket": "工单",
+      "worker": "执行者 · 模型",
+      "owner": "运行位置",
+      "updated": "更新"
+    },
+    "origin": {
+      "manual": "手动",
+      "github": "github",
+      "schedule": "定时"
+    },
+    "owner": {
+      "cloud": "云端",
+      "daemon": "daemon:{{id}}"
+    },
+    "workerNone": "PTC",
+    "list": "工单",
+    "empty": "还没有工单。在首页的输入框里开始一个。",
+    "emptyFiltered": "没有符合这些筛选条件的工单。",
+    "error": "无法读取工单。请检查连接后重试。",
+    "loadMore": "加载更多工单",
+    "loading": "加载中…",
+    "scope": {
+      "failed": "正在显示失败和已阻塞的工单。",
+      "source": "正在显示来自同一个 Source 的工单。",
+      "schedule": "正在显示来自同一个定时任务的工单。",
+      "clear": "清除筛选"
+    }
+  }
+}

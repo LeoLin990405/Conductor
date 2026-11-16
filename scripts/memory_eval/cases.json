@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "user-preference-language",
+      "query": "summary of my tracked stocks",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/language",
+          "index_text": "The user prefers Simplified Chinese answers."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/tracked",
+          "index_text": "Workspace tracks 600519.SH and 000001.SZ."
+        },
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/format",
+          "index_text": "Use a short bullet summary."
+        }
+      ],
+      "required": [
+        "user:prefs/language"
+      ],
+      "relevant": [
+        "user:prefs/language",
+        "workspace:fact/tracked",
+        "user:prefs/format"
+      ]
+    },
+    {
+      "id": "user-feedback-correction",
+      "query": "format the answer",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/format-v2",
+          "index_text": "User corrected the format: always include a sources section."
+        },
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/format-v1",
+          "index_text": "Old format: no sources section.",
+          "status": "superseded"
+        }
+      ],
+      "required": [
+        "user:prefs/format-v2"
+      ],
+      "relevant": [
+        "user:prefs/format-v2"
+      ],
+      "must_not_include": [
+        "user:prefs/format-v1"
+      ]
+    },
+    {
+      "id": "project-constraint",
+      "query": "build the report",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "project",
+          "key": "rules/no-trading",
+          "index_text": "Never place trades or give execution instructions."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/audience",
+          "index_text": "Readers are non-technical finance staff."
+        }
+      ],
+      "required": [
+        "project:rules/no-trading"
+      ],
+      "relevant": [
+        "project:rules/no-trading",
+        "workspace:fact/audience"
+      ]
+    },
+    {
+      "id": "workspace-symbols",
+      "query": "what am I tracking",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/symbols",
+          "index_text": "Tracked symbols: 600519.SH (Moutai), 000001.SZ (Ping An)."
+        },
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/language",
+          "index_text": "The user prefers Simplified Chinese answers."
+        }
+      ],
+      "required": [
+        "workspace:fact/symbols"
+      ],
+      "relevant": [
+        "workspace:fact/symbols",
+        "user:prefs/language"
+      ]
+    },
+    {
+      "id": "session-handoff",
+      "query": "continue the analysis",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "session",
+          "key": "session/decision",
+          "index_text": "Decision made in this session: use 2025 annual reports only."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/symbols",
+          "index_text": "Tracked symbols: 600519.SH."
+        }
+      ],
+      "required": [
+        "session:session/decision"
+      ],
+      "relevant": [
+        "session:session/decision",
+        "workspace:fact/symbols"
+      ]
+    },
+    {
+      "id": "task-progress",
+      "query": "what is left on this task",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "task",
+          "key": "task/remaining",
+          "index_text": "Remaining: charts for Q3 and the final DOCX."
+        },
+        {
+          "user": "u1",
+          "tier": "session",
+          "key": "session/decision",
+          "index_text": "Decision: use 2025 annual reports only."
+        }
+      ],
+      "required": [
+        "task:task/remaining"
+      ],
+      "relevant": [
+        "task:task/remaining",
+        "session:session/decision"
+      ]
+    },
+    {
+      "id": "stale-entry",
+      "query": "which benchmark to use",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/benchmark",
+          "index_text": "Benchmark is CSI 300 total return."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/benchmark-old",
+          "index_text": "Old benchmark was CSI 500.",
+          "status": "superseded"
+        }
+      ],
+      "required": [
+        "workspace:fact/benchmark"
+      ],
+      "relevant": [
+        "workspace:fact/benchmark"
+      ],
+      "must_not_include": [
+        "workspace:fact/benchmark-old"
+      ]
+    },
+    {
+      "id": "cross-user-isolation",
+      "query": "summarize preferences",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/language",
+          "index_text": "The user prefers Simplified Chinese answers."
+        },
+        {
+          "user": "u2",
+          "tier": "user",
+          "key": "prefs/other-language",
+          "index_text": "Another user prefers English answers."
+        }
+      ],
+      "required": [
+        "user:prefs/language"
+      ],
+      "relevant": [
+        "user:prefs/language"
+      ],
+      "must_not_include": [
+        "user:prefs/other-language"
+      ]
+    },
+    {
+      "id": "budget-pressure",
+      "query": "prepare the long-form report",
+      "budget_tokens": 80,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/language",
+          "index_text": "The user prefers Simplified Chinese answers."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/symbols",
+          "index_text": "Tracked symbols: 600519.SH, 000001.SZ."
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/noise-1",
+          "index_text": "Background note about office hours and meeting rooms."
+        },
+        {
+          "user": "u1",
+          "tier": "project",
+          "key": "rules/noise-2",
+          "index_text": "General style guide unrelated to the current research task."
+        }
+      ],
+      "required": [
+        "user:prefs/language",
+        "workspace:fact/symbols"
+      ],
+      "relevant": [
+        "user:prefs/language",
+        "workspace:fact/symbols"
+      ]
+    },
+    {
+      "id": "chinese-index-line",
+      "query": "用一句话总结我关注的股票",
+      "budget_tokens": 160,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "fact/zh-symbols",
+          "index_text": "关注的股票：贵州茅台 600519.SH、平安银行 000001.SZ。"
+        },
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/zh-language",
+          "index_text": "用户偏好简体中文回答。"
+        }
+      ],
+      "required": [
+        "workspace:fact/zh-symbols",
+        "user:prefs/zh-language"
+      ],
+      "relevant": [
+        "workspace:fact/zh-symbols",
+        "user:prefs/zh-language"
+      ]
+    },
+    {
+      "id": "temporal-expired-fact",
+      "query": "what is the current view?",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "view/old",
+          "index_text": "Old view: the thesis was cyclical growth.",
+          "metadata": {
+            "valid_until": "2020-01-01T00:00:00"
+          }
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "view/current",
+          "index_text": "Current view: the thesis is structural tightness.",
+          "metadata": {
+            "valid_from": "2024-01-01T00:00:00"
+          }
+        }
+      ],
+      "required": [
+        "workspace:view/current"
+      ],
+      "relevant": [
+        "workspace:view/current"
+      ],
+      "must_not_include": [
+        "workspace:view/old"
+      ]
+    },
+    {
+      "id": "temporal-expiry-boundary",
+      "query": "current handoff at expiry boundary",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "handoff/expired",
+          "index_text": "Previous handoff expires at the boundary.",
+          "metadata": {"valid_until": "2020-01-01T00:00:00Z"}
+        },
+        {
+          "user": "u1",
+          "tier": "workspace",
+          "key": "handoff/current",
+          "index_text": "Current handoff remains valid."
+        }
+      ],
+      "required": ["workspace:handoff/current"],
+      "relevant": ["workspace:handoff/current"],
+      "must_not_include": ["workspace:handoff/expired"]
+    },
+    {
+      "id": "conditional-rule-preserves-new-concept",
+      "query": "Explain the new concept concisely without losing when it applies or its exception.",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "project",
+          "key": "concept/conditional-retry-budget",
+          "index_text": "Retry budgets cap repeated requests.",
+          "metadata": {
+            "applies_when": "A transient upstream failure occurs and the operation is safe to retry.",
+            "exceptions": "Do not retry a non-idempotent operation without an idempotency key."
+          }
+        }
+      ],
+      "required": ["project:concept/conditional-retry-budget"],
+      "relevant": ["project:concept/conditional-retry-budget"],
+      "condition_fields_required": ["project:concept/conditional-retry-budget"]
+    },
+    {
+      "id": "long-term-conclusion-first-cross-session",
+      "query": "In this new session, summarize the current result.",
+      "thread_id": "synthetic-new-thread",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "prefs/conclusion-first",
+          "index_text": "For future replies, state the conclusion first, then give the evidence."
+        },
+        {
+          "user": "u1",
+          "tier": "session",
+          "thread_id": "synthetic-old-thread",
+          "key": "session/old-format",
+          "index_text": "For this earlier task, use a chronological format."
+        }
+      ],
+      "required": ["user:prefs/conclusion-first"],
+      "relevant": ["user:prefs/conclusion-first"],
+      "must_not_include": ["session:session/old-format"]
+    },
+    {
+      "id": "recall-exact-user-wording-source-reference",
+      "query": "What exact words did I use for the original instruction?",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "request/original-wording",
+          "index_text": "The user asked to preserve the exact wording of the instruction.",
+          "metadata": {
+            "evidence_quote_ref": {
+              "message_id": "synthetic-user-message-01",
+              "start": 0,
+              "end": 41,
+              "unit": "unicode_codepoint"
+            }
+          }
+        }
+      ],
+      "required": ["user:request/original-wording"],
+      "relevant": ["user:request/original-wording"],
+      "source_refs_required": ["user:request/original-wording"]
+    },
+    {
+      "id": "assistant-inference-not-user-preference",
+      "query": "What did the user explicitly say about their answer style?",
+      "budget_tokens": 200,
+      "entries": [
+        {
+          "user": "u1",
+          "tier": "user",
+          "key": "inference/possible-style",
+          "index_text": "Possible preference: the user may want terse answers.",
+          "metadata": {
+            "origin": "assistant_inference",
+            "confidence": 0.4,
+            "evidence_count": 0,
+            "counts_as_evidence": false
+          }
+        }
+      ],
+      "required": ["user:inference/possible-style"],
+      "relevant": ["user:inference/possible-style"],
+      "expected_origins": {
+        "user:inference/possible-style": "assistant_inference"
+      },
+      "must_not_count_as_evidence": ["user:inference/possible-style"]
+    }
+  ]
+}

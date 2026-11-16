@@ -1,0 +1,120 @@
+/* ============================================
+   App-Level Layout Styles
+   ============================================ */
+
+.app-layout {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-page);
+  color: var(--ink-fg);
+  font-family: var(--font-mono);
+}
+
+/* The rail is a flex sibling and reserves its own column, so the content
+   column takes the remaining width; only the mobile branch (no rail) owns the
+   full viewport. Fixed overlays still position themselves off
+   --sidebar-width, which App publishes on :root. */
+.app-main {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  background: var(--surface-page);
+  overflow: auto;
+  box-sizing: border-box;
+  transition: background-color var(--duration-quick) var(--ease-standard);
+}
+
+/* Fixed overlays positioned off --sidebar-width. They are viewport-anchored, so
+   nothing carries them along when the rail changes width — without this they
+   snap to the new column while the content is still easing into it. */
+.sidebar-tracking {
+  transition:
+    left var(--duration-fold) var(--ease-standard),
+    transform var(--duration-fold) var(--ease-standard);
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* `min-height: 0` is what lets flex shrink the route stage when the network
+   banner takes part of the column. A flex item defaults to `min-height: auto`,
+   so without it a tall route refuses to go below its min-content height. It
+   only sizes THIS wrapper though: a route root that pins itself to the
+   viewport instead of its container overflows the shrunken column by exactly
+   the banner's height (see web/AGENTS.md). The mobile branch also needs to be
+   a flex column, because the mobile dashboard is `height: auto` and takes its
+   height from being a flex item. */
+.route-stage {
+  height: 100%;
+  min-height: 0;
+}
+
+.route-stage--mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* A route with no top bar of its own to mark `data-chrome="drag"` drops in a
+   `.chrome-drag-strip` (chrome.css) so the top of the content column can still
+   move the window. It goes ABOVE the route's scroll port (Automations, Orders,
+   Plugins, Settings) -- a strip inside one rides the content out of view, and a
+   titlebar that works only at scroll-top is the bug reported again. Nothing is
+   needed from here: the strip is the first child of an unpadded column, so it
+   already starts at the window's top edge and runs the column's full width. */
+
+/* In the desktop shell the window buttons live in the rail's titlebar row,
+   not over this column, so the strip is a drag handle and no longer needs a
+   band of its own. It keeps its full height but takes no room in the flow:
+   the route's content starts at the top edge and the strip lies over its top
+   padding. Controls under it stay clickable because they declare `no-drag`
+   (chrome.css). The narrow layout below hides it. */
+html.desktop-mac .app-main .chrome-drag-strip {
+  margin-bottom: -38px;
+}
+
+@media (max-width: 767px) {
+  .app-layout {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .app-main {
+    padding-bottom: var(--bottom-tab-height);
+  }
+
+  .app-main--no-tab {
+    padding-bottom: 0;
+  }
+
+  /* Below this width the rail is gone, and the rail is the only thing
+     reserving the strip the macOS window buttons float over, so every route's
+     own top bar lays out underneath them. Reserved here rather than per route
+     because there is no shape the routes share: some own a header, some carry
+     the padding on the page root, some start straight into content.
+
+     Height only, and the column is `box-sizing: border-box`, so this shrinks
+     the content box instead of adding to it: the child at `height: 100%` still
+     fits and nothing leaves the scroll port. Gated on `desktop-mac`, which only
+     the shell's preload can produce, so mobile web is untouched. */
+  html.desktop-mac .app-main {
+    padding-top: 38px;
+  }
+
+  /* ...so a route's own strip stands down here. The rule above already reserved
+     the row for every one of them, and two reservations are 76px of nothing. */
+  html.desktop-mac .app-main .chrome-drag-strip {
+    display: none;
+  }
+}

@@ -1,0 +1,13 @@
+# Changelog
+
+## 2026-11-06
+
+- Build and CI files no longer name `libs/market-protocol`, which is not in the repository (`FORK-CN.md`): the `COPY` lines of `deploy/Dockerfile.backend` and `deploy/Dockerfile.dev`, the two bind mounts of `docker-compose.yml`, the `market-protocol` job of `test.yml` and three path filters of `sandbox-integration.yml` are gone. `yahoo-live.yml` is deleted: it ran `pytest -m yahoo`, which collects no test, and its path filters named five paths that do not exist. The `yahoo` pytest marker and the `and not yahoo` clause of the integration jobs went with it; the integration job selects the same 1,005 tests.
+- Both backend Dockerfiles now `COPY skills/agent-browser/` before `uv sync`. The root project's editable build force-includes it (`pyproject.toml`); in a scratch directory holding only what the Dockerfile had copied by then, the sync failed with "Forced include not found" without it. No image was built.
+- `tests/unit/deploy/test_build_paths.py` is a literal guard: a text search of `deploy/`, `docker-compose*.yml`, `.github/workflows/`, the `Makefile` and `scripts/` for `market-protocol` and `market_protocol` (it also fails on a file that is not UTF-8), with mutation cases that put the name back, and an exact list of the `COPY`/`ADD` lines of the two backend Dockerfiles whose sources must exist, with the skill copied before the first `uv sync`. It parses neither Dockerfiles nor YAML.
+
+## 2026-11-03
+
+- Switching, handing off, or resuming a legacy unisolated cloud line fails with `_CLOUD_WORKER_REJECTION_ERROR` (`src/server/services/autonomy/worker.py`) and does not start the shared runtime. The ticket is marked `failed` with that error when the snapshot is still an eligible cloud launch. Switch, reply, and reassign re-read and retry that fence when `revision` moves, and switch returns the failed row. Migrate by creating the follow-on work on a configured local daemon (`worker_daemon_id` on the Source, schedule, or manual task). Steps: [`ports/worker-isolation.md`](ports/worker-isolation.md#legacy-unisolated-cloud-lines).
+- Linux workers read-only bind `/etc/pki/ca-trust` (with `/etc/pki/tls/certs` and `/etc/pki/tls/cert.pem`) when those RHEL/Fedora paths exist, and follow symlink entries that leave the store (the `ca-trust/extracted` chain). `prepare_process` mounts them through `collect_trust_store_binds()`.
+- Loopback TCP deny is macOS Seatbelt only. Linux `bwrap` does not pass `--unshare-net`, so loopback ports and abstract-namespace unix sockets stay reachable. `localhost_tcp_ports` is not enforced on Linux. Tracked follow-up: a network namespace plus an egress proxy, failing closed if the proxy is unavailable.

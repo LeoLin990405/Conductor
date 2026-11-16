@@ -1,0 +1,30 @@
+{
+  "tnShell": {
+    "nav": {
+      "primary": "主导航",
+      "inbox": "收件箱",
+      "tasks": "任务",
+      "agents": "Agent",
+      "lines": "支线",
+      "dispatch": "调度",
+      "agentFleet": "Agent 集群",
+      "runs": "执行日志",
+      "sources": "来源",
+      "plugins": "插件",
+      "skillsMcp": "技能与 MCP",
+      "settings": "设置"
+    },
+    "palette": {
+      "trigger": "命令",
+      "open": "打开命令面板",
+      "hint": "Ctrl K"
+    },
+    "brand": {
+      "tagline": "超级 Agent"
+    },
+    "loading": "载入中…",
+    "network": {
+      "offline": "离线。数据可能已过期。"
+    }
+  }
+}

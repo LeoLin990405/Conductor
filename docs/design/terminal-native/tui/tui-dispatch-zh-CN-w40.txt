@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ 空闲
+
+
+
+
+  派发
+  7f3a91c2  待审批  62%  integrate/r2
+  把终端原生的评审队列屏幕上线
+  G6 正在等待人工决定
+  名册
+  线       状态
+  L1    ✔  已完成
+    kimi · 已评审 · 1 · ✔ 合并 · —
+  L2    ●  运行中
+    deepseek · 构建中 · 0 · — · L1
+  L3    ▣  已阻塞
+    cursor · — · 0 · ✖ 阻断 · L2
+  L4    ○  排队中
+    minimax · — · 0 · — · L2
+  依赖图
+  L0: L1
+  L1: L2, L4
+  L2: L3
+  未分配
+  L4  执行者池已耗尽
+  命令
+  ▸ dispatch      派发名册；/dispatch…
+    approve       批准一个等待人工的派发
+    reject        驳回一个等待人工的派发
+    review        排队一次本地交叉评审…
+❯ 描述一个任务，/ 打开命令，@ 附加文件
+自动 · ● 3 在线   ◆ 2 · shift+enter 换行

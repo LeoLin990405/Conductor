@@ -1,0 +1,12 @@
+# Kernel/provider preflight only. The full Dockerfile.sandbox must still pass
+# the same probe before this deployment can claim production sandbox readiness.
+# Match its Ubuntu base, workspace user and FUSE version family, without the
+# large browser, office, ML or language tooling layers.
+FROM ubuntu:24.04
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 fuse3 util-linux ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -m -s /bin/bash -d /home/workspace workspace
+USER workspace
+WORKDIR /home/workspace
+CMD ["sleep", "infinity"]

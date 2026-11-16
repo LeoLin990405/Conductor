@@ -1,0 +1,38 @@
+{
+  "tnRuns": {
+    "title": "Execution logs",
+    "lede": "Worker sessions that carried out a task. Open the task to create, track, or close the work.",
+    "error": "Could not read Worker runs. Check the connection and retry.",
+    "loading": "Loading Worker runs…",
+    "empty": "No Worker has run yet.",
+    "selectPrompt": "Select a run.",
+    "fallbackTitle": "Worker run",
+    "fallbackWorker": "PTC",
+    "needsPerson": "Needs a person",
+    "listLabel": "Worker runs",
+    "rawLabel": "Raw run events",
+    "rawEmpty": "No events yet.",
+    "hint": "j/k move · enter opens",
+    "copyRaw": "Copy raw",
+    "openTask": "Open Task",
+    "col": {
+      "state": "state",
+      "run": "run",
+      "worker": "worker",
+      "origin": "origin",
+      "duration": "duration",
+      "updated": "updated"
+    },
+    "origin": {
+      "schedule": "Schedule",
+      "manual": "Manual",
+      "github": "GitHub"
+    },
+    "duration": {
+      "none": "—",
+      "s": "{{s}}s",
+      "ms": "{{m}}m {{s}}s",
+      "hm": "{{h}}h {{m}}m"
+    }
+  }
+}

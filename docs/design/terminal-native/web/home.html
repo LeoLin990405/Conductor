@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · terminal-native web mockups</title>
+<style>
+/* ===========================================================================
+   Terminal-native web mockups — home
+   Every colour in this file is copied from
+   docs/design/terminal-native/system/tokens.json (themes.dark / themes.light).
+   Softer tints are color-mix() of those same inks; no new hex is introduced.
+   =========================================================================== */
+
+:root{
+  /* colour — themes.dark */
+  --surface-page:#0F1115;
+  --surface-canvas:#1E1E1E;
+  --surface-elevated:#282C34;
+  --surface-selection:#1A2140;
+  --surface-accent:#8B9CFF;
+  --ink-fg:#E6E8EE;
+  --ink-muted:#9AA3B5;
+  --ink-baton:#8B9CFF;
+  --ink-tempo:#56C7D9;
+  --ink-ok:#5BD38A;
+  --ink-hold:#F2B544;
+  --ink-error:#FF7A7A;
+  --ink-on-accent:#0F1115;
+  --ink-focus:#8B9CFF;
+  --ink-faint:#2A2F3A;
+  --ink-rule:#3A4150;
+
+  /* typography */
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --font-prose:Geist,"Noto Sans SC",var(--font-mono); /* Geist absent → mono */
+  --size-chrome:12px;
+  --lh-chrome:1.45;
+  --size-prose:15px;
+  --lh-prose:1.65;
+  --weight-label:500;
+  --weight-value:400;
+
+  /* space */
+  --space-0:0px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+
+  /* radius */
+  --radius-none:0px;
+  --radius-control:2px;
+  --radius-card:3px;
+  --radius-overlay:6px;
+
+  /* border */
+  --border-hairline:1px;
+  --border-focus:2px;
+  --focus-offset:2px;
+
+  /* elevation — 1 is only the palette, menus and dialogs */
+  --elevation-0:none;
+  --elevation-1:0 8px 24px rgba(15,17,21,0.45);
+
+  /* motion */
+  --ease-standard:cubic-bezier(0.16,1,0.3,1);
+  --duration-quick:160ms;
+  --duration-fold:240ms;
+  --duration-enter:280ms;
+  --duration-exit:140ms;
+  --duration-reveal:360ms;
+  --duration-spinner:100ms;
+}
+
+[data-theme="light"]{
+  /* colour — themes.light */
+  --surface-page:#FFFFFF;
+  --surface-canvas:#F5F4F1;
+  --surface-elevated:#FDF6E3;
+  --surface-selection:#DCE3FF;
+  --surface-accent:#3F4FC8;
+  --ink-fg:#1B1E26;
+  --ink-muted:#5B6272;
+  --ink-baton:#3F4FC8;
+  --ink-tempo:#0E7A8C;
+  --ink-ok:#1A7F37;
+  --ink-hold:#9A4A06;
+  --ink-error:#C93838;
+  --ink-on-accent:#FFFFFF;
+  --ink-focus:#3F4FC8;
+  --ink-faint:#C9CCD4;
+  --ink-rule:#C9CCD4;
+  --elevation-1:0 8px 24px rgba(27,30,38,0.12);
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--surface-page);
+  color:var(--ink-fg);
+  font-family:var(--font-mono);
+  font-size:var(--size-chrome);
+  line-height:var(--lh-chrome);
+  font-weight:var(--weight-value);
+}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:var(--ink-baton);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+img{max-width:100%}
+
+/* ---------- focus: 2px ink.focus ring, offset 2px ---------- */
+:where(a,button,input,select,textarea,[tabindex],[role="option"]):focus-visible{
+  outline:var(--border-focus) solid var(--ink-focus);
+  outline-offset:var(--focus-offset);
+}
+.row:focus-visible{outline-offset:calc(var(--focus-offset) * -1)}
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;align-items:center;gap:var(--space-4);
+  padding:var(--space-2) var(--space-4);
+  background:var(--surface-page);
+  border-bottom:var(--border-hairline) solid var(--ink-rule);
+}
+.brand{display:flex;align-items:baseline;gap:var(--space-2);font-weight:var(--weight-label)}
+.brand .mark{color:var(--ink-baton)}
+.brand .sub{color:var(--ink-muted);font-weight:var(--weight-value)}
+.nav{display:flex;gap:var(--space-3);margin-inline-start:auto}
+.nav a{padding:var(--space-1) var(--space-2);border-radius:var(--radius-control)}
+.nav a[aria-current="page"]{color:var(--ink-fg);background:var(--surface-canvas)}
+.nav a[aria-current="page"]::before{content:"› ";color:var(--ink-baton)}
+.tools{display:flex;align-items:center;gap:var(--space-2)}
+.kbd{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+  cursor:pointer;
+}
+.kbd b{color:var(--ink-baton);font-weight:var(--weight-label)}
+.kbd:hover{color:var(--ink-fg)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  min-height:32px;
+  padding:var(--space-1) var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);
+  cursor:pointer;
+}
+.btn:hover{border-color:var(--ink-muted)}
+.btn-primary{background:var(--surface-accent);color:var(--ink-on-accent);border-color:var(--surface-accent)}
+.btn-primary:hover{border-color:var(--ink-fg)}
+.btn-danger{color:var(--ink-error)}
+.btn-danger:hover{border-color:var(--ink-error)}
+.btn-sm{min-height:24px;padding:var(--space-1) var(--space-2)}
+.btn[aria-disabled="true"]{color:var(--ink-muted);cursor:not-allowed}
+
+/* ---------- page frame ---------- */
+.shell{max-width:1440px;margin-inline:auto;padding:var(--space-5) var(--space-4) var(--space-6)}
+.page-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-3);margin-bottom:var(--space-4)}
+.page-head h1{font-size:var(--size-prose);font-weight:var(--weight-label);line-height:var(--lh-prose)}
+.page-head .zh{font-family:var(--font-prose);color:var(--ink-muted);font-size:var(--size-prose);line-height:var(--lh-prose)}
+.lede{max-width:76ch;color:var(--ink-muted);font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);margin-bottom:var(--space-5)}
+.section{margin-bottom:var(--space-6)}
+.section > h2{
+  display:flex;align-items:baseline;gap:var(--space-3);
+  font-size:var(--size-chrome);font-weight:var(--weight-label);
+  color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.08em;
+  padding-bottom:var(--space-1);border-bottom:var(--border-hairline) solid var(--ink-rule);
+  margin-bottom:var(--space-3);
+}
+.section > h2 .count{color:var(--ink-hold);font-variant-numeric:tabular-nums}
+.section > h2 .count.ok{color:var(--ink-tempo)}
+.card{
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+  padding:var(--space-4);
+}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+.mono-id{font-variant-numeric:tabular-nums;color:var(--ink-muted)}
+.prose{font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose)}
+
+/* ---------- status marks ---------- */
+.st{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap}
+.st .glyph{width:1ch;text-align:center}
+.st-queued .glyph{color:var(--ink-muted)}
+.st-running .glyph{color:var(--ink-tempo)}
+.st-blocked .glyph{color:var(--ink-hold)}
+.st-needs-you .glyph{color:var(--ink-hold)}
+.st-failed .glyph{color:var(--ink-error)}
+.st-completed .glyph{color:var(--ink-ok)}
+.st-archived .glyph{color:var(--ink-muted)}
+.st-queued .glyph::before{content:"○"}
+.st-running .glyph::before{content:"●"}
+.st-blocked .glyph::before{content:"▣"}
+.st-needs-you .glyph::before{content:"◆"}
+.st-failed .glyph::before{content:"✖"}
+.st-completed .glyph::before{content:"✔"}
+.st-archived .glyph::before{content:"⊘"}
+.st .label{color:var(--ink-muted)}
+/* the spinner advances only while motion is allowed */
+.glyph:has(.spin)::before{content:none}   /* the spinner span draws the running mark itself */
+[data-motion="off"] .spin::before{content:"●"}
+.spin::before{content:"●"}
+@media (prefers-reduced-motion:no-preference){
+  .spin::before{content:none}
+}
+.chip{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);
+}
+.provider{color:var(--ink-baton)}
+.model{color:var(--ink-muted)}
+
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --duration-quick:0ms;--duration-fold:0ms;--duration-enter:0ms;
+    --duration-exit:0ms;--duration-reveal:0ms;--duration-spinner:0ms;
+  }
+}
+
+/* ===========================================================================
+   home page
+   =========================================================================== */
+.ticket-card{display:flex;flex-direction:column;gap:var(--space-3)}
+.ticket-card .top{display:flex;align-items:flex-start;gap:var(--space-3)}
+.ticket-card .body{flex:1 1 auto;min-width:0}
+.ticket-title{color:var(--ink-fg);font-weight:var(--weight-label)}
+.ticket-title a{color:inherit;display:flex;align-items:center;min-height:24px}
+.ticket-zh{font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);color:var(--ink-fg);margin-top:var(--space-1)}
+.ticket-en{font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);color:var(--ink-muted);margin-top:var(--space-1)}
+.meta{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-3);color:var(--ink-muted)}
+.meta .mono-id{color:var(--ink-muted)}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.note{
+  font-family:var(--font-prose);font-size:var(--size-prose);line-height:var(--lh-prose);
+  color:var(--ink-muted);
+  border-inline-start:var(--border-focus) solid var(--ink-hold);
+  padding-inline-start:var(--space-3);
+}
+
+/* needs-you prompt: a trap in front of the composer */
+.reply-trap{
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);
+  padding:var(--space-3);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+}
+.reply-trap label{color:var(--ink-hold);font-weight:var(--weight-label)}
+.reply-trap textarea{
+  flex:1 1 260px;min-width:0;min-height:32px;
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);
+}
+.reply-trap .mono-id{flex-basis:100%}
+
+/* running work */
+.progress{display:flex;align-items:center;gap:var(--space-2)}
+.progress .bar{letter-spacing:2px;color:var(--ink-tempo)}
+.progress .bar .todo{color:var(--ink-faint)}
+.progress .mono-id{color:var(--ink-tempo)}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:var(--space-1)}
+.steps li{display:grid;grid-template-columns:2ch minmax(0,1fr) auto;gap:var(--space-2);color:var(--ink-muted)}
+.steps li.done{color:var(--ink-fg)}
+.steps li .mark{color:var(--ink-ok)}
+.steps li.now .mark{color:var(--ink-tempo)}
+.steps li .mono-id{color:var(--ink-muted)}
+
+/* queued strip */
+.queue{border:var(--border-hairline) solid var(--ink-rule);border-radius:var(--radius-card);background:var(--surface-canvas)}
+.queue .row{
+  display:grid;grid-template-columns:2ch minmax(0,1fr) 14ch 10ch auto;gap:var(--space-2);
+  align-items:center;padding:var(--space-1) var(--space-2);padding-inline-start:var(--space-1);
+}
+.queue .row + .row{border-top:var(--border-hairline) solid color-mix(in srgb, var(--ink-rule) 45%, transparent)}
+.queue .row .mono-id{text-align:end}
+
+/* composer + status line */
+.composer{
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);
+  padding:var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+}
+.composer .prompt{color:var(--ink-baton);font-weight:var(--weight-label)}
+.composer input{
+  flex:1 1 320px;min-width:0;min-height:32px;
+  background:none;border:0;color:var(--ink-fg);
+}
+.composer input::placeholder{color:var(--ink-muted)}
+.composer .mono-id{flex-basis:100%}
+.statusline{
+  display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);
+  margin-top:var(--space-3);padding:var(--space-2) var(--space-3);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+  color:var(--ink-muted);
+}
+.statusline b{color:var(--ink-fg);font-weight:var(--weight-label)}
+
+/* ---------- responsive: 1440 designed, usable at 390 ---------- */
+@media (max-width:1100px){
+  .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .grid-2,.grid-3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .shell{padding-inline:var(--space-3)}
+  .topbar{flex-wrap:wrap;gap:var(--space-2);padding-inline:var(--space-3)}
+  .nav{order:3;width:100%;margin-inline-start:0;overflow-x:auto}
+  .tools{margin-inline-start:auto}
+  .queue .row{grid-template-columns:2ch minmax(0,1fr) auto;row-gap:0}
+  .queue .row .hide-sm{display:none}
+  .card{padding:var(--space-3)}
+}
+
+/* ---------- shared chrome: mode chip, composers, long-string wrap (same block on all five pages) ---------- */
+main,footer{overflow-wrap:anywhere}              /* long zh-CN runs and ids wrap instead of scrolling the page */
+.shell{min-width:0}
+[hidden]{display:none !important}
+.topbar{flex-wrap:wrap;row-gap:var(--space-2)}
+.topbar .brand,.topbar .nav a,.topbar .tools > *{white-space:nowrap;overflow-wrap:normal}
+.topbar .tools{flex-wrap:wrap}
+.mode-chip{
+  display:inline-flex;align-items:center;gap:var(--space-1);
+  min-height:32px;padding:var(--space-1) var(--space-2);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-muted);cursor:pointer;white-space:nowrap;
+}
+.mode-chip b{color:var(--ink-fg);font-weight:var(--weight-label)}
+.mode-chip:hover{border-color:var(--ink-muted)}
+.mode-hint{color:var(--ink-muted);white-space:nowrap}
+.composer-box{
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-2);
+  margin-top:var(--space-3);padding:var(--space-3);
+  background:var(--surface-canvas);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-card);
+}
+.composer-box > *{min-width:0}
+.composer-box .prompt{color:var(--ink-baton);font-weight:var(--weight-label);padding-top:var(--space-1)}
+.composer-box .mono-id{flex-basis:100%}
+textarea.composer-input{
+  flex:1 1 260px;min-width:0;min-height:32px;resize:vertical;
+  padding:var(--space-1) var(--space-2);
+  background:var(--surface-page);
+  border:var(--border-hairline) solid var(--ink-rule);
+  border-radius:var(--radius-control);
+  color:var(--ink-fg);font:inherit;line-height:var(--lh-chrome);
+}
+textarea.composer-input::placeholder{color:var(--ink-muted)}
+@media (max-width:640px){ .mode-hint{display:none} }
+/* ---------- end shared chrome ---------- */
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="mark">▍</span><span>conductor</span><span class="sub">terminal-native / web mockups</span></div>
+  <nav class="nav" aria-label="Mockups">
+    <a href="home.html" aria-current="page">home</a>
+    <a href="tickets.html">tickets</a>
+    <a href="dispatch.html">dispatch</a>
+    <a href="ticket.html">ticket</a>
+    <a href="palette.html">palette</a>
+  </nav>
+  <div class="tools">
+    <button class="mode-chip" id="mode-chip" type="button" aria-keyshortcuts="Alt+M" title="alt+m mode">mode <b id="mode-val">auto</b></button>
+    <span class="mode-hint mono-id" aria-hidden="true">alt+m mode</span>
+    <a class="kbd" href="palette.html"><b>Ctrl</b>+<b>K</b> palette</a>
+    <button class="btn" id="theme-toggle" type="button" aria-pressed="false">theme: dark</button>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="page-head">
+    <h1>Home</h1>
+    <span class="zh">主页 · 需要你的事情，以及正在运行的工作</span>
+  </div>
+  <p class="lede">
+    Home is the one screen an operator keeps open. The top half is everything that needs a person: a decision, a reply,
+    a retry. The bottom half is the work already in flight. Nothing here animates except the running rows.
+  </p>
+
+  <!-- ==================== needs you ==================== -->
+  <section class="section" aria-labelledby="needs-you">
+    <h2 id="needs-you">Needs you <span class="count">◆ 2</span></h2>
+    <div class="grid-2">
+
+      <article class="card ticket-card">
+        <div class="top">
+          <span class="st st-needs-you"><span class="glyph"></span><span class="label">Needs you</span></span>
+          <div class="body">
+            <div class="ticket-title"><a href="ticket.html">#56 调色板查询框里 j/k 始终是字符，只在结果列表或 Alt+N 导航模式下移动高亮</a></div>
+            <p class="ticket-zh">TUI 与 web 的调色板遵守同一条边界：查询框里 j/k 是字符，即使查询为空；只有焦点在结果列表上，或 Alt+N 导航模式开启时，它们才移动高亮。</p>
+            <p class="ticket-en">Both palettes keep one boundary: j and k are characters in the query, even when it is empty; they move the highlight only on the focused result list or in Alt+N navigation mode.</p>
+          </div>
+        </div>
+        <div class="meta">
+          <span class="mono-id">7c1e0a44-9b52-4d7e-8f31-5a6c2e90b1d4</span>
+          <span class="provider">kimi</span><span class="model">kimi-k3.1-pro-coding</span>
+          <span class="mono-id">line L4 · web-palette</span>
+          <span class="mono-id">waiting 12m</span>
+          <span class="chip">github · issue</span>
+        </div>
+        <p class="note">The worker asks whether to pin the boundary with a unit test on both surfaces before it touches the composer. 工人询问：是否先把这条边界写成两侧的单元测试，再动输入框。</p>
+        <div class="reply-trap" role="group" aria-label="Reply to ticket 56" data-composer-box>
+          <label for="reply-56">reply #56</label>
+          <textarea id="reply-56" class="composer-input" rows="2" data-composer data-status="reply-56-status" data-return="composer-input">同意：先补两侧测试，再改 composer 的按键分支；Shift+Enter 换行时保留草稿，Esc 不清空已经输入的回复内容。</textarea>
+          <button class="btn btn-primary btn-sm" type="button" data-send>send</button>
+          <span class="mono-id" id="reply-56-status" role="status">Enter sends the reply · Shift+Enter (or Ctrl+J) newline · Esc dismisses the prompt and moves to the composer — the prompt is a trap in front of the composer</span>
+        </div>
+      </article>
+
+      <article class="card ticket-card">
+        <div class="top">
+          <span class="st st-needs-you"><span class="glyph"></span><span class="label">Needs you</span></span>
+          <div class="body">
+            <div class="ticket-title"><a href="ticket.html">把周报里的三条待办转成 Ticket</a></div>
+            <p class="ticket-zh">来源：飞书群「迭代周报」。路由已经拆出三条候选，但两条都指向同一个 line，需要你决定合并成一条还是分成两条并行。</p>
+            <p class="ticket-en">Source: the Feishu group 「迭代周报」. The Router split three candidates, but two point at the same line — decide whether to merge them into one Ticket or run two in parallel.</p>
+          </div>
+        </div>
+        <div class="meta">
+          <span class="mono-id">6d81b5a9-3f70-4e2c-91ab-40c7f2d8e635</span>
+          <span class="provider">minimax</span><span class="model">minimax-m3</span>
+          <span class="mono-id">line L2 · review-merge</span>
+          <span class="mono-id">waiting 21m</span>
+          <span class="chip">feishu</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" type="button">merge into one</button>
+          <button class="btn btn-sm" type="button">run two in parallel</button>
+          <button class="btn btn-sm btn-danger" type="button">archive</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== running ==================== -->
+  <section class="section" aria-labelledby="running">
+    <h2 id="running">Running <span class="count ok">● 3</span></h2>
+    <div class="grid-3">
+
+      <article class="card ticket-card">
+        <div class="top">
+          <span class="st st-running"><span class="glyph"><span class="spin"></span></span><span class="label">Running</span></span>
+          <div class="body">
+            <div class="ticket-title"><a href="ticket.html">#57 合并彩排在 throwaway worktree 中运行测试</a></div>
+            <p class="ticket-zh">彩排现在在一个一次性的 worktree 里跑测试，只有彩排通过的那一个提交才会被 compare-and-swap 落到目标分支。</p>
+          </div>
+        </div>
+        <div class="progress" role="img" aria-label="step 7 of 12">
+          <span class="bar"><span>▮▮▮▮▮▮▮</span><span class="todo">▯▯▯▯▯</span></span>
+          <span class="mono-id">7/12 · 4 files</span>
+        </div>
+        <ul class="steps">
+          <li class="done"><span class="mark">✔</span><span>read <span class="mono-id">review_merge.py</span> rehearsal path</span><span class="mono-id">1m</span></li>
+          <li class="done"><span class="mark">✔</span><span>edit <span class="mono-id">git_delivery.py</span></span><span class="mono-id">3m</span></li>
+          <li class="now"><span class="mark">●</span><span>run <span class="mono-id">pytest tests/unit/server/services/autonomy -q</span></span><span class="mono-id">2m</span></li>
+          <li><span class="mark">○</span><span>report + delivery check</span><span class="mono-id">—</span></li>
+        </ul>
+        <div class="meta">
+          <span class="provider">deepseek-dsh</span><span class="model">deepseek-v4-pro</span>
+          <span class="mono-id">line L2 · review-merge</span>
+          <span class="mono-id">running 4m</span>
+        </div>
+      </article>
+
+      <article class="card ticket-card">
+        <div class="top">
+          <span class="st st-running"><span class="glyph"><span class="spin"></span></span><span class="label">Running</span></span>
+          <div class="body">
+            <div class="ticket-title"><a href="ticket.html">文档站的中文标题需要书名号</a></div>
+            <p class="ticket-zh">中文标题里的文件名、命令与令牌名统一加上《》或 <span class="mono-id">`</span>，避免与正文混淆。</p>
+          </div>
+        </div>
+        <div class="progress" role="img" aria-label="step 3 of 6">
+          <span class="bar"><span>▮▮▮</span><span class="todo">▯▯▯</span></span>
+          <span class="mono-id">3/6 · 11 files</span>
+        </div>
+        <ul class="steps">
+          <li class="done"><span class="mark">✔</span><span>scan <span class="mono-id">docs/**/*.md</span> headings</span><span class="mono-id">40s</span></li>
+          <li class="now"><span class="mark">●</span><span>edit <span class="mono-id">docs/design/terminal-native/*.md</span></span><span class="mono-id">1m</span></li>
+          <li><span class="mark">○</span><span>link check</span><span class="mono-id">—</span></li>
+        </ul>
+        <div class="meta">
+          <span class="provider">stepfun</span><span class="model">step-3.7-flash</span>
+          <span class="mono-id">line L4 · web-palette</span>
+          <span class="mono-id">running 6m</span>
+        </div>
+      </article>
+
+      <article class="card ticket-card">
+        <div class="top">
+          <span class="st st-running"><span class="glyph"><span class="spin"></span></span><span class="label">Running</span></span>
+          <div class="body">
+            <div class="ticket-title"><a href="ticket.html">调度器的咨询锁超时告警</a></div>
+            <p class="ticket-zh">单个 Postgres 咨询锁的等待超过 30 秒时记录一条结构化告警，并带上持锁的 dispatch id。</p>
+          </div>
+        </div>
+        <div class="progress" role="img" aria-label="step 9 of 10">
+          <span class="bar"><span>▮▮▮▮▮▮▮▮▮</span><span class="todo">▯</span></span>
+          <span class="mono-id">9/10 · 2 files</span>
+        </div>
+        <ul class="steps">
+          <li class="done"><span class="mark">✔</span><span>edit <span class="mono-id">scheduler.py</span> lock wait</span><span class="mono-id">5m</span></li>
+          <li class="now"><span class="mark">●</span><span>run <span class="mono-id">pytest tests/unit/server/test_scheduler_lock -q</span></span><span class="mono-id">1m</span></li>
+          <li><span class="mark">○</span><span>report</span><span class="mono-id">—</span></li>
+        </ul>
+        <div class="meta">
+          <span class="provider">kimi</span><span class="model">kimi-k3-coding</span>
+          <span class="mono-id">line L1 · autonomy-scheduler</span>
+          <span class="mono-id">running 9m</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== queued ==================== -->
+  <section class="section" aria-labelledby="queued">
+    <h2 id="queued">Queued <span class="count">○ 2</span></h2>
+    <div class="queue">
+      <div class="row">
+        <span class="st st-queued"><span class="glyph"></span></span>
+        <span><a href="tickets.html">邮件里提到的构建失败需要复现</a> <span class="mono-id">Reproduce the build failure mentioned in the email</span></span>
+        <span class="provider hide-sm">codex</span>
+        <span class="mono-id hide-sm">L1</span>
+        <span class="mono-id">queued 4m</span>
+      </div>
+      <div class="row">
+        <span class="st st-queued"><span class="glyph"></span></span>
+        <span><a href="tickets.html">#58 原生 CLI worker 的上下文轮换不丢失 handoff</a> <span class="mono-id">retry queued after the blocked decision</span></span>
+        <span class="provider hide-sm">cursor</span>
+        <span class="mono-id hide-sm">L3</span>
+        <span class="mono-id">queued 1m</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== composer ==================== -->
+  <section class="section" aria-labelledby="composer">
+    <h2 id="composer">Composer</h2>
+    <div class="composer" role="group" aria-label="Composer" data-composer-box>
+      <span class="prompt" aria-hidden="true">›</span>
+      <textarea id="composer-input" class="composer-input" rows="2" data-composer data-status="composer-status" aria-label="Composer" placeholder="Ask the Router, or press / at column 0…"></textarea>
+      <button class="btn btn-primary" type="button" data-send>send</button>
+      <span class="mono-id" id="composer-status" role="status">Enter sends · Shift+Enter (or Ctrl+J) newline · / at column 0 opens the palette prefilled with /</span>
+      <span class="mono-id">Focus order when the palette is closed: the main list, then the composer. j and k on the focused transcript scroll one row; PageUp and PageDown scroll ten.</span>
+    </div>
+    <div class="statusline" role="status">
+      <span><b>L2</b> review-merge</span>
+      <span>G5 集成 · <b>4/6</b></span>
+      <span>deepseek-dsh · deepseek-v4-pro</span>
+      <span>3 running · 2 needs you · 2 queued</span>
+      <span><b>Ctrl+K</b> palette · <b>Esc</b> back</span>
+    </div>
+  </section>
+</main>
+
+<footer class="shell" style="padding-block-start:0">
+  <p class="mono-id">Designed at 1440px, usable at 390px. Dark is primary; light has its own hex. Colours: tokens.json.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+
+  /* ---- theme ---- */
+  var params = new URLSearchParams(location.search);
+  if (params.get("theme") === "light" || params.get("theme") === "dark"){
+    root.setAttribute("data-theme", params.get("theme"));
+  }
+  var themeBtn = document.getElementById("theme-toggle");
+  function paintTheme(){
+    var light = root.getAttribute("data-theme") === "light";
+    themeBtn.textContent = "theme: " + (light ? "light" : "dark");
+    themeBtn.setAttribute("aria-pressed", light ? "true" : "false");
+  }
+  themeBtn.addEventListener("click", function(){
+    root.setAttribute("data-theme", root.getAttribute("data-theme") === "light" ? "dark" : "light");
+    paintTheme();
+  });
+  paintTheme();
+
+  /* ---- reduced motion: prefers-reduced-motion, plus the TUI env predicate ---- */
+  var mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+  var forced = ["1","true","yes","on"].indexOf((params.get("reduced") || "").toLowerCase()) > -1;
+  var motion = mq.matches && !forced;
+
+  /* ---- spinner frames ♪ ♫ ♬ ♫, one frame per 100ms ---- */
+  var FRAMES = ["\u266a","\u266b","\u266c","\u266b"];
+  var spins = Array.prototype.slice.call(document.querySelectorAll(".spin"));
+  if (!motion) root.setAttribute("data-motion", "off");
+  if (motion && spins.length){
+    var tick = 0;
+    for (var s = 0; s < spins.length; s++) spins[s].textContent = FRAMES[0];
+    setInterval(function(){
+      tick = (tick + 1) % FRAMES.length;
+      for (var i = 0; i < spins.length; i++) spins[i].textContent = FRAMES[tick];
+    }, 100);
+  }
+
+  /* ---- shared chrome (same block on all five pages) ----
+     D3: Alt+M cycles mode auto → dispatch → read-only (keydown, Alt the only
+     modifier, code KeyM, preventDefault — the Alt+N handling). Shift+Tab is
+     never bound. In a composer textarea Enter sends, Shift+Enter (or Ctrl+J)
+     is a newline, / at column 0 opens the palette prefilled with /, and Escape
+     returns focus to the element the composer was opened from. */
+  var MODES = ["auto", "dispatch", "read-only"];
+  var modeBtn = document.getElementById("mode-chip");
+  var modeVal = document.getElementById("mode-val");
+  var modeAt = 0;
+  function paintMode(){
+    modeVal.textContent = MODES[modeAt];
+    modeBtn.setAttribute("aria-label", "mode " + MODES[modeAt] + " — Alt+M cycles");
+  }
+  function cycleMode(){ modeAt = (modeAt + 1) % MODES.length; paintMode(); }
+  modeBtn.addEventListener("click", cycleMode);
+  paintMode();
+  var hasPalette = !!document.getElementById("palette");
+  document.addEventListener("keydown", function(e){
+    if (e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.code === "KeyM"){
+      e.preventDefault();
+      if (!document.querySelector("[data-permission-pending]")) cycleMode();  /* suppressed while a permission is pending */
+      return;
+    }
+    if (!hasPalette && (e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k"){
+      e.preventDefault(); location.href = "palette.html";
+      return;
+    }
+    /* Escape inside an open tool block closes it and returns focus to its summary (the opener) */
+    if (e.key === "Escape" && document.activeElement){
+      var d = document.activeElement.closest && document.activeElement.closest("details[open]");
+      if (d && !e.defaultPrevented){ e.preventDefault(); d.open = false; d.querySelector("summary").focus(); }
+    }
+  });
+  function insertAtCaret(ta, text){
+    var a = ta.selectionStart, b = ta.selectionEnd;
+    ta.value = ta.value.slice(0, a) + text + ta.value.slice(b);
+    ta.selectionStart = ta.selectionEnd = a + text.length;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-composer]"), function(ta){
+    var out = document.getElementById(ta.getAttribute("data-status"));
+    var box = ta.closest("[data-composer-box]") || ta.parentNode;
+    var sendBtn = box.querySelector("[data-send]");
+    function send(){
+      var text = ta.value.replace(/\s+$/, "");
+      if (out) out.textContent = text ? "sent " + text.split("\n").length + " line(s) · Enter sends · Shift+Enter newline"
+                                      : "nothing to send · Enter sends · Shift+Enter newline";
+    }
+    if (sendBtn) sendBtn.addEventListener("click", send);
+    ta.addEventListener("keydown", function(e){
+      if (e.key === "Enter" && e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) return;  /* newline: browser default */
+      if (e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && (e.key === "j" || e.key === "J")){
+        e.preventDefault(); insertAtCaret(ta, "\n"); return;
+      }
+      if (e.key === "Enter" && !e.ctrlKey && !e.altKey && !e.metaKey){ e.preventDefault(); send(); return; }
+      var a = ta.selectionStart;
+      if (e.key === "/" && a === ta.selectionEnd && (a === 0 || ta.value.charAt(a - 1) === "\n") && !hasPalette){
+        e.preventDefault(); location.href = "palette.html?q=%2F"; return;
+      }
+      if (e.key === "Escape"){
+        var back = document.getElementById(ta.getAttribute("data-return") || "");
+        if (back){ e.preventDefault(); back.focus(); }
+      }
+    });
+  });
+  /* j/k (and ↓/↑) move between the rows of a focused list; Enter follows the row's link */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-keylist]"), function(listEl){
+    listEl.addEventListener("keydown", function(e){
+      var row = e.target.closest && e.target.closest("[data-keyrow]");
+      if (!row || e.ctrlKey || e.metaKey || e.altKey) return;
+      var all = Array.prototype.slice.call(listEl.querySelectorAll("[data-keyrow]"));
+      var at = all.indexOf(row), next = null;
+      if (e.key === "j" || e.key === "ArrowDown") next = all[at + 1];
+      else if (e.key === "k" || e.key === "ArrowUp") next = all[at - 1];
+      else if (e.key === "Enter" && e.target === row){
+        var link = row.querySelector("a[href]"); if (link){ e.preventDefault(); link.click(); }
+        return;
+      } else return;
+      e.preventDefault();
+      if (next){
+        var roving = listEl.getAttribute("data-keylist") === "roving";
+        all.forEach(function(r){
+          if (r.hasAttribute("aria-selected")) r.setAttribute("aria-selected", r === next ? "true" : "false");
+          if (roving) r.setAttribute("tabindex", r === next ? "0" : "-1");
+        });
+        next.focus();
+      }
+    });
+  });
+  /* j/k on a focused transcript scroll one row; PageUp/PageDown are the browser's */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-transcript]"), function(t){
+    t.addEventListener("keydown", function(e){
+      if (e.target !== t || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "j"){ e.preventDefault(); window.scrollBy(0, 20); }
+      if (e.key === "k"){ e.preventDefault(); window.scrollBy(0, -20); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

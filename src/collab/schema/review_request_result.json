@@ -1,0 +1,27 @@
+{
+  "$id": "https://conductor.local/collab/schema/review_request_result.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "deduplicated": {
+      "description": "true when an existing review was returned instead of a new one",
+      "type": "boolean"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "review_id": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "review_id",
+    "state"
+  ],
+  "title": "collab.review_request_result",
+  "type": "object"
+}

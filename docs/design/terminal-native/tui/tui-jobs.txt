@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  jobs
+     #    id           state      title                        worker    age     next
+  ▸  1    7f782add  ✔  Completed  Read the adapter registry    kimi      12s     /jobs 1
+     2    6bfa630f  ◆  Needs you  Needs a host with bash       deepseek  2h05m   /reply 2
+     3    4b2f7803  ✖  Failed     Sandbox denied               cursor    7h57m   /retry 3
+     4    1a91c0de  ●  Running    Add the review queue screen  minimax   4m12s   /jobs watch 4
+     5    0c73ab19  ○  Queued     Audit the token contrast     —         —       /jobs 5
+  5 Tickets · 1 needs you · 1 running
+  commands
+  ▸ tickets       /jobs       list Tickets; /jobs <id> shows one; /jobs watch <id> follows it
+    reply         /reply      answer the Ticket that needs you
+    retry         /retry      retry a failed or waiting Ticket
+    cancel        /cancel     stop a running Ticket (/cancel <id|index>)
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                                             ◆ 2 · shift+enter newline · alt+m mode

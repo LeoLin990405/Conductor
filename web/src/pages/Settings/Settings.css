@@ -1,0 +1,299 @@
+/* ============================================================
+   Settings — terminal-native configuration console (S25)
+   Left index, right detail. Dense field rows, mono section labels, square
+   token geometry. Colours, sizes, space, radius and motion all come from the
+   S01 custom properties (terminal-native.css / tokens.css); no literal
+   colour appears here.
+   ============================================================ */
+
+.settings-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+/* Both tracks are minmax(0, ...): a bare `1fr` is minmax(auto, 1fr), and the
+   tab strip's min-content would then widen the column past a 390px viewport. */
+.settings-console {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.settings-console-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  border-right: var(--border-hairline) solid var(--color-border-muted);
+  background: var(--color-bg-subtle);
+}
+
+.settings-nav-brand {
+  min-width: 0;
+  padding: 0 var(--space-1);
+}
+
+/* Section labels: mono chrome, muted ink. */
+.settings-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  font-weight: var(--weight-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  overflow-wrap: anywhere;
+}
+
+.settings-nav-title {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-prose);
+  line-height: var(--lh-prose);
+  font-weight: var(--weight-label);
+  color: var(--color-text-primary);
+}
+
+.settings-nav-subtitle {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-prose);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  color: var(--color-text-tertiary);
+}
+
+.settings-tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--border-hairline);
+  min-width: 0;
+}
+
+.settings-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  text-align: left;
+  transition:
+    background-color var(--duration-quick) var(--ease-standard),
+    color var(--duration-quick) var(--ease-standard);
+}
+
+.settings-tab:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.settings-tab.active {
+  background: var(--surface-selection);
+  color: var(--color-text-primary);
+}
+
+.settings-tab.active::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-4));
+  top: 50%;
+  width: var(--border-focus);
+  height: var(--space-4);
+  transform: translateY(-50%);
+  background: var(--color-accent-primary);
+}
+
+.settings-tab-label {
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  font-weight: var(--weight-label);
+  white-space: nowrap;
+}
+
+.settings-console-main {
+  min-width: 0;
+  padding: var(--space-5) clamp(16px, 3vw, 40px) 56px;
+}
+
+.settings-main-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: var(--border-hairline) solid var(--color-border-muted);
+}
+
+.settings-main-title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-prose);
+  line-height: var(--lh-prose);
+  font-weight: var(--weight-label);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.settings-main-desc {
+  margin: 0;
+  font-family: var(--font-prose);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  color: var(--color-text-tertiary);
+}
+
+.settings-content {
+  min-width: 0;
+  min-height: 0;
+  max-width: 980px;
+  overflow-wrap: anywhere;
+}
+
+.settings-loading {
+  padding: var(--space-6) 0;
+}
+
+/* Settings rows: one hairline stack rather than separate cards. */
+.settings-rows {
+  border-top: var(--border-hairline) solid var(--color-border-muted);
+  border-bottom: var(--border-hairline) solid var(--color-border-muted);
+}
+
+.settings-rows > * + * {
+  border-top: var(--border-hairline) solid var(--color-border-muted);
+}
+
+/* Dense field row: label left, control right; wraps instead of clipping when
+   a long zh-CN or en label meets a wide control. */
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+  min-height: 40px;
+  padding: var(--space-2) var(--space-1);
+}
+
+.settings-row > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* A control column (`shrink-0`) and the segmented control inside it may
+   shrink to the row: at 390 a long en-US option label otherwise pushes the
+   group past the content box (370px in a 358px column) and the page scrolls
+   sideways. The options wrap their words instead of clipping. */
+.settings-row > .shrink-0,
+.settings-row [role="group"].clips-focus-ring {
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.settings-row [role="group"].clips-focus-ring > button {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .settings-console {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .settings-console-nav {
+    border-right: 0;
+    border-bottom: var(--border-hairline) solid var(--color-border-muted);
+    padding: var(--space-4) var(--space-4) var(--space-2);
+    gap: var(--space-3);
+  }
+  .settings-tab-list {
+    flex-direction: row;
+    max-width: 100%;
+    overflow-x: auto;
+    /* room for the 2px focus ring + 2px offset inside the scroller */
+    padding: var(--space-1);
+    scrollbar-width: none;
+  }
+  .settings-tab-list::-webkit-scrollbar { display: none; }
+  .settings-tab {
+    width: auto;
+    flex-shrink: 0;
+    padding: var(--space-1) var(--space-3);
+  }
+  .settings-tab.active::before {
+    left: var(--space-2);
+    right: var(--space-2);
+    top: auto;
+    bottom: calc(-1 * var(--border-hairline));
+    width: auto;
+    height: var(--border-focus);
+    transform: none;
+  }
+  .settings-console-main {
+    padding: var(--space-4) var(--space-4) 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-nav-subtitle { display: none; }
+}
+
+/* Panels share the console language: square surfaces, mono section labels,
+   no card-on-card shadows. The panels use rounded-(--radius-*) tokens; this
+   keeps any remaining Tailwind rounding at the card radius. */
+.settings-content .rounded-lg,
+.settings-content .rounded-md,
+.settings-content .rounded-xl,
+.settings-content .ui-card {
+  border-radius: var(--radius-card) !important;
+}
+
+.settings-content > div > section > h3,
+.settings-content section > h3 {
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  line-height: var(--lh-chrome);
+  font-weight: var(--weight-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary) !important;
+  margin-bottom: var(--space-2);
+}
+
+.settings-content > div {
+  max-width: none;
+}
+
+.settings-content .p-3 {
+  padding: var(--space-2) var(--space-3);
+}
+
+.settings-content section {
+  margin-bottom: var(--space-4);
+}
+
+.settings-content .shadow-card,
+.settings-content .shadow-sm {
+  box-shadow: none;
+}

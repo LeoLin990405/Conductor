@@ -1,0 +1,1 @@
+Shell command could not be fully analyzed (heredoc); explicit approval is required. No interactive approval is available. Use a supported literal command or review it in an interactive session.

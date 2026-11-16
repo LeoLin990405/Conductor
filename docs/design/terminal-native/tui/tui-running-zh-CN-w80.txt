@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · 会话 bad2c655  ● 实时
+
+
+
+
+
+
+
+
+  列出已注册的适配器。
+  ♩ kimi 正在 feat/tui 分支上指挥。
+  ▸ read_file [done 1.2s]
+  ╰ registry.py 适配器
+  ♬ 添加评审队列屏幕 · kimi     · feat/tui    · 7f782add · 42s
+  │ Worker 正在执行这个 Ticket
+  │ ▸ grep "review"
+  │ ╰ src/server/services/autonomy/review_merge.py
+  │ ▸ pytest tests/unit
+  │ ╰ 128 passed in 4.21s
+  │ ▸ git diff --stat
+  │ ╰ 3 files changed, 214 insertions
+  │ 共 2 个注册名，未改任何文件。原生注册表里的适配器名称至今仍按字母顺序排列，
+  │ 新加的适配器也遵守这个顺序。
+  命令
+  ▸ status        /status     重新读取当前 Ticket 的 Supervisor 进度
+    details       /details    切换 Worker 详情（默认：Supervisor 视图）
+    stop          /stop       停止运行中的 Ticket（/stop <id|index>）
+    compact       /compact    从记录中去掉活动噪声和重复行
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ 描述一个任务，/ 打开命令，@ 附加文件                                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+自动 · ● 3 在线                         esc 中断 · shift+enter 换行 · alt+m 模式

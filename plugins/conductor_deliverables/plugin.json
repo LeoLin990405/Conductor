@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "conductor-deliverables",
+  "version": "1.0.0",
+  "description": "What the agent hands you. Reports, decks, workbooks and interactive dashboards, plus the chart annotation and design conventions that keep them looking like one house produced them.",
+  "author": {
+    "name": "Conductor",
+    "url": "https://github.com/LeoLin990405/Conductor"
+  },
+  "homepage": "https://github.com/LeoLin990405/Conductor",
+  "repository": "https://github.com/LeoLin990405/Conductor",
+  "license": "Apache-2.0",
+  "keywords": [
+    "reporting",
+    "documents",
+    "charts",
+    "dashboards",
+    "pptx",
+    "xlsx"
+  ]
+}

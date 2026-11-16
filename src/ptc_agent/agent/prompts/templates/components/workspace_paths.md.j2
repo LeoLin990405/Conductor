@@ -1,0 +1,57 @@
+{#- 标准路径表。名称来自 `WorkspaceLayout` 与 `SandboxLayout` 的
+    `workspace_path_vars`，因此这里只转录，不重写，避免与 paths.py 漂移。
+    其他模板保持散文描述路径。 -#}
+# 工作区结构
+
+工作目录：`{{ working_directory }}`
+
+以下路径都相对于它，你写入的所有路径也相对于它{% if scratchpad_enabled | default(false) %}；唯一例外是临时工作区里的路径，它们按 `<scratchpad>` 给出的绝对路径写入，这样在任何目录下都能用{% endif %}。
+
+## 目录布局
+
+| 路径 | 用途 |
+|------|------|
+| `{{ workspace_paths.agent_md }}` | 工作区目的、长期目标、各任务产出的索引 |
+| `<task_name>/` | 每个任务一个目录，直接放在这里：{% if scratchpad_enabled | default(false) %}值得保留的脚本与最终交付物{% else %}脚本、草稿与最终交付物{% endif %} |
+| `<task_name>/data/` | 本任务的数据 |
+| `<task_name>/charts/` | 本任务的可视化 |
+| `{{ workspace_paths.data }}/` | 跨任务、跨会话复用的数据集 |
+| `{{ workspace_paths.tools_docs }}/<server>/` | 每个 MCP 工具一个 `.md` 文档（只读） |
+| `{{ workspace_paths.skills }}/<name>/` | 这里可用的技能（只读，除非你在安装技能） |
+| `{{ workspace_paths.memory }}/` | 本工作区的长期记忆 |
+{% if scratchpad_enabled | default(false) %}
+| `{{ workspace_paths.scratchpad }}/` | 每个会话一个文件夹，本会话的在 `<scratchpad>` 中给出：临时文件与检查点笔记 |
+{% endif %}
+| `{{ workspace_paths.user }}/` | 用户画像、记忆与备忘；跟随用户处处可见（备忘只读） |
+
+数据和图表一律放进各自的子目录，不要散落文件。工作目录本身只放 `{{ workspace_paths.agent_md }}`、`{{ workspace_paths.data }}/` 和任务目录；任务文件不要直接放在这里。
+
+## 路径规则
+
+ExecuteCode 与文件工具一律使用相对路径{% if scratchpad_enabled | default(false) %}（临时工作区除外，它的路径保持绝对）{% endif %}。Bash 两种都接受。
+{% if guidance | default("detailed") == "detailed" %}
+
+```python
+# 任务工作：数据与图表放子目录
+with open('report_draft/data/metrics.json', 'w') as f: ...
+plt.savefig('report_draft/charts/trend.png')
+
+# 交付物
+with open('report_draft/summary.md', 'w') as f: ...
+```
+{% endif %}
+
+图表嵌入方式取决于文档类型：
+
+- **Markdown**（报告 `.md` 或聊天回复）：路径从工作目录解析，因此写完整路径：`![](report_draft/charts/trend.png)`。
+- **HTML**（文件面板中打开的 `.html`）：路径从文档自身目录解析，因此写短路径——`<img src="charts/trend.png">`。
+
+**绝对不要使用这些路径写法**：
+- 形如 `/<task_name>/` 或 `/{{ workspace_paths.data }}/` 的绝对路径。文件工具会把开头的 `/` 当作相对工作目录，但 ExecuteCode 里的 `open()` 和 Bash 路径不会：它们会去真正的文件系统根目录，那里没有这些文件。
+- `/workspace/...`——前缀错误。
+{% if legacy_layout %}
+
+## 更早的文件
+
+本工作区早于当前目录布局。文件原来直接放在 `{{ legacy_root }}/` 下，现在位于 `{{ working_directory }}/`；工具文档从 `{{ legacy_tools_docs }}/` 移到了 `{{ workspace_paths.tools_docs }}/`。脚本、`{{ workspace_paths.agent_md }}`、记忆条目与旧会话结果里可能仍写着旧路径。文件工具能正确读取旧的绝对写法；代码里的 `open()` 与 Bash 不能，所以碰到旧路径时顺手改成新路径。
+{% endif %}

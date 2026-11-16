@@ -1,0 +1,80 @@
+{
+  "tnInbox": {
+    "title": "Home",
+    "lede": "Home is the one screen an operator keeps open. The top half is everything that needs a person: a decision, a reply, a retry. The bottom half is the work already in flight.",
+    "needsYou": "Needs you",
+    "running": "Running",
+    "queued": "Queued",
+    "composerHeading": "Composer",
+    "empty": "Nothing needs you. Start work in the composer below.",
+    "state": {
+      "queued": "Queued",
+      "running": "Running",
+      "blocked": "Blocked",
+      "needsYou": "Needs you",
+      "failed": "Failed",
+      "completed": "Completed",
+      "archived": "Archived"
+    },
+    "meta": {
+      "waiting": "waiting",
+      "running": "running",
+      "queued": "queued",
+      "line": "line",
+      "failed": "failed"
+    },
+    "reply": {
+      "label": "reply {{id}}",
+      "placeholder": "Reply to the worker — answer the question above…",
+      "send": "send",
+      "status": "Enter sends the reply · Shift+Enter (or Ctrl+J) newline · the prompt is a trap in front of the composer",
+      "sent": "sent the reply · Enter sends · Shift+Enter newline",
+      "empty": "nothing to reply · Enter sends · Shift+Enter newline",
+      "failed": "Could not send the reply. Retry in a moment.",
+      "dismiss": "Esc dismisses the prompt and moves to the composer"
+    },
+    "composer": {
+      "placeholder": "Ask the Router, or press / at column 0…",
+      "send": "send",
+      "status": "Enter sends · Shift+Enter (or Ctrl+J) newline · / at column 0 opens the palette prefilled with /",
+      "hint": "Focus order when the palette is closed: the main list, then the composer. j and k on the focused transcript scroll one row; PageUp and PageDown scroll ten.",
+      "title": "Short title (optional)",
+      "prompt": "Describe the task. You will track and close it here.",
+      "workspace": "Workspace…",
+      "provider": "PTC agent",
+      "daemon": "Run in cloud",
+      "create": "Create task",
+      "creating": "Creating…",
+      "needWorkspace": "Choose a workspace for this task.",
+      "needPrompt": "Describe the task.",
+      "mode": "mode",
+      "modes": {
+        "auto": "auto",
+        "dispatch": "dispatch",
+        "read-only": "read-only"
+      }
+    },
+    "statusline": {
+      "counts": "{{running}} running · {{needsYou}} needs you · {{queued}} queued",
+      "palette": "Ctrl+K palette · Esc back"
+    },
+    "loadError": "Could not read Tickets. Check the connection and retry.",
+    "clarify": {
+      "label": "confirm {{id}}",
+      "placeholder": "The request the worker will start from — edit anything that misses what you meant…",
+      "status": "Enter confirms this request and starts the Ticket · Shift+Enter (or Ctrl+J) newline",
+      "sent": "confirmed · the Ticket is queued",
+      "empty": "nothing to confirm · Enter confirms · Shift+Enter newline",
+      "failed": "Could not confirm. Retry in a moment.",
+      "loading": "loading the drafted request…",
+      "unavailable": "No drafted request to confirm here. Open the Ticket to review it.",
+      "questions": "Open questions"
+    },
+    "age": {
+      "s": "{{n}}s ago",
+      "m": "{{n}}m ago",
+      "h": "{{n}}h ago",
+      "d": "{{n}}d ago"
+    }
+  }
+}

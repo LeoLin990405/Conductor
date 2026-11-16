@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ 空闲
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  描述一个任务后按 Enter，它会作为
+  Ticket 在 Home 上运行。
+
+  ◆ 权限：merge feat/tui
+    动作：local-merge
+    合入 integrate/r2
+    [a]允许一次  [s]本会话允许  [d]拒绝
+  命令
+  ▸ approve       批准一个等待人工的派发
+    reject        驳回一个等待人工的派发
+    help          显示 TUI 按键和命令
+❯ 描述一个任务，/ 打开命令，@ 附加文件
+ ◆ merge…  a 允许 · s 会话 · d 拒绝

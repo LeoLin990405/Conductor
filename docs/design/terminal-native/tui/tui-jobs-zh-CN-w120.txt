@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · 会话 bad2c655  ○ 空闲
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  任务列表
+     #    id           状态       标题                    执行者    用时    下一步
+  ▸  1    7f782add  ✔  已完成     读取适配器注册表        kimi      12s     /jobs 1
+     2    6bfa630f  ◆  需要你     需要一台带 bash 的主机  deepseek  2h05m   /reply 2
+     3    4b2f7803  ✖  失败       沙箱拒绝了这次执行      cursor    7h57m   /retry 3
+     4    1a91c0de  ●  运行中     添加评审队列屏幕        minimax   4m12s   /jobs watch 4
+     5    0c73ab19  ○  排队中     审查令牌的对比度        —         —       /jobs 5
+  5 个 Ticket · 1 个需要你 · 1 个运行中
+  命令
+  ▸ tickets       /jobs       列出 Ticket；/jobs <id> 查看一个；/jobs watch <id> 跟随它
+    reply         /reply      回复需要你的 Ticket
+    retry         /retry      重试失败或等待中的 Ticket
+    cancel        /cancel     停止运行中的 Ticket（/cancel <id|index>）
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ 描述一个任务，/ 打开命令，@ 附加文件                                                                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+自动 · ● 3 在线                                                                      ◆ 2 · shift+enter 换行 · alt+m 模式

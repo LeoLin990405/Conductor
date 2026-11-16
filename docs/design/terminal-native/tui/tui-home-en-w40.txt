@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ idle
+  Conductor
+  Describe a task and press Enter. It
+  runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ◆ 2 need you — /jobs --attention
+  ✔  Read the adapter registry
+    Completed · /jobs 1 · kimi · 12s
+    09:41
+  ◆  Needs a host with bash
+    Needs you · /reply 2 · deepseek
+    2h05m · 09:12
+  ✖  Sandbox denied
+    Failed · /retry 3 · cursor · 7h57m
+    01:35
+
+
+
+
+
+
+
+
+
+
+  commands
+  ▸ tickets       list Tickets; /jobs…
+    reply         answer the Ticket…
+    retry         retry a failed or…
+    help          show the TUI key map…
+❯ Describe a task, / for commands
+auto · ● 3 online                    ◆ 2

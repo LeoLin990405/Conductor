@@ -1,0 +1,29 @@
+{
+  "_comment": "Local, machine-specific model API config. Copy to config/llm.local.json (gitignored). Shape: providers/models/pricing each replace or extend the committed manifest entries (src/llms/manifest/*.json). Restart backend after editing.",
+  "providers": {
+    "my-gateway": {
+      "sdk": "openai",
+      "base_url": "https://gateway.example.com/v1",
+      "env_key": "MY_GATEWAY_API_KEY",
+      "access_type": "api_key",
+      "region": "cn",
+      "display_name": "My Gateway"
+    }
+  },
+  "models": {
+    "my-gateway-model": {
+      "prompt_guidance": "lean",
+      "model_id": "example-model-id",
+      "provider": "my-gateway",
+      "display_name": "Example Model (My Gateway)",
+      "visible": true,
+      "speed": 3,
+      "intelligence": 4,
+      "context": 128000,
+      "input_modalities": ["text"]
+    }
+  },
+  "pricing": {
+    "my-gateway": []
+  }
+}

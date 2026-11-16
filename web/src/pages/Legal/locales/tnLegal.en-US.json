@@ -1,0 +1,10 @@
+{
+  "tnLegal": {
+    "back": "Back to Conductor",
+    "title": "Legal & Attribution",
+    "intro": "Open-source licenses and third-party credits for Conductor.",
+    "creditsHeading": "Other credits",
+    "creditsBody": "Conductor is built on React, Vite, FastAPI, PostgreSQL, Redis, and many other open-source projects. The complete list of dependencies and their licenses is in the <repo>Conductor repository</repo>.",
+    "privacyBody": "See also our <privacy>Privacy Policy</privacy>."
+  }
+}

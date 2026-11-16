@@ -1,0 +1,40 @@
+❯ Run the smoke test.
+
+◆ Needs you
+│   1. Re-run on a host with bash
+│   2. Leave the Ticket waiting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                           esc later · shift+enter newline · alt+m mode

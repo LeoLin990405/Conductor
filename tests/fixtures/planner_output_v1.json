@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "spec": {
+    "title": "Add a dispatch status summary endpoint",
+    "body": "## Goal\nExpose a read-only summary of a dispatch's lines.\n\n## Non-goals\n- No UI changes.\n\n## Acceptance\n- New endpoint returns 200 with line ids and states.\n- Existing dispatch tests still pass."
+  },
+  "lines": [
+    {
+      "name": "summary_model",
+      "task": "Add a DispatchSummary builder in src/server/services/dispatch_summary.py that maps a Dispatch to line ids and states",
+      "depends_on": [],
+      "write_scope": [
+        "src/server/services/dispatch_summary.py",
+        "tests/unit/server/services/test_dispatch_summary.py"
+      ],
+      "declared_paths": [
+        "src/server/services/dispatch_summary.py",
+        "tests/unit/server/services/test_dispatch_summary.py"
+      ],
+      "acceptance": [
+        "cmd: pytest -q tests/unit/server/services/test_dispatch_summary.py"
+      ],
+      "risk_bearing": false
+    },
+    {
+      "name": "summary_route",
+      "task": "Add GET /dispatch/{id}/summary in src/server/app/dispatch_summary.py using the DispatchSummary builder",
+      "depends_on": [
+        "summary_model"
+      ],
+      "write_scope": [
+        "src/server/app/dispatch_summary.py",
+        "tests/unit/server/app/test_dispatch_summary_api.py"
+      ],
+      "declared_paths": [
+        "src/server/app/dispatch_summary.py",
+        "tests/unit/server/app/test_dispatch_summary_api.py"
+      ],
+      "acceptance": [
+        "cmd: pytest -q tests/unit/server/app/test_dispatch_summary_api.py",
+        "the route requires the same auth as GET /dispatch/{id}"
+      ],
+      "risk_bearing": true
+    }
+  ]
+}

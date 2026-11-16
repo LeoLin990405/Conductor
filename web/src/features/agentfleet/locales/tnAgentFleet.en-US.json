@@ -1,0 +1,92 @@
+{
+  "tnAgentFleet": {
+    "title": "Agent fleet",
+    "subtitle": "Live view of the agent worktrees on this machine: process, log growth, commits ahead and provider headroom. Read-only.",
+    "filter": {
+      "label": "Filters",
+      "status": "Status",
+      "role": "Role",
+      "provider": "Provider",
+      "model": "Model",
+      "sort": "Sort",
+      "all": "All",
+      "substring": "any"
+    },
+    "loading": "Scanning the local worktrees…",
+    "empty": "No agents match the current filters.",
+    "loopbackOnly": "The fleet describes the machine that runs the backend, so this view is only available from that machine.",
+    "loadFailed": "The fleet scan could not be read, so the worktrees were not scanned.",
+    "roster": {
+      "title": "Providers",
+      "hint": "One row per provider in the scan. Pick a provider to show only its agents.",
+      "provider": "Provider",
+      "models": "Models",
+      "agents": "Agents",
+      "running": "Running",
+      "health": "Health",
+      "showOnly": "Show only {{provider}}",
+      "showAll": "Show every provider",
+      "noProvider": "no provider"
+    },
+    "agents": {
+      "title": "Agents",
+      "count": "{{shown}} of {{total}}"
+    },
+    "column": {
+      "agent": "Agent",
+      "model": "Model",
+      "role": "Role",
+      "worktree": "Worktree",
+      "status": "Status",
+      "elapsed": "Elapsed",
+      "tail": "Log tail",
+      "commits": "Ahead",
+      "tests": "Tests",
+      "balance": "Balance"
+    },
+    "sort": {
+      "id": "Agent",
+      "elapsed": "Elapsed",
+      "commits": "Commits",
+      "status": "Status",
+      "role": "Role",
+      "model": "Model"
+    },
+    "status": {
+      "running": "Running",
+      "stalled": "Stalled",
+      "error": "Error",
+      "done": "Done",
+      "unknown": "Unknown"
+    },
+    "role": {
+      "plan": "Plan",
+      "dev": "Dev",
+      "review": "Review",
+      "research": "Research"
+    },
+    "balance": {
+      "ok": "ok",
+      "low": "low",
+      "unknown": "unknown"
+    },
+    "balanceTitle": {
+      "ok": "Balance ok",
+      "low": "Balance low",
+      "unknown": "Balance unknown"
+    },
+    "logs": {
+      "open": "Show the log of {{agent}}",
+      "loading": "Reading the agent log…",
+      "missing": "This agent has no log file yet.",
+      "failed": "The log could not be read.",
+      "truncated": "showing the end of the log",
+      "close": "Close"
+    },
+    "foot": {
+      "scannedAt": "Scanned {{time}}",
+      "stallThreshold": "Stalled after {{minutes}} min without log growth",
+      "refreshEvery": "Refreshing every {{seconds}}s"
+    }
+  }
+}

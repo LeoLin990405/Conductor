@@ -1,0 +1,102 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_report.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "lease_id": {
+      "type": "string"
+    },
+    "report": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "additionalProperties": false,
+          "properties": {
+            "commits": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "files": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "pr": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "commits",
+            "files",
+            "pr"
+          ],
+          "title": "completion_artifacts",
+          "type": "object"
+        },
+        "handbacks": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "next": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "done",
+            "partial",
+            "blocked",
+            "needs_review",
+            "needs_split"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "verification": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "ran": {
+                "type": "string"
+              },
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ran",
+              "result"
+            ],
+            "title": "completion_verification",
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "summary",
+        "artifacts",
+        "verification",
+        "next",
+        "handbacks"
+      ],
+      "title": "completion_report",
+      "type": "object"
+    }
+  },
+  "required": [
+    "lease_id",
+    "report"
+  ],
+  "title": "task_report_input",
+  "type": "object"
+}

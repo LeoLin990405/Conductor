@@ -1,0 +1,29 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_release.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "lease_id": {
+      "type": "string"
+    },
+    "note": {
+      "maxLength": 500,
+      "type": "string"
+    },
+    "reason": {
+      "enum": [
+        "done_elsewhere",
+        "cannot_do",
+        "out_of_quota",
+        "user_stopped",
+        "other"
+      ]
+    }
+  },
+  "required": [
+    "lease_id",
+    "reason"
+  ],
+  "title": "task_release_input",
+  "type": "object"
+}

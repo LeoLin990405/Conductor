@@ -1,0 +1,18 @@
+[Unit]
+Description=Conductor __LABEL__
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=__REPO__
+Environment=CONDUCTOR_REPO_ROOT=__REPO__
+Environment=CONDUCTOR_HOME=__HOME__
+Environment=CONDUCTOR_SECRETS_FILE=__SECRETS__
+Environment=CONDUCTOR_WORKTREE_ROOT=__WORKTREE_ROOT__
+Environment=PYTHONPATH=__REPO__
+ExecStart=__PYTHON__ -m src.conductor_cli.ops_cli up --foreground
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

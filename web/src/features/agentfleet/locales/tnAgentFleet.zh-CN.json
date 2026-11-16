@@ -1,0 +1,92 @@
+{
+  "tnAgentFleet": {
+    "title": "Agent 集群",
+    "subtitle": "本机 Agent 工作树的实时视图：进程、日志增长、领先提交数与供应商余量。只读。",
+    "filter": {
+      "label": "筛选",
+      "status": "状态",
+      "role": "角色",
+      "provider": "供应商",
+      "model": "模型",
+      "sort": "排序",
+      "all": "全部",
+      "substring": "任意"
+    },
+    "loading": "正在扫描本地工作树…",
+    "empty": "没有符合当前筛选条件的 Agent。",
+    "loopbackOnly": "集群描述的是运行后端的这台机器，因此只能在本机查看。",
+    "loadFailed": "集群扫描读取失败，未扫描任何工作树。",
+    "roster": {
+      "title": "供应商",
+      "hint": "扫描到的每个供应商一行。选择一个供应商，只看它的 Agent。",
+      "provider": "供应商",
+      "models": "模型",
+      "agents": "Agent",
+      "running": "运行中",
+      "health": "健康",
+      "showOnly": "只看 {{provider}}",
+      "showAll": "显示全部供应商",
+      "noProvider": "无供应商"
+    },
+    "agents": {
+      "title": "Agent",
+      "count": "{{shown}} / {{total}}"
+    },
+    "column": {
+      "agent": "Agent",
+      "model": "模型",
+      "role": "角色",
+      "worktree": "工作树",
+      "status": "状态",
+      "elapsed": "已运行",
+      "tail": "日志尾部",
+      "commits": "领先",
+      "tests": "测试",
+      "balance": "余额"
+    },
+    "sort": {
+      "id": "Agent",
+      "elapsed": "已运行",
+      "commits": "提交",
+      "status": "状态",
+      "role": "角色",
+      "model": "模型"
+    },
+    "status": {
+      "running": "运行中",
+      "stalled": "已停滞",
+      "error": "出错",
+      "done": "已完成",
+      "unknown": "未知"
+    },
+    "role": {
+      "plan": "规划",
+      "dev": "开发",
+      "review": "评审",
+      "research": "调研"
+    },
+    "balance": {
+      "ok": "充足",
+      "low": "偏低",
+      "unknown": "未知"
+    },
+    "balanceTitle": {
+      "ok": "余额充足",
+      "low": "余额偏低",
+      "unknown": "余额未知"
+    },
+    "logs": {
+      "open": "查看 {{agent}} 的日志",
+      "loading": "正在读取 Agent 日志…",
+      "missing": "该 Agent 还没有日志文件。",
+      "failed": "日志读取失败。",
+      "truncated": "仅显示日志末尾",
+      "close": "关闭"
+    },
+    "foot": {
+      "scannedAt": "扫描于 {{time}}",
+      "stallThreshold": "日志 {{minutes}} 分钟无增长即视为停滞",
+      "refreshEvery": "每 {{seconds}} 秒刷新"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "tnLines": {
+    "title": "Lines",
+    "lede": "Tickets grouped by the work line — branch and worktree — they run on. Refreshes every 15 seconds.",
+    "refresh": "Refresh",
+    "loading": "Loading Lines…",
+    "error": "Could not read the Ticket lines. Try Refresh.",
+    "empty": "No Ticket lines yet.",
+    "ungrouped": "Ungrouped",
+    "noTickets": "No Tickets on this line.",
+    "counts": "{{open}} open · {{total}} total",
+    "listLabel": "Lines and their Tickets",
+    "hint": "j/k move · enter open",
+    "noWorker": "no worker",
+    "noBranch": "no branch",
+    "toggle": "Show or hide the Tickets on {{name}}",
+    "col": {
+      "state": "state",
+      "line": "line",
+      "worker": "worker",
+      "branch": "branch",
+      "tickets": "tickets"
+    }
+  }
+}

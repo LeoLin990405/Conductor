@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  palette › /dsp▏
+  ▸ dispatch      /dispatch   dispatch roster; /dispatch <id> reads one
+  1 match · tab accepts · enter runs
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                                                    tab accept · ctrl+down list · esc close · alt+n nav

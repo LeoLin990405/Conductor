@@ -1,0 +1,24 @@
+  Conductor                                                                    ^
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3
+
+♩ Keys
+  Enter           send the line, run the menu item, or reply when a Ticket
+  needs you
+  Shift+Enter     new line (Ctrl+J; Esc then Enter in terminals that send plain
+  Enter)
+  @path           attach a local file to the prompt
+  Ctrl+K          palette (also / at column 0); type to filter, Tab accepts,
+  Enter runs
+  /               palette prefilled with / when the caret is at column 0
+  ?               help, when the composer is empty
+  Esc             close the palette, answer later, or interrupt the Ticket
+  after a confirmation
+  Alt+M           cycle mode: auto, dispatch, read-only                        v
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                      shift+enter newline · alt+m mode · ? help

@@ -1,0 +1,47 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_list.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claimable": {
+      "default": true,
+      "type": "boolean"
+    },
+    "cursor": {
+      "maxLength": 200,
+      "type": "string"
+    },
+    "kind": {
+      "default": "any",
+      "enum": [
+        "ticket",
+        "line",
+        "any"
+      ]
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "mine": {
+      "default": false,
+      "type": "boolean"
+    },
+    "status": {
+      "items": {
+        "enum": [
+          "queued",
+          "running",
+          "waiting",
+          "blocked",
+          "awaiting_clarification"
+        ]
+      },
+      "type": "array"
+    }
+  },
+  "title": "task_list_input",
+  "type": "object"
+}

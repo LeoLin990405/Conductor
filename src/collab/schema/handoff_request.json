@@ -1,0 +1,99 @@
+{
+  "$id": "https://conductor.local/collab/schema/handoff_request.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "conversation_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "app": {
+          "type": "string"
+        },
+        "session_id": {
+          "maxLength": 200,
+          "type": "string"
+        }
+      },
+      "required": [
+        "app",
+        "session_id"
+      ],
+      "title": "conversation_ref",
+      "type": "object"
+    },
+    "lease_id": {
+      "type": "string"
+    },
+    "note": {
+      "maxLength": 1000,
+      "type": "string"
+    },
+    "reason": {
+      "enum": [
+        "quota_exhausted",
+        "context_full",
+        "stuck",
+        "end_of_session",
+        "other"
+      ]
+    },
+    "self_report": {
+      "additionalProperties": false,
+      "properties": {
+        "done": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "in_progress": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "next": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "open_questions": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "pitfalls": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        }
+      },
+      "title": "self_report",
+      "type": "object"
+    },
+    "to": {
+      "default": "router",
+      "description": "app_id, 'any' or 'router'",
+      "type": "string"
+    }
+  },
+  "required": [
+    "lease_id",
+    "reason"
+  ],
+  "title": "handoff_request_input",
+  "type": "object"
+}

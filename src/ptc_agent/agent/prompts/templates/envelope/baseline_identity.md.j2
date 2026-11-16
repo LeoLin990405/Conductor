@@ -1,0 +1,7 @@
+{# State only, in a fixed key order: this lands in the cached per-thread
+   baseline and must be byte-identical for equal inputs. #}
+<user_identity>
+- Name: {{ name | default("User") }}
+- Timezone: {{ timezone | default("UTC") }}
+- Locale: {{ locale | default("en-US") }}
+</user_identity>

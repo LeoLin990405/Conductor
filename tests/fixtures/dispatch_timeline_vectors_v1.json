@@ -1,0 +1,1307 @@
+{
+  "vectors": [
+    {
+      "id": "w0",
+      "current": "g6",
+      "record": {
+        "phase": "awaiting_human",
+        "risk_bearing": true,
+        "machine": {
+          "stage": "awaiting_human",
+          "return_stage": "primary_review"
+        },
+        "gates": {
+          "G0": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "D1": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "G2": {
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          "primary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "secondary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "G5": {
+            "result": "pass",
+            "reason": "g5_passed"
+          },
+          "G6": {
+            "result": "pending",
+            "reason": "awaiting_human"
+          }
+        },
+        "history": [
+          {
+            "round": 0,
+            "gate": "primary_review",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "round": 1,
+            "gate": "primary_review",
+            "result": "pass",
+            "reason": "review_merged"
+          }
+        ],
+        "events": [
+          {
+            "from_stage": "planning",
+            "to_stage": "spec_review",
+            "gate": "G0",
+            "result": "",
+            "reason": "spec_submitted"
+          },
+          {
+            "from_stage": "spec_review",
+            "to_stage": "dag_ready",
+            "gate": "G0",
+            "result": "pass",
+            "reason": "spec_accepted"
+          },
+          {
+            "from_stage": "dag_ready",
+            "to_stage": "assigned",
+            "gate": "D1",
+            "result": "",
+            "reason": "assigned"
+          },
+          {
+            "from_stage": "assigned",
+            "to_stage": "implementing",
+            "gate": "",
+            "result": "",
+            "reason": "implementation_started"
+          },
+          {
+            "from_stage": "implementing",
+            "to_stage": "focused_tests",
+            "gate": "G2",
+            "result": "",
+            "reason": "work_submitted"
+          },
+          {
+            "from_stage": "focused_tests",
+            "to_stage": "primary_review",
+            "gate": "G2",
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "fixing",
+            "gate": "",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "from_stage": "fixing",
+            "to_stage": "primary_review",
+            "gate": "",
+            "result": "",
+            "reason": "fix_resubmitted"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "secondary_review",
+            "gate": "",
+            "result": "pass",
+            "reason": "primary_review_passed"
+          },
+          {
+            "from_stage": "secondary_review",
+            "to_stage": "integration_checks",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "secondary_review_passed"
+          },
+          {
+            "from_stage": "integration_checks",
+            "to_stage": "awaiting_human",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "integration_checks_passed"
+          }
+        ]
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "—",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "pending-approval",
+          "current": true
+        }
+      ],
+      "notes": {
+        "primary": [
+          "review_blocked",
+          "fix_resubmitted",
+          "primary_review_passed"
+        ]
+      }
+    },
+    {
+      "id": "w0-cancel",
+      "current": "g6",
+      "record": {
+        "phase": "cancelled",
+        "risk_bearing": true,
+        "machine": {
+          "stage": "cancelled",
+          "return_stage": "primary_review"
+        },
+        "gates": {
+          "G0": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "D1": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "G2": {
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          "primary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "secondary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "G5": {
+            "result": "pass",
+            "reason": "g5_passed"
+          },
+          "G6": {
+            "result": "pending",
+            "reason": "awaiting_human"
+          }
+        },
+        "history": [
+          {
+            "round": 0,
+            "gate": "primary_review",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "round": 1,
+            "gate": "primary_review",
+            "result": "pass",
+            "reason": "review_merged"
+          }
+        ],
+        "events": [
+          {
+            "from_stage": "planning",
+            "to_stage": "spec_review",
+            "gate": "G0",
+            "result": "",
+            "reason": "spec_submitted"
+          },
+          {
+            "from_stage": "spec_review",
+            "to_stage": "dag_ready",
+            "gate": "G0",
+            "result": "pass",
+            "reason": "spec_accepted"
+          },
+          {
+            "from_stage": "dag_ready",
+            "to_stage": "assigned",
+            "gate": "D1",
+            "result": "",
+            "reason": "assigned"
+          },
+          {
+            "from_stage": "assigned",
+            "to_stage": "implementing",
+            "gate": "",
+            "result": "",
+            "reason": "implementation_started"
+          },
+          {
+            "from_stage": "implementing",
+            "to_stage": "focused_tests",
+            "gate": "G2",
+            "result": "",
+            "reason": "work_submitted"
+          },
+          {
+            "from_stage": "focused_tests",
+            "to_stage": "primary_review",
+            "gate": "G2",
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "fixing",
+            "gate": "",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "from_stage": "fixing",
+            "to_stage": "primary_review",
+            "gate": "",
+            "result": "",
+            "reason": "fix_resubmitted"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "secondary_review",
+            "gate": "",
+            "result": "pass",
+            "reason": "primary_review_passed"
+          },
+          {
+            "from_stage": "secondary_review",
+            "to_stage": "integration_checks",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "secondary_review_passed"
+          },
+          {
+            "from_stage": "integration_checks",
+            "to_stage": "awaiting_human",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "integration_checks_passed"
+          },
+          {
+            "from_stage": "awaiting_human",
+            "to_stage": "cancelled",
+            "gate": "G6",
+            "result": "",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "—",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "cancelled",
+          "current": true
+        }
+      ],
+      "notes": {
+        "primary": [
+          "review_blocked",
+          "fix_resubmitted",
+          "primary_review_passed"
+        ]
+      }
+    },
+    {
+      "id": "w0-cancel-empty-return",
+      "current": "g6",
+      "record": {
+        "phase": "cancelled",
+        "risk_bearing": true,
+        "machine": {
+          "stage": "cancelled",
+          "return_stage": ""
+        },
+        "gates": {
+          "G0": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "D1": {
+            "result": "pass",
+            "reason": "planner_output_valid"
+          },
+          "G2": {
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          "primary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "secondary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          },
+          "G5": {
+            "result": "pass",
+            "reason": "g5_passed"
+          },
+          "G6": {
+            "result": "pending",
+            "reason": "awaiting_human"
+          }
+        },
+        "history": [
+          {
+            "round": 0,
+            "gate": "primary_review",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "round": 1,
+            "gate": "primary_review",
+            "result": "pass",
+            "reason": "review_merged"
+          }
+        ],
+        "events": [
+          {
+            "from_stage": "planning",
+            "to_stage": "spec_review",
+            "gate": "G0",
+            "result": "",
+            "reason": "spec_submitted"
+          },
+          {
+            "from_stage": "spec_review",
+            "to_stage": "dag_ready",
+            "gate": "G0",
+            "result": "pass",
+            "reason": "spec_accepted"
+          },
+          {
+            "from_stage": "dag_ready",
+            "to_stage": "assigned",
+            "gate": "D1",
+            "result": "",
+            "reason": "assigned"
+          },
+          {
+            "from_stage": "assigned",
+            "to_stage": "implementing",
+            "gate": "",
+            "result": "",
+            "reason": "implementation_started"
+          },
+          {
+            "from_stage": "implementing",
+            "to_stage": "focused_tests",
+            "gate": "G2",
+            "result": "",
+            "reason": "work_submitted"
+          },
+          {
+            "from_stage": "focused_tests",
+            "to_stage": "primary_review",
+            "gate": "G2",
+            "result": "pass",
+            "reason": "focused_tests_passed"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "fixing",
+            "gate": "",
+            "result": "fail",
+            "reason": "review_blocked"
+          },
+          {
+            "from_stage": "fixing",
+            "to_stage": "primary_review",
+            "gate": "",
+            "result": "",
+            "reason": "fix_resubmitted"
+          },
+          {
+            "from_stage": "primary_review",
+            "to_stage": "secondary_review",
+            "gate": "",
+            "result": "pass",
+            "reason": "primary_review_passed"
+          },
+          {
+            "from_stage": "secondary_review",
+            "to_stage": "integration_checks",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "secondary_review_passed"
+          },
+          {
+            "from_stage": "integration_checks",
+            "to_stage": "awaiting_human",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "integration_checks_passed"
+          },
+          {
+            "from_stage": "awaiting_human",
+            "to_stage": "cancelled",
+            "gate": "G6",
+            "result": "",
+            "reason": "cancelled"
+          }
+        ]
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "—",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "cancelled",
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "g5-blocked",
+      "current": "g5",
+      "record": {
+        "phase": "blocked",
+        "risk_bearing": true,
+        "machine": {
+          "stage": "blocked",
+          "return_stage": "primary_review"
+        },
+        "gates": {
+          "G5": {
+            "result": "fail",
+            "reason": "integration_checks_failed"
+          },
+          "primary_review": {
+            "result": "pass",
+            "reason": "review_merged"
+          }
+        },
+        "events": [
+          {
+            "from_stage": "integration_checks",
+            "to_stage": "blocked",
+            "gate": "G5",
+            "result": "fail",
+            "reason": "integration_checks_failed"
+          }
+        ]
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "pass",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "blocked",
+          "current": true
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "blocked-skip-unlocated-event",
+      "current": "g5",
+      "record": {
+        "phase": "blocked",
+        "machine": {
+          "stage": "blocked",
+          "return_stage": "primary_review"
+        },
+        "events": [
+          {
+            "from_stage": "integration_checks",
+            "to_stage": "blocked",
+            "gate": "G5",
+            "result": "",
+            "reason": "operator_blocked"
+          },
+          {
+            "from_stage": "mystery",
+            "to_stage": "blocked",
+            "gate": "G3",
+            "result": "",
+            "reason": "noise"
+          }
+        ]
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "blocked",
+          "current": true
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "cancelled-no-event-empty-return",
+      "current": "implementing",
+      "record": {
+        "phase": "cancelled",
+        "machine": {
+          "stage": "cancelled",
+          "return_stage": ""
+        }
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "cancelled",
+          "current": true
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "fixing-primary",
+      "current": "primary",
+      "record": {
+        "phase": "fixing",
+        "return_stage": "primary_review",
+        "machine": {
+          "stage": "fixing",
+          "return_stage": "primary_review"
+        }
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "fixing",
+          "current": true
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "merged",
+      "current": null,
+      "record": {
+        "phase": "merged",
+        "machine": {
+          "stage": "merged",
+          "return_stage": "primary_review"
+        }
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "merged",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "merged",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "non-risk-secondary",
+      "current": "implementing",
+      "record": {
+        "phase": "implementing",
+        "risk_bearing": false
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "not-applicable",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-planning",
+      "current": "g0",
+      "record": {
+        "phase": "planning"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-dag_ready",
+      "current": "d1",
+      "record": {
+        "phase": "dag_ready"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-implementing",
+      "current": "implementing",
+      "record": {
+        "phase": "implementing"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-focused_tests",
+      "current": "g2",
+      "record": {
+        "phase": "focused_tests"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-primary_review",
+      "current": "primary",
+      "record": {
+        "phase": "primary_review"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-secondary_review",
+      "current": "secondary",
+      "record": {
+        "phase": "secondary_review"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-integration_checks",
+      "current": "g5",
+      "record": {
+        "phase": "integration_checks"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "current",
+          "current": true
+        },
+        {
+          "id": "g6",
+          "status": "unreached",
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "phase-awaiting_human",
+      "current": "g6",
+      "record": {
+        "phase": "awaiting_human"
+      },
+      "slots": [
+        {
+          "id": "g0",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "d1",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "implementing",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g2",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "primary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "secondary",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g5",
+          "status": "unreached",
+          "current": false
+        },
+        {
+          "id": "g6",
+          "status": "pending-approval",
+          "current": true
+        }
+      ]
+    }
+  ]
+}

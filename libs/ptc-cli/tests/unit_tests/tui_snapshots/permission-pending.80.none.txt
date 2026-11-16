@@ -1,0 +1,24 @@
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3
+
+  ◆ permission: merge feat/tui
+    action: local-merge
+    into integrate/r2
+    [a]llow once  [s]ession allow  [d]eny
+    esc deny
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ ◆ merge feat/tui (local-merge) — into…  a allow · s session · d deny

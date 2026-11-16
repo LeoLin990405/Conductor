@@ -1,0 +1,13 @@
+/* ============================================
+   Dotted ground
+   ============================================
+
+   The one recipe for a dotted surface, reserved for empty states (DESIGN.md):
+   the Plugins EmptyState and the Automations card while it lists nothing.
+   The dot is token ink, faint enough to read as texture rather than content.
+   Set `background-color` for the ground behind the dots. */
+.dot-grid {
+  background-image: radial-gradient(circle at center, var(--ink-faint) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0;
+}

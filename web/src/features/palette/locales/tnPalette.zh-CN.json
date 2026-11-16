@@ -1,0 +1,16 @@
+{
+  "tnPalette": {
+    "title": "命令面板",
+    "placeholder": "输入命令…",
+    "noMatch": "没有匹配的命令",
+    "approveNeedsId": "approve 需要一个 dispatch id",
+    "rejectNeedsId": "reject 需要一个 dispatch id",
+    "replyNeedsText": "reply 需要回复内容",
+    "nav": "nav",
+    "countOf": "{{shown}} / {{total}}",
+    "needsOne": "需要一个",
+    "hintApproveBilingual": "approve needs a dispatch id · approve 需要一个 dispatch id",
+    "hintRejectBilingual": "reject needs a dispatch id · reject 需要一个 dispatch id",
+    "noMatchBilingual": "no command matches · 没有匹配的命令"
+  }
+}

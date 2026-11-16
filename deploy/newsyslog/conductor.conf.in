@@ -1,0 +1,5 @@
+# Conductor log rotation snippet. cond also rotates before each open.
+# logfilename                          mode count size when  flags
+__LOGDIR__/backend.log                 644  5     10240 *     J
+__LOGDIR__/web.log                     644  5     10240 *     J
+__LOGDIR__/daemon.log                  644  5     10240 *     J

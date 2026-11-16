@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ● live
+
+
+
+
+
+
+
+
+  List the registered adapters.
+  ♩ kimi is conducting on branch feat/tui.
+  ▸ read_file [done 1.2s]
+  ╰ registry.py adapters
+  ♬ Add the review queue screen · kimi     · feat/tui    · 7f782add · 42s
+  │ Worker is executing the Ticket
+  │ ▸ grep "review"
+  │ ╰ src/server/services/autonomy/review_merge.py
+  │ ▸ pytest tests/unit
+  │ ╰ 128 passed in 4.21s
+  │ ▸ git diff --stat
+  │ ╰ 3 files changed, 214 insertions
+  │ There are 2 registered names and no file was changed. The registered adapter names stay
+  │ alphabetical across the native registry today.
+  commands
+  ▸ status        /status     reread Supervisor progress for the current Ticket
+    details       /details    toggle Worker details (default: Supervisor view)
+    stop          /stop       stop a running Ticket (/stop <id|index>)
+    compact       /compact    drop activity noise and duplicate rows from the transcript
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                                   esc interrupt · shift+enter newline · alt+m mode

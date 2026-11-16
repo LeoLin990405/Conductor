@@ -1,0 +1,40 @@
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                              shift+enter newline · alt+m mode · ? help

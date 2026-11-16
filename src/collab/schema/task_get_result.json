@@ -1,0 +1,98 @@
+{
+  "$id": "https://conductor.local/collab/schema/task_get_result.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "task": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance": {
+          "items": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "type": "array"
+        },
+        "body": {
+          "maxLength": 8000,
+          "type": "string"
+        },
+        "claim_refusal": {
+          "type": "string"
+        },
+        "claimable": {
+          "type": "boolean"
+        },
+        "kind": {
+          "enum": [
+            "ticket",
+            "line"
+          ]
+        },
+        "owner": {
+          "additionalProperties": false,
+          "properties": {
+            "deadline": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string"
+            }
+          },
+          "title": "owner",
+          "type": "object"
+        },
+        "ref": {
+          "maxLength": 200,
+          "pattern": "^(^t:[0-9a-f-]{36}$|^d:[A-Za-z0-9_-]{1,64}:[A-Za-z0-9_-]{1,64}$)$",
+          "type": "string"
+        },
+        "repo": {
+          "maxLength": 200,
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer"
+        },
+        "risk_bearing": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "type": "string"
+        },
+        "write_scope": {
+          "items": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "type": "array"
+        }
+      },
+      "required": [
+        "ref",
+        "kind",
+        "title",
+        "status",
+        "claimable",
+        "revision"
+      ],
+      "title": "task_view",
+      "type": "object"
+    }
+  },
+  "required": [
+    "task"
+  ],
+  "title": "task_get_result",
+  "type": "object"
+}

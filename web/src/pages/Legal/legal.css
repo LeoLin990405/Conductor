@@ -1,0 +1,119 @@
+/* Terminal-native /legal (S28).
+   Token custom properties only (S01 --surface-* / --ink-* / --font-* /
+   --space-*); the hex fallbacks are token values. Square geometry, hairline
+   rules, mono chrome for headings, the prose face for body copy. */
+
+.tn-legal {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--surface-page, #0f1115);
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-prose);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+  padding: var(--space-6, 32px) var(--space-4, 16px);
+  box-sizing: border-box;
+}
+
+/* Readable measure at 1440; at 390 the column is the viewport less gutters. */
+.tn-legal-article {
+  max-width: 68ch;
+  width: 100%;
+  margin: 0 auto;
+  min-width: 0;
+}
+
+.tn-legal-header {
+  padding-bottom: var(--space-5, 24px);
+  margin-bottom: var(--space-5, 24px);
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+}
+
+.tn-legal-back {
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  color: var(--ink-muted, #9aa3b5);
+  text-decoration: none;
+  border-radius: var(--radius-control, 2px);
+}
+
+.tn-legal-back:hover {
+  color: var(--ink-fg, #e6e8ee);
+  text-decoration: underline;
+}
+
+.tn-legal-title,
+.tn-legal-heading {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-label, 500);
+  color: var(--ink-fg, #e6e8ee);
+  letter-spacing: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.tn-legal-title {
+  font-size: 20px;
+  line-height: 1.3;
+  margin-top: var(--space-4, 16px);
+}
+
+.tn-legal-heading {
+  font-size: 14px;
+  line-height: var(--lh-chrome, 1.45);
+  margin-bottom: var(--space-3, 12px);
+}
+
+.tn-legal-heading::before {
+  content: '## ';
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-legal-intro {
+  margin: var(--space-2, 8px) 0 0;
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-legal-section + .tn-legal-section {
+  margin-top: var(--space-6, 32px);
+}
+
+.tn-legal-prose {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.tn-legal-prose + .tn-legal-prose {
+  margin-top: var(--space-3, 12px);
+}
+
+.tn-legal-link {
+  color: var(--ink-baton, #8b9cff);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border-radius: var(--radius-control, 2px);
+}
+
+.tn-legal-link:hover {
+  color: var(--ink-fg, #e6e8ee);
+}
+
+/* The 2px ink.focus ring on keyboard focus (unlayered, so it wins over the
+   focus-defaults layer); the pointer stays ring-free like the rest of the app. */
+.tn-legal a:focus-visible {
+  outline: var(--border-focus, 2px) solid var(--ink-focus, #8b9cff);
+  outline-offset: var(--focus-offset, 2px);
+}
+
+:root[data-pointer-focus] .tn-legal a:focus-visible {
+  outline-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .tn-legal {
+    padding: var(--space-6, 32px) var(--space-5, 24px);
+  }
+}

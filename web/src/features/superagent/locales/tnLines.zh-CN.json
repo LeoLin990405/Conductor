@@ -1,0 +1,25 @@
+{
+  "tnLines": {
+    "title": "工作线",
+    "lede": "按工作线（分支与 worktree）分组的工单。每 15 秒刷新一次。",
+    "refresh": "刷新",
+    "loading": "正在加载工作线…",
+    "error": "无法读取工单工作线，请点击刷新重试。",
+    "empty": "还没有工单工作线。",
+    "ungrouped": "未分组",
+    "noTickets": "这条工作线上没有工单。",
+    "counts": "{{open}} 个进行中 · 共 {{total}} 个",
+    "listLabel": "工作线及其工单",
+    "hint": "j/k 移动 · enter 打开",
+    "noWorker": "无 worker",
+    "noBranch": "无分支",
+    "toggle": "显示或隐藏 {{name}} 上的工单",
+    "col": {
+      "state": "状态",
+      "line": "工作线",
+      "worker": "worker",
+      "branch": "分支",
+      "tickets": "工单"
+    }
+  }
+}

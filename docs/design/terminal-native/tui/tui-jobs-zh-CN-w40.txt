@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ 空闲
+
+
+
+
+
+
+  任务列表
+        标题
+  ▸  ✔  读取适配器注册表
+    已完成 · /jobs 1 · 7f782add · kimi
+    12s · 1
+     ◆  需要一台带 bash 的主机
+    需要你 · /reply 2 · 6bfa630f
+    deepseek · 2h05m · 2
+     ✖  沙箱拒绝了这次执行
+    失败 · /retry 3 · 4b2f7803 · cursor
+    7h57m · 3
+     ●  添加评审队列屏幕
+    运行中 · /jobs watch 4 · 1a91c0de
+    minimax · 4m12s · 4
+     ○  审查令牌的对比度
+    排队中 · /jobs 5 · 0c73ab19 · — · —
+    5
+  5 个 Ticket · 1 个需要你 · 1 个运行中
+  命令
+  ▸ tickets       列出 Ticket；/jobs…
+    reply         回复需要你的 Ticket
+    retry         重试失败或等待中的…
+    cancel        停止运行中的…
+❯ 描述一个任务，/ 打开命令，@ 附加文件
+自动 · ● 3 在线   ◆ 2 · shift+enter 换行

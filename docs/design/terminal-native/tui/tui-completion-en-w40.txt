@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ idle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  Describe a task and press Enter. It
+  runs as a Ticket on Home.
+  palette › /dsp▏
+  ▸ dispatch      dispatch roster;…
+  1 match · tab accepts · enter runs
+❯ Describe a task, / for commands
+auto · ● 3 online             tab accept

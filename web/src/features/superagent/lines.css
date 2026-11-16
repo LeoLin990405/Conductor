@@ -1,0 +1,190 @@
+/* Terminal-native Lines page (/lines).
+   Colours are the S01 token custom properties; only token hexes appear, as
+   fallbacks. Square geometry (nothing above radius.card), hairline rules, mono
+   ids, and a glyph + word for every state. One dense row per line, its
+   Tickets as dense rows beneath it. */
+
+.tn-lines {
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  min-width: 0;
+}
+
+.tn-lines *,
+.tn-lines *::before,
+.tn-lines *::after {
+  box-sizing: border-box;
+}
+
+.tn-lines-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  flex-shrink: 0;
+}
+
+.tn-lines-hint {
+  color: var(--ink-muted, #9aa3b5);
+  white-space: nowrap;
+}
+
+.tn-lines-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3, 12px);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  background: transparent;
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+  cursor: pointer;
+}
+.tn-lines-button:hover { border-color: var(--ink-fg, #e6e8ee); }
+.tn-lines-button:disabled { color: var(--ink-muted, #9aa3b5); cursor: progress; }
+
+.tn-lines-muted { color: var(--ink-muted, #9aa3b5); }
+.tn-lines-error { color: var(--ink-error, #ff7a7a); }
+
+/* ---------- list ---------- */
+
+.tn-lines-list {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  min-width: 0;
+}
+
+.tn-lines-group {
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  min-width: 0;
+}
+
+.tn-lines-heading {
+  margin: 0;
+  font: inherit;
+}
+
+.tn-lines-row {
+  display: grid;
+  grid-template-columns: 1.25em 12ch minmax(0, 1fr) minmax(0, 16ch) minmax(0, 28ch) minmax(14ch, max-content);
+  align-items: center;
+  column-gap: var(--space-3, 12px);
+  width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border: 0;
+  border-radius: var(--radius-none, 0px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.tn-lines-row:hover { background: var(--surface-elevated, #282c34); }
+/* Rows draw their own ring (unlayered, so it beats the focus-defaults layer and
+   its tabindex="-1" opt-out): roving focus must stay visible on j/k. Inward,
+   so the hairline-ruled list never clips it. */
+.tn-lines-row:focus-visible {
+  outline: var(--border-focus, 2px) solid var(--ink-focus, #8b9cff);
+  outline-offset: -2px;
+  background: var(--surface-selection, #1a2140);
+}
+
+.tn-lines-row--line .tn-lines-name { font-weight: var(--weight-label, 500); }
+.tn-lines-row--ticket {
+  grid-template-columns: 1.25em 12ch minmax(0, 1fr) minmax(0, 24ch) 12ch;
+}
+
+.tn-lines-meta { display: contents; }
+
+.tn-lines-colhead {
+  cursor: default;
+  color: var(--ink-muted, #9aa3b5);
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-faint, #2a2f3a);
+}
+.tn-lines-colhead:hover { background: transparent; }
+
+.tn-lines-caret { color: var(--ink-muted, #9aa3b5); }
+.tn-lines-state { white-space: nowrap; flex-shrink: 0; }
+.tn-lines-worker,
+.tn-lines-who,
+.tn-lines-age { color: var(--ink-muted, #9aa3b5); }
+.tn-lines-branch,
+.tn-lines-worktree {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: inherit;
+  color: var(--ink-baton, #8b9cff);
+  background: transparent;
+  padding: 0;
+}
+.tn-lines-counts {
+  justify-self: end;
+  white-space: nowrap;
+  color: var(--ink-muted, #9aa3b5);
+}
+.tn-lines-age {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+/* Long names truncate; the state column never shrinks, so it never hides. */
+.tn-lines-trunc {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tn-lines-body {
+  padding-bottom: var(--space-2, 8px);
+}
+.tn-lines-worktree {
+  padding: 0 var(--space-2, 8px) var(--space-1, 4px) calc(1.25em + var(--space-2, 8px) + var(--space-3, 12px));
+  color: var(--ink-muted, #9aa3b5);
+}
+.tn-lines-none {
+  padding: var(--space-1, 4px) var(--space-2, 8px) var(--space-1, 4px) calc(1.25em + var(--space-2, 8px) + var(--space-3, 12px));
+}
+
+/* ---------- narrow: stack instead of dropping a column ---------- */
+
+@media (max-width: 720px) {
+  .tn-lines-hint,
+  .tn-lines-colhead { display: none; }
+
+  .tn-lines-row--line {
+    grid-template-columns: 1.25em minmax(0, 2fr) minmax(0, 3fr);
+    grid-template-areas:
+      "caret state counts"
+      ".     name  name"
+      ".     worker branch";
+    row-gap: 2px;
+  }
+  .tn-lines-row--line .tn-lines-caret { grid-area: caret; }
+  .tn-lines-row--line .tn-lines-state { grid-area: state; }
+  .tn-lines-row--line .tn-lines-name { grid-area: name; }
+  .tn-lines-row--line .tn-lines-worker { grid-area: worker; }
+  .tn-lines-row--line .tn-lines-branch { grid-area: branch; }
+  .tn-lines-row--line .tn-lines-counts { grid-area: counts; }
+
+  .tn-lines-row--ticket {
+    grid-template-columns: 1.25em minmax(0, 1fr) max-content;
+    grid-template-areas:
+      ".     state age"
+      ".     title title"
+      ".     who   who";
+    row-gap: 2px;
+  }
+  .tn-lines-row--ticket .tn-lines-state { grid-area: state; }
+  .tn-lines-row--ticket .tn-lines-title { grid-area: title; }
+  .tn-lines-row--ticket .tn-lines-who { grid-area: who; }
+  .tn-lines-row--ticket .tn-lines-age { grid-area: age; }
+
+  .tn-lines .sa-page-head { flex-wrap: wrap; }
+}

@@ -1,0 +1,182 @@
+/* Terminal-native command palette. Colours are token custom properties
+   (S01 --surface-* / --ink-*); only the 25 token hexes appear as fallbacks. */
+
+.tn-palette-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: color-mix(in srgb, var(--surface-page, #0f1115) 74%, transparent);
+}
+
+.tn-palette {
+  position: fixed;
+  z-index: 81;
+  top: max(24px, 8vh);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 32px));
+  background: var(--surface-elevated, #282c34);
+  border: 1px solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-overlay, 6px);
+  box-shadow: var(--elevation-1, 0 8px 24px rgba(15, 17, 21, 0.45));
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.tn-palette-query {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--ink-rule, #3a4150);
+}
+
+.tn-palette-query .tn-palette-prompt {
+  color: var(--ink-baton, #8b9cff);
+  font-weight: 500;
+}
+
+.tn-palette-query input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 32px;
+  background: none;
+  border: 0;
+  outline-offset: 2px;
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+}
+
+.tn-palette-query input::placeholder {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-palette-nav {
+  color: var(--ink-baton, #8b9cff);
+  font-variant-numeric: tabular-nums;
+}
+
+.tn-palette-list-wrap {
+  max-height: 264px;
+  overflow: auto;
+  padding: 4px;
+}
+
+.tn-palette-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tn-palette-list:focus-visible {
+  outline: 2px solid var(--ink-focus, #8b9cff);
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+
+.tn-prow {
+  display: grid;
+  grid-template-columns: 14ch minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.tn-prow[data-kind='arg'] {
+  grid-template-columns: 24ch minmax(0, 1fr) auto;
+}
+
+.tn-prow[aria-selected='true'] {
+  background: var(--surface-selection, #1a2140);
+}
+
+.tn-prow[aria-selected='true'] .tn-pname {
+  color: var(--ink-fg, #e6e8ee);
+  font-weight: 500;
+}
+
+.tn-pname {
+  color: var(--ink-baton, #8b9cff);
+  overflow-wrap: anywhere;
+}
+
+.tn-pname b {
+  color: var(--ink-fg, #e6e8ee);
+  font-weight: 500;
+}
+
+.tn-phint {
+  color: var(--ink-muted, #9aa3b5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tn-pmeta {
+  color: var(--ink-muted, #9aa3b5);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tn-pempty {
+  color: var(--ink-muted, #9aa3b5);
+  cursor: default;
+  display: block;
+  overflow-wrap: anywhere;
+  padding: 4px 8px;
+}
+
+.tn-perror {
+  color: var(--ink-error, #ff7a7a);
+}
+
+.tn-perror::before {
+  content: '✖ ';
+}
+
+.tn-palette-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  border-top: 1px solid var(--ink-rule, #3a4150);
+  color: var(--ink-muted, #9aa3b5);
+}
+
+@media (max-width: 640px) {
+  .tn-palette {
+    top: 12px;
+    width: calc(100% - 24px);
+  }
+
+  .tn-prow {
+    grid-template-columns: 12ch minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .tn-prow[data-kind='arg'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tn-pmeta {
+    display: none;
+  }
+
+  .tn-phint {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tn-palette-scrim,
+  .tn-palette {
+    animation: none !important;
+    transition: none !important;
+  }
+}

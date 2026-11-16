@@ -1,0 +1,40 @@
+  Conductor
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3
+
+  dispatch
+  7f3a91c2  APPROVAL  62%  integrate/r2
+  Ship the terminal-native dispatch screen
+  approve 7f3a91c2  reject 7f3a91c2
+  roster
+  line     status     model     gate      fix  verdict  depends
+  L1    ✔  Completed  kimi      reviewed  —    ✔ MERGE  —
+  L2    ●  Running    deepseek  build     —    —        L1
+  dag
+  L0: L1
+  L1: L2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                              shift+enter newline · alt+m mode · ? help

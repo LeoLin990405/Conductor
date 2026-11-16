@@ -1,0 +1,113 @@
+{
+  "flow": "F3",
+  "revision": "synthetic-baseline",
+  "app_revision": "12d17232",
+  "captured_at": "2026-10-25T00:00:00Z",
+  "synthetic": true,
+  "http": [
+    {
+      "method": "POST",
+      "path": "/api/v1/threads/b1c2d3e4-f506-47a8-9b0c-1d2e3f4a5b6c/messages",
+      "status": 200,
+      "request": {
+        "body": {
+          "message": "整理三份公告",
+          "thread_id": "b1c2d3e4-f506-47a8-9b0c-1d2e3f4a5b6c"
+        }
+      },
+      "response": {
+        "accepted": true,
+        "run_id": "c2d3e4f5-0617-48a9-0b1c-2d3e4f5a6b7c"
+      }
+    }
+  ],
+  "sse": [
+    {
+      "label": "main",
+      "events": [
+        {
+          "type": "message_chunk",
+          "payload": {
+            "seq": 1,
+            "content": "Delegating to the researcher."
+          }
+        },
+        {
+          "type": "subagent_started",
+          "payload": {
+            "task_id": "task-1",
+            "subagent_type": "research"
+          }
+        },
+        {
+          "type": "subagent_report",
+          "payload": {
+            "task_id": "task-1",
+            "status": "completed"
+          }
+        }
+      ]
+    },
+    {
+      "label": "task:task-1",
+      "events": [
+        {
+          "type": "subagent_started",
+          "payload": {
+            "task_id": "task-1"
+          }
+        },
+        {
+          "type": "tool_call",
+          "payload": {
+            "seq": 1,
+            "tool": "web_search",
+            "args": {
+              "query": "600519 2025 年报"
+            }
+          }
+        },
+        {
+          "type": "subagent_result",
+          "payload": {
+            "task_id": "task-1",
+            "status": "completed",
+            "summary": "found three filings",
+            "token_count": 400,
+            "latency_ms": 120
+          }
+        }
+      ]
+    }
+  ],
+  "db": [
+    {
+      "table": "subagent_tasks",
+      "keys": [
+        "thread_id",
+        "task_id"
+      ],
+      "rows": [
+        {
+          "thread_id": "b1c2d3e4-f506-47a8-9b0c-1d2e3f4a5b6c",
+          "task_id": "task-1",
+          "subagent_type": "research"
+        }
+      ]
+    },
+    {
+      "table": "subagent_runs",
+      "keys": [
+        "task_run_id"
+      ],
+      "rows": [
+        {
+          "task_run_id": "c2d3e4f5-0617-48a9-0b1c-2d3e4f5a6b7c",
+          "thread_id": "b1c2d3e4-f506-47a8-9b0c-1d2e3f4a5b6c",
+          "task_id": "task-1",
+          "status": "completed"
+        }
+      ]
+    }
+  ]
+}

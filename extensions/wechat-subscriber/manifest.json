@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Conductor WeChat Subscriber",
+  "version": "0.1.0",
+  "description": "在微信公众号文章页一键把该公众号加入 Conductor 订阅。",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["http://127.0.0.1:8000/*", "https://mp.weixin.qq.com/*"],
+  "action": {"default_popup": "popup.html", "default_title": "订阅到 Conductor"},
+  "icons": {}
+}

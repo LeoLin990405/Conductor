@@ -1,0 +1,15 @@
+{
+  "$id": "https://conductor.local/collab/schema/handoff_list.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "limit": {
+      "default": 20,
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "title": "handoff_list_input",
+  "type": "object"
+}

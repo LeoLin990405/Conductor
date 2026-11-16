@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "policy_status": "example_placement_rules",
+  "execution_hosts": {
+    "bot": {
+      "hostname": "host-a",
+      "user": "worker-1",
+      "allowed_runtimes": [
+        "claude",
+        "cursor"
+      ],
+      "verification": "example_host_check_record"
+    },
+    "m5": {
+      "hostname": "host-b",
+      "hardware_model": "generic-arm64-workstation",
+      "allowed_runtimes": [
+        "codex",
+        "ollama"
+      ],
+      "preferred_executor": "executor-1",
+      "verification": "example_host_check_record"
+    },
+    "m4": {
+      "hostname": "host-c",
+      "user": "worker-2",
+      "allowed_runtimes": [
+        "ollama",
+        "ollama-m4-guarded",
+        "qwen",
+        "gemini",
+        "kimi"
+      ],
+      "binding": "candidate_only",
+      "verification": "example_host_check_record"
+    },
+    "m720q-b": {
+      "hostname": "host-d",
+      "user": "worker-3",
+      "allowed_runtimes": [
+        "qwen",
+        "gemini",
+        "step",
+        "minimax",
+        "codebuddy"
+      ],
+      "binding": "candidate_only",
+      "verification": "example_host_check_record"
+    },
+    "server-01": {
+      "hostname": "host-e",
+      "user": "worker-4",
+      "allowed_runtimes": [
+        "cursor"
+      ],
+      "binding": "candidate_only",
+      "verification": "example_host_check_record"
+    }
+  },
+  "runtime_candidates": {
+    "cursor": {
+      "hosts": [
+        "server-01",
+        "bot"
+      ],
+      "binding": "candidate_only",
+      "verification": "example_cursor_runtime_check_record",
+      "host_status": {
+        "server-01": "verified_ready",
+        "bot": "disabled_logged_out"
+      }
+    },
+    "ollama": {
+      "hosts": [
+        "m5",
+        "m4"
+      ],
+      "binding": "candidate_only",
+      "enabled": true,
+      "host_status": {
+        "m5": "verified_ready",
+        "m4": "candidate_only"
+      },
+      "verification": "example_ollama_runtime_check_record"
+    },
+    "ollama-m4-guarded": {
+      "hosts": [
+        "m4"
+      ],
+      "binding": "candidate_only",
+      "enabled": true,
+      "host_status": {
+        "m4": "verified_ready"
+      },
+      "verification": "example_ollama-m4-guarded_runtime_check_record"
+    },
+    "qwen": {
+      "hosts": [
+        "m4",
+        "m720q-b"
+      ],
+      "binding": "candidate_only",
+      "enabled": false,
+      "host_status": {
+        "m4": "auth_unavailable",
+        "m720q-b": "auth_unavailable"
+      },
+      "verification": "example_qwen_runtime_check_record"
+    },
+    "gemini": {
+      "hosts": [
+        "m4",
+        "m720q-b"
+      ],
+      "binding": "candidate_only",
+      "enabled": false,
+      "host_status": {
+        "m4": "entitlement_unavailable",
+        "m720q-b": "auth_unavailable"
+      },
+      "verification": "example_gemini_runtime_check_record"
+    },
+    "kimi": {
+      "hosts": [
+        "m4"
+      ],
+      "binding": "candidate_only",
+      "enabled": true,
+      "host_status": {
+        "m4": "verified_ready"
+      },
+      "verification": "example_kimi_runtime_check_record"
+    },
+    "step": {
+      "hosts": [
+        "m720q-b"
+      ],
+      "binding": "candidate_only",
+      "enabled": false,
+      "host_status": {
+        "m720q-b": "auth_unverified"
+      },
+      "verification": "example_step_runtime_check_record"
+    },
+    "minimax": {
+      "hosts": [
+        "m720q-b"
+      ],
+      "binding": "candidate_only",
+      "enabled": false,
+      "host_status": {
+        "m720q-b": "auth_unverified"
+      },
+      "verification": "example_minimax_runtime_check_record"
+    },
+    "codebuddy": {
+      "hosts": [
+        "m720q-b"
+      ],
+      "binding": "candidate_only",
+      "enabled": false,
+      "host_status": {
+        "m720q-b": "auth_unverified"
+      },
+      "verification": "example_codebuddy_runtime_check_record"
+    }
+  },
+  "memory": {
+    "authority_host": "nas",
+    "authority_scope": [
+      "formal-memory",
+      "notes",
+      "cited-attachments"
+    ],
+    "backup_hosts": [
+      "index-host"
+    ],
+    "misc_archive_hosts": [
+      "index-host"
+    ],
+    "backup_verified": false,
+    "automatic_promotion": false
+  },
+  "legacy_worker_pool": {
+    "host_binding": "unknown",
+    "allowed_unpinned_models": "policy_compatible_unverified",
+    "blocked_runtime_families": [
+      "claude",
+      "anthropic",
+      "sonnet",
+      "opus",
+      "haiku",
+      "codex",
+      "cursor"
+    ]
+  }
+}

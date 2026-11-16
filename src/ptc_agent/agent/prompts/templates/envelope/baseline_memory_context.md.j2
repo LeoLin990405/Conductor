@@ -1,0 +1,10 @@
+{# The selected memory index for this turn (Phase-2 render switch). The
+   baseline's per-tier store reads are suppressed while this block is present,
+   so memory appears exactly once. Empty selection renders nothing — the
+   <memory-context> block is the only marker, and it is byte-deterministic for
+   equal input so the prompt-cache prefix stays stable. #}
+{% if content %}
+<memory-context source="selected">
+{{ content }}
+</memory-context>
+{% endif %}

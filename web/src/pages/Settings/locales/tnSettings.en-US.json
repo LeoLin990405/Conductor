@@ -1,0 +1,13 @@
+{
+  "tnSettings": {
+    "eyebrow": {
+      "app": "conductor / settings",
+      "section": "settings / {{section}}"
+    },
+    "sectionsNav": "Settings sections",
+    "providers": {
+      "grokLogin": "Grok (xAI sign-in)",
+      "geminiLogin": "Gemini / Antigravity (Google sign-in)"
+    }
+  }
+}

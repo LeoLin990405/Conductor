@@ -1,0 +1,55 @@
+{
+  "_comment": [
+    "Shared fixture for the CodexBar headroom adapter.",
+    "It is the shape written by src/conductor_cli/codexbar_snapshot.py: a top",
+    "level updatedAt and one row per provider, each row carrying its quota",
+    "windows as used_percent (0-100). The adapter only reads provider id,",
+    "used_percent and updatedAt; nothing else in a real snapshot is used.",
+    "The 'email' field on the zai row is a placeholder on purpose: the",
+    "adapter must never surface an account field, and a test asserts that",
+    "this value appears in neither the logs nor an error.",
+    "No token and no balance is written here on purpose."
+  ],
+  "updatedAt": "2026-11-06T12:00:00Z",
+  "providers": [
+    {
+      "provider": "kimi",
+      "kind": "quota",
+      "status": "ok",
+      "updated_at": "2026-11-06T12:00:00Z",
+      "windows": [{ "used_percent": 0.0, "resets_at_utc": "2026-11-06T17:00:00Z" }]
+    },
+    {
+      "provider": "zai",
+      "kind": "quota",
+      "status": "ok",
+      "updated_at": "2026-11-06T12:00:00Z",
+      "email": "not-a-real-account@example.invalid",
+      "windows": [{ "used_percent": 45.0, "resets_at_utc": "2026-11-06T17:00:00Z" }]
+    },
+    {
+      "provider": "grok",
+      "kind": "quota",
+      "status": "ok",
+      "updated_at": "2026-11-06T12:00:00Z",
+      "windows": [
+        { "used_percent": 100.0, "resets_at_utc": "2026-11-06T17:00:00Z" },
+        { "used_percent": 20.0, "resets_at_utc": "2026-11-13T00:00:00Z" }
+      ]
+    },
+    {
+      "provider": "cursor",
+      "kind": "quota",
+      "status": "ok",
+      "updated_at": "2026-11-06T12:00:00Z",
+      "windows": []
+    },
+    {
+      "provider": "deepseek",
+      "kind": "balance",
+      "status": "unknown",
+      "updated_at": "2026-11-06T12:00:00Z",
+      "windows": []
+    }
+  ]
+}

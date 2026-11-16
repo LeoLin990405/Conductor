@@ -1,0 +1,2102 @@
+{
+  "auto": {
+    "prompt_guidance": "lean",
+    "model_id": "__auto__",
+    "provider": "__auto__",
+    "display_name": "Auto（自动选择）",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 4,
+    "context": 1000000,
+    "input_modalities": [
+      "text"
+    ]
+  },
+  "gpt-5.6-terra": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-5.6-terra",
+    "provider": "openai",
+    "display_name": "GPT-5.6 Terra",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 3,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "prompt_cache_options": {
+        "mode": "implicit"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6-astra": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-6-astra",
+    "provider": "openai",
+    "display_name": "GPT-6 Astra",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 5,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "prompt_cache_options": {
+        "mode": "implicit"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6.1-sol": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-6.1-sol",
+    "provider": "openai",
+    "display_name": "GPT-6.1 Sol",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "prompt_cache_options": {
+        "mode": "implicit"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6-luna": {
+    "model_id": "gpt-6-luna",
+    "provider": "openai",
+    "display_name": "GPT-6 Luna",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "prompt_cache_options": {
+        "mode": "implicit"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "claude-fable-5-1": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-fable-5-1",
+    "provider": "anthropic",
+    "display_name": "Claude Fable 5.1",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-opus-5-5": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-opus-5-5",
+    "provider": "anthropic",
+    "display_name": "Claude Opus 5.5",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-sonnet-5-5": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "display_name": "Claude Sonnet 5.5",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-haiku-5-5": {
+    "model_id": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "display_name": "Claude Haiku 5.5",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "gemini-4-argon": {
+    "prompt_guidance": "lean",
+    "model_id": "gemini-4-argon",
+    "provider": "gemini",
+    "display_name": "Gemini 4 Argon",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf",
+      "video"
+    ],
+    "parameters": {
+      "include_thoughts": true
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.thinking_level"
+    }
+  },
+  "gemini-3.8-flash": {
+    "model_id": "gemini-3.8-flash",
+    "provider": "gemini",
+    "display_name": "Gemini 3.8 Flash",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf",
+      "video"
+    ],
+    "parameters": {
+      "include_thoughts": true
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.thinking_level"
+    }
+  },
+  "gemini-3.1-flash-lite": {
+    "model_id": "gemini-3.1-flash-lite-preview",
+    "provider": "gemini",
+    "display_name": "Gemini 3.1 Flash-Lite",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 1,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf",
+      "video"
+    ],
+    "parameters": {
+      "include_thoughts": true
+    },
+    "reasoning": {
+      "efforts": [
+        "minimal",
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.thinking_level"
+    }
+  },
+  "gpt-oss-120b": {
+    "model_id": "gpt-oss-120b",
+    "provider": "vllm",
+    "display_name": "gpt-oss-120b",
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "gpt-oss-20b": {
+    "model_id": "gpt-oss-20b",
+    "provider": "vllm",
+    "display_name": "gpt-oss-20b",
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "gpt-oss-20b-safe-groq": {
+    "model_id": "openai/gpt-oss-safeguard-20b",
+    "provider": "openrouter",
+    "display_name": "gpt-oss-20b Safe",
+    "parameters": {
+      "use_previous_response_id": false,
+      "extra_body": {
+        "provider": {
+          "order": [
+            "Groq"
+          ],
+          "allow_fallbacks": true
+        }
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "gpt-oss-20b-deepinfra": {
+    "model_id": "openai/gpt-oss-20b",
+    "provider": "deepinfra",
+    "display_name": "gpt-oss-20b",
+    "parameters": {
+      "use_previous_response_id": false,
+      "extra_body": {
+        "provider": {
+          "order": [
+            "DeepInfra"
+          ],
+          "allow_fallbacks": false
+        }
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "gpt-oss-safeguard-20b-deepinfra": {
+    "model_id": "openai/gpt-oss-safeguard-20b",
+    "provider": "deepinfra",
+    "display_name": "gpt-oss-safeguard-20b",
+    "parameters": {
+      "use_previous_response_id": false,
+      "extra_body": {
+        "provider": {
+          "order": [
+            "DeepInfra"
+          ],
+          "allow_fallbacks": false
+        }
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "gpt-oss-120b-groq": {
+    "model_id": "openai/gpt-oss-120b",
+    "provider": "openrouter",
+    "display_name": "gpt-oss-120b",
+    "parameters": {
+      "use_previous_response_id": false,
+      "extra_body": {
+        "provider": {
+          "order": [
+            "Groq"
+          ],
+          "allow_fallbacks": true
+        }
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "low",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "deepseek-flash": {
+    "prompt_guidance": "lean",
+    "model_id": "deepseek-flash",
+    "provider": "deepseek",
+    "display_name": "DeepSeek-V4.1-Flash",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_tokens": 256000
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort",
+      "on": {
+        "parameters.thinking.type": "enabled"
+      },
+      "off": {
+        "parameters.thinking.type": "disabled"
+      }
+    }
+  },
+  "deepseek-flash-account": {
+    "prompt_guidance": "lean",
+    "model_id": "deepseek-flash",
+    "provider": "deepseek-account",
+    "display_name": "DeepSeek-V4.1-Flash（账号登录）",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_tokens": 256000
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort",
+      "on": {
+        "parameters.thinking.type": "enabled"
+      },
+      "off": {
+        "parameters.thinking.type": "disabled"
+      }
+    }
+  },
+  "deepseek-v4-pro": {
+    "prompt_guidance": "lean",
+    "model_id": "deepseek-v4-pro",
+    "provider": "deepseek",
+    "display_name": "DeepSeek-V4-Pro",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text"
+    ],
+    "parameters": {
+      "max_tokens": 256000
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort",
+      "on": {
+        "parameters.thinking.type": "enabled"
+      },
+      "off": {
+        "parameters.thinking.type": "disabled"
+      }
+    }
+  },
+  "deepseek-v4-pro-account": {
+    "prompt_guidance": "lean",
+    "model_id": "deepseek-v4-pro",
+    "provider": "deepseek-account",
+    "display_name": "DeepSeek-V4-Pro（账号登录）",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text"
+    ],
+    "parameters": {
+      "max_tokens": 256000
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort",
+      "on": {
+        "parameters.thinking.type": "enabled"
+      },
+      "off": {
+        "parameters.thinking.type": "disabled"
+      }
+    }
+  },
+  "glm-5.2": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.2",
+    "provider": "z-ai",
+    "display_name": "GLM-5.2",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 2,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "extra_body.reasoning_effort",
+      "on": {
+        "extra_body.thinking.clear_thinking": false,
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "glm-5.3": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3",
+    "provider": "z-ai",
+    "display_name": "GLM-5.3",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 4,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "glm-5.3-flash": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3-flash",
+    "provider": "z-ai",
+    "display_name": "GLM-5.3 Flash",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 3,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "glm-5.2-cn": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.2",
+    "provider": "z-ai-cn",
+    "display_name": "GLM-5.2 (CN)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 2,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high",
+        "max"
+      ],
+      "default": "high",
+      "write": "extra_body.reasoning_effort",
+      "on": {
+        "extra_body.thinking.clear_thinking": false,
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "glm-5.3-cn": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3",
+    "provider": "z-ai-cn",
+    "display_name": "GLM-5.3 (CN)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 4,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "glm-5.3-flash-cn": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3-flash",
+    "provider": "z-ai-cn",
+    "display_name": "GLM-5.3 Flash (CN)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 3,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "minimax-m3.1-flash": {
+    "model_id": "MiniMax-M3.1-Flash",
+    "provider": "minimax",
+    "display_name": "MiniMax M3.1 Flash",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 128000
+    },
+    "input_modalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "minimax-m3": {
+    "model_id": "MiniMax-M3",
+    "provider": "minimax",
+    "display_name": "MiniMax M3",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 2,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 512000
+    },
+    "input_modalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "parameters.thinking.type": "adaptive"
+      },
+      "off": {
+        "parameters.thinking.type": "disabled"
+      }
+    }
+  },
+  "qwen3.8-max": {
+    "prompt_guidance": "lean",
+    "model_id": "qwen3.8-max",
+    "provider": "dashscope",
+    "display_name": "Qwen3.8 Max",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "default": "xhigh",
+      "write": "parameters.reasoning.effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "qwen3.8-flash": {
+    "model_id": "qwen3.8-flash",
+    "provider": "dashscope",
+    "display_name": "Qwen3.8 Flash",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "default": "xhigh",
+      "write": "parameters.reasoning.effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "qwen3.7-plus": {
+    "model_id": "qwen3.7-plus",
+    "provider": "dashscope",
+    "display_name": "Qwen3.7 Plus",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 1,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_tokens": 65536
+    }
+  },
+  "qwen3.8-max-intl": {
+    "prompt_guidance": "lean",
+    "model_id": "qwen3.8-max",
+    "provider": "dashscope-intl",
+    "display_name": "Qwen3.8 Max (Intl)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "default": "xhigh",
+      "write": "parameters.reasoning.effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "qwen3.8-flash-intl": {
+    "model_id": "qwen3.8-flash",
+    "provider": "dashscope-intl",
+    "display_name": "Qwen3.8 Flash (Intl)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "default": "xhigh",
+      "write": "parameters.reasoning.effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "qwen3.7-plus-intl": {
+    "model_id": "qwen3.7-plus",
+    "provider": "dashscope-intl",
+    "display_name": "Qwen3.7 Plus (Intl)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 1,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_tokens": 65536
+    }
+  },
+  "kimi-k3": {
+    "prompt_guidance": "lean",
+    "model_id": "kimi-k3",
+    "provider": "moonshot",
+    "display_name": "Kimi K3",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "parameters.output_config.effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-k3-coding": {
+    "prompt_guidance": "lean",
+    "model_id": "k3",
+    "provider": "moonshot-coding",
+    "display_name": "Kimi K3 (Code)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-k3-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "k3",
+    "provider": "kimi-oauth",
+    "display_name": "Kimi K3 (Code 订阅)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "gpt-5.3-codex-spark-oauth": {
+    "model_id": "gpt-5.3-codex-spark",
+    "provider": "codex-oauth",
+    "display_name": "GPT-5.3 Codex Spark (OAuth)",
+    "oauth_plans": [
+      "pro",
+      "prolite"
+    ],
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 400000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "include": [
+        "reasoning.encrypted_content"
+      ],
+      "store": false
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-5.6-terra-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-5.6-terra",
+    "provider": "codex-oauth",
+    "display_name": "GPT-5.6 Terra (OAuth)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 3,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "include": [
+        "reasoning.encrypted_content"
+      ],
+      "store": false
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6-astra-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-6-astra",
+    "provider": "codex-oauth",
+    "display_name": "GPT-6 Astra (OAuth)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 5,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "include": [
+        "reasoning.encrypted_content"
+      ],
+      "store": false
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6.1-sol-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "gpt-6.1-sol",
+    "provider": "codex-oauth",
+    "display_name": "GPT-6.1 Sol (OAuth)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "include": [
+        "reasoning.encrypted_content"
+      ],
+      "store": false
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "gpt-6-luna-oauth": {
+    "model_id": "gpt-6-luna",
+    "provider": "codex-oauth",
+    "display_name": "GPT-6 Luna (OAuth)",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1050000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "reasoning": {
+        "summary": "auto"
+      },
+      "include": [
+        "reasoning.encrypted_content"
+      ],
+      "store": false
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning.effort"
+    }
+  },
+  "claude-fable-5-1-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-fable-5-1",
+    "provider": "claude-oauth",
+    "display_name": "Claude Fable 5.1 (OAuth)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+      }
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "high",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-opus-5-5-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-opus-5-5",
+    "provider": "claude-oauth",
+    "display_name": "Claude Opus 5.5 (OAuth)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-sonnet-5-5-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "claude-sonnet-5-5",
+    "provider": "claude-oauth",
+    "display_name": "Claude Sonnet 5.5 (OAuth)",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "claude-haiku-5-5-oauth": {
+    "model_id": "claude-haiku-5-5",
+    "provider": "claude-oauth",
+    "display_name": "Claude Haiku 5.5 (OAuth)",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "parameters": {
+      "max_tokens": 128000,
+      "thinking": {
+        "type": "adaptive",
+        "display": "summarized",
+        "block_binding": {
+          "prefix_mismatch_behavior": "drop_block"
+        }
+      }
+    },
+    "additional_betas": [
+      "thinking-binding-controls-2026-08-01"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default": "medium",
+      "write": "parameters.output_config.effort"
+    }
+  },
+  "glm-5.3-cn-coding": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3",
+    "provider": "z-ai-cn-coding",
+    "display_name": "GLM-5.3 (CN Coding Plan)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 4,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "glm-5.3-cn-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3",
+    "provider": "z-ai-cn-oauth",
+    "display_name": "GLM-5.3 (智谱登录)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 4,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "glm-5.3-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3",
+    "provider": "z-ai-oauth",
+    "display_name": "GLM-5.3 (Z.ai 登录)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 4,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "doubao-seed-2-1-pro": {
+    "prompt_guidance": "lean",
+    "model_id": "doubao-seed-2-1-pro",
+    "provider": "doubao-plan",
+    "display_name": "Doubao Seed 2.1 Pro (ARK Plan)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 5,
+    "context": 128000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "doubao-seed-2-1-turbo": {
+    "prompt_guidance": "lean",
+    "model_id": "doubao-seed-2-1-turbo",
+    "provider": "doubao-plan",
+    "display_name": "Doubao Seed 2.1 Turbo (ARK Plan)",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 4,
+    "context": 128000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "doubao-seed-2-1-lite": {
+    "prompt_guidance": "lean",
+    "model_id": "doubao-seed-2-1-lite",
+    "provider": "doubao-plan",
+    "display_name": "Doubao Seed 2.1 Lite (ARK Plan)",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 128000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "doubao-seed-2-0-pro": {
+    "prompt_guidance": "lean",
+    "model_id": "doubao-seed-2-0-pro",
+    "provider": "doubao-plan",
+    "display_name": "Doubao Seed 2.0 Pro (ARK Plan)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 4,
+    "context": 128000,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "mimo-v2.6-flash": {
+    "prompt_guidance": "lean",
+    "model_id": "mimo-v2.6-flash",
+    "provider": "mimo",
+    "display_name": "MiMo V2.6 Flash (小米)",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 3,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_completion_tokens": 131072
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "mimo-v2.6-pro": {
+    "prompt_guidance": "lean",
+    "model_id": "mimo-v2.6-pro",
+    "provider": "mimo",
+    "display_name": "MiMo V2.6 Pro (小米)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 4,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_completion_tokens": 131072
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "mimo-v2.6-flash-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "mimo-v2.6-flash",
+    "provider": "mimo-oauth",
+    "display_name": "MiMo V2.6 Flash（登录）",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 3,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_completion_tokens": 131072
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "mimo-v2.6-pro-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "mimo-v2.6-pro",
+    "provider": "mimo-oauth",
+    "display_name": "MiMo V2.6 Pro（登录）",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 4,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "parameters": {
+      "max_completion_tokens": 131072
+    },
+    "reasoning": {
+      "efforts": [
+        "none",
+        "high"
+      ],
+      "default": "high",
+      "on": {
+        "extra_body.thinking.type": "enabled"
+      },
+      "off": {
+        "extra_body.thinking.type": "disabled"
+      }
+    }
+  },
+  "step-router-v1": {
+    "prompt_guidance": "lean",
+    "model_id": "step-router-v1",
+    "provider": "stepfun-plan",
+    "display_name": "StepFun Router (Plan)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text"
+    ]
+  },
+  "step-5-preview": {
+    "prompt_guidance": "lean",
+    "model_id": "step-5-preview",
+    "provider": "stepfun-plan",
+    "display_name": "StepFun Step-5 Preview (Plan)",
+    "visible": true,
+    "speed": 2,
+    "intelligence": 5,
+    "context": 1024000,
+    "input_modalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "parameters": {
+      "max_tokens": 65536
+    },
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "step-3.7-flash": {
+    "prompt_guidance": "lean",
+    "model_id": "step-3.7-flash",
+    "provider": "stepfun-plan",
+    "display_name": "StepFun Step-3.7 Flash (Plan)",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image",
+      "video"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "step-3.5-flash": {
+    "prompt_guidance": "lean",
+    "model_id": "step-3.5-flash",
+    "provider": "stepfun-plan",
+    "display_name": "StepFun Step-3.5 Flash (Plan)",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 3,
+    "context": 262144,
+    "input_modalities": [
+      "text"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "write": "parameters.reasoning_effort"
+    }
+  },
+  "grok-4.7-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "grok-4.7",
+    "provider": "grok-oauth",
+    "display_name": "Grok 4.7 (xAI 登录)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 500000,
+    "input_modalities": [
+      "text",
+      "image"
+    ]
+  },
+  "grok-4.6-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "grok-4.6",
+    "provider": "grok-oauth",
+    "display_name": "Grok 4.6 (xAI 登录)",
+    "visible": true,
+    "speed": 4,
+    "intelligence": 4,
+    "context": 500000,
+    "input_modalities": [
+      "text",
+      "image"
+    ]
+  },
+  "gemini-2.5-pro-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "gemini-2.5-pro",
+    "provider": "gemini-oauth",
+    "display_name": "Gemini 2.5 Pro (Antigravity)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 5,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ]
+  },
+  "gemini-3.8-flash-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "gemini-3.8-flash",
+    "provider": "gemini-oauth",
+    "display_name": "Gemini 3.8 Flash (Antigravity)",
+    "visible": true,
+    "speed": 5,
+    "intelligence": 4,
+    "context": 1000000,
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ]
+  },
+  "glm-5.3-flash-cn-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "glm-5.3-flash",
+    "provider": "z-ai-cn-oauth",
+    "display_name": "GLM-5.3 Flash (智谱登录)",
+    "visible": true,
+    "speed": 3,
+    "intelligence": 3,
+    "context": 1000000,
+    "parameters": {
+      "max_tokens": 131072
+    },
+    "extra_body": {
+      "thinking": {
+        "type": "enabled",
+        "clear_thinking": false
+      }
+    },
+    "input_modalities": [
+      "text",
+      "image",
+      "pdf"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    }
+  },
+  "kimi-k3.1-pro-coding": {
+    "prompt_guidance": "lean",
+    "model_id": "k3.1-pro",
+    "provider": "moonshot-coding",
+    "display_name": "Kimi K3.1 Pro (Code)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-k3.1-pro-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "k3.1-pro",
+    "provider": "kimi-oauth",
+    "display_name": "Kimi K3.1 Pro (Code 订阅)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-k3.1-pro-highspeed-coding": {
+    "prompt_guidance": "lean",
+    "model_id": "k3.1-pro-highspeed",
+    "provider": "moonshot-coding",
+    "display_name": "Kimi K3.1 Pro Highspeed (Code)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-k3.1-pro-highspeed-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "k3.1-pro-highspeed",
+    "provider": "kimi-oauth",
+    "display_name": "Kimi K3.1 Pro Highspeed (Code 订阅)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 4,
+    "context": 262144,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 131072
+    }
+  },
+  "kimi-for-coding-coding": {
+    "prompt_guidance": "lean",
+    "model_id": "kimi-for-coding",
+    "provider": "moonshot-coding",
+    "display_name": "Kimi for Coding",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 3,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 32768
+    }
+  },
+  "kimi-for-coding-oauth": {
+    "prompt_guidance": "lean",
+    "model_id": "kimi-for-coding",
+    "provider": "kimi-oauth",
+    "display_name": "Kimi for Coding (订阅)",
+    "visible": true,
+    "speed": 1,
+    "intelligence": 3,
+    "context": 1048576,
+    "input_modalities": [
+      "text",
+      "image"
+    ],
+    "reasoning": {
+      "efforts": [
+        "low",
+        "high",
+        "max"
+      ],
+      "default": "max",
+      "write": "extra_body.reasoning_effort"
+    },
+    "parameters": {
+      "max_tokens": 32768
+    }
+  }
+}

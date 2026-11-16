@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'self'">
+<title>Connect to your Conductor server</title>
+<style>
+  /* Standalone on purpose: this page has to render before any server is known,
+     so it cannot pull a stylesheet or a font from one. */
+  :root {
+    color-scheme: dark;
+    --bg: #191919;
+    --fg: #e8e8e8;
+    --muted: #8b8b8b;
+    --line: #2e2e2e;
+    --field: #202020;
+    --accent: #e8e8e8;
+    --bad: #e5646d;
+    --good: #5db87f;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --fg: #1a1a1a; --muted: #6b6b6b;
+      --line: #e2e2e2; --field: #f6f6f6; --accent: #1a1a1a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; height: 100vh; display: grid; place-items: center;
+    background: var(--bg); color: var(--fg);
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-app-region: drag;
+  }
+  main { width: 380px; -webkit-app-region: no-drag; }
+  /* Inlined, not loaded: same reason as the outage page, and this window is the
+     very first thing an OSS user sees, before any origin is known. Monochrome,
+     so one copy strokes currentColor and both themes are covered. */
+  .mark { display: block; width: 34px; height: 34px; margin: 0 0 16px -4px; color: var(--fg); }
+  h1 { font-size: 17px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lede { margin: 0 0 20px; color: var(--muted); font-size: 13px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 9px 11px; border-radius: 7px;
+    border: 1px solid var(--line); background: var(--field); color: var(--fg);
+    font: inherit; font-size: 13px;
+  }
+  input:focus { outline: none; border-color: var(--muted); }
+  .row { display: flex; gap: 8px; margin-top: 14px; }
+  button {
+    flex: 1; padding: 9px 12px; border-radius: 7px; border: 1px solid transparent;
+    background: var(--accent); color: var(--bg); font: inherit; font-weight: 550;
+    font-size: 13px; cursor: pointer;
+  }
+  button.secondary { background: transparent; color: var(--fg); border-color: var(--line); }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .status { margin-top: 12px; font-size: 12.5px; min-height: 18px; color: var(--muted); }
+  .status[data-tone="bad"] { color: var(--bad); }
+  .status[data-tone="good"] { color: var(--good); }
+  .hint { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line);
+          font-size: 12px; color: var(--muted); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; }
+</style>
+</head>
+<body>
+<main>
+  <svg class="mark" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+    <path d="M13.93 47.14L30 12.86L46.07 47.14" stroke="currentColor" stroke-width="4.29" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20.36 37.07L39.64 32.14" stroke="#E89A4B" stroke-width="4.29" stroke-linecap="round"/>
+  </svg>
+
+  <h1>Connect to your server</h1>
+  <p class="lede">This build talks to an Conductor stack you run yourself. Point it at the address where the web app is served.</p>
+
+  <label for="url">Server address</label>
+  <input id="url" type="url" spellcheck="false" autocomplete="off" placeholder="http://localhost:5173">
+
+  <div class="row">
+    <button id="test" class="secondary" type="button">Test</button>
+    <button id="connect" type="button">Connect</button>
+  </div>
+
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <p class="hint">Started with <code>make up</code>? The default is right. Behind the dev proxy it is <code>http://localhost</code>.</p>
+</main>
+<script src="./setup.js"></script>
+</body>
+</html>

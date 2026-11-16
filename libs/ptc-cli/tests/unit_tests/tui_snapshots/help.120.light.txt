@@ -1,0 +1,40 @@
+  Conductor                                                                                                            ^
+  Describe a task and press Enter. It runs as a Ticket on Home.
+  / commands    @ attach    ? keys
+  ✔  Completed  Read registry   kimi      12s            /jobs 1
+  ◆  Needs you  Need a host     deepseek  2h05m          /reply 2
+  ✖  Failed     Sandbox denied  cursor    7h57m          /retry 3
+
+♩ Keys
+  Enter           send the line, run the menu item, or reply when a Ticket needs you
+  Shift+Enter     new line (Ctrl+J; Esc then Enter in terminals that send plain Enter)
+  @path           attach a local file to the prompt
+  Ctrl+K          palette (also / at column 0); type to filter, Tab accepts, Enter runs
+  /               palette prefilled with / when the caret is at column 0
+  ?               help, when the composer is empty
+  Esc             close the palette, answer later, or interrupt the Ticket after a confirmation
+  Alt+M           cycle mode: auto, dispatch, read-only
+  Shift+Tab       previous focus
+  Ctrl+C          clear the composer; twice within 1.5s quits
+  PgUp/PgDn       scroll the conversation
+  Up              recall history when the palette is closed
+  Ctrl+T          show the task list
+  Ctrl+O          expand the newest collapsed output
+
+Commands
+  /worker      show which worker has the current Ticket
+  /dispatch    dispatch roster; /dispatch <id> reads one
+  /roles       role registry; /roles set <role> default <name> reason <text>
+  /jobs        list Tickets; /jobs <id> shows one; /jobs watch <id> follows it
+  /attach      follow a Ticket; /attach <id|index> is /jobs watch
+  /workspace   switch the Home workspace
+  /reply       answer the Ticket that needs you
+  /retry       retry a failed or waiting Ticket
+  /cancel      stop a running Ticket (/cancel <id|index>)
+  /resume      list saved sessions; /resume <id> reopens one
+  /status      reread Supervisor progress for the current Ticket
+  /help        show the TUI key map and commands                                                                       v
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+auto · ● 1 online                                                              shift+enter newline · alt+m mode · ? help

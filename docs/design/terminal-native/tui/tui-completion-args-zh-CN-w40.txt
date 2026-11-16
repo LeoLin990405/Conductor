@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ 空闲
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Conductor
+  描述一个任务后按 Enter，它会作为
+  Ticket 在 Home 上运行。
+  命令面板 › approve ▏
+  ▸ 7f3a91c2      ◆ 需要你     把终端原…
+    7f9e02b1      ◆ 需要你     修复窄屏…
+  2 个等待人工 · tab 或 enter 插入 id
+❯ 描述一个任务，/ 打开命令，@ 附加文件
+自动 · ● 3 在线                 tab 接受

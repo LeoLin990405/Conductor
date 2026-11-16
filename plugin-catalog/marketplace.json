@@ -1,0 +1,19 @@
+{
+  "name": "conductor-curated",
+  "description": "Curated MCP servers for Conductor: real browser automation and GitHub work, packaged as Agent Plugins.",
+  "owner": {
+    "name": "Conductor"
+  },
+  "plugins": [
+    {
+      "name": "playwright-browser",
+      "source": "plugins/playwright-browser",
+      "description": "Real browser automation (Playwright) for JS-rendered pages, filings, exchange sites and anti-bot pages."
+    },
+    {
+      "name": "github-mcp",
+      "source": "plugins/github-mcp",
+      "description": "GitHub repositories, issues, pull requests and code search through GitHub's official remote MCP server."
+    }
+  ]
+}

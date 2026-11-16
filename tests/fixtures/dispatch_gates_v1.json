@@ -1,0 +1,314 @@
+{
+  "id": "d3adbeef",
+  "goal": "Add a /healthz endpoint with tests",
+  "state": "APPROVAL",
+  "progress_pct": 75,
+  "integrate_branch": "integrate/auto-dispatch-d3adbeef",
+  "approval_token": "tok-1",
+  "message": "Integrate branch integrate/auto-dispatch-d3adbeef passed G5; awaiting human approval",
+  "spec_ref": "specs/9f3a1c7e5b2d4086",
+  "lines": [
+    {
+      "id": "line-0",
+      "name": "api",
+      "task": "Add GET /healthz",
+      "assigned_model": "kimi",
+      "branch": "feature/auto-dispatch-d3adbeef/line-0",
+      "attempts": 0,
+      "status": "PASSED",
+      "current_run": null,
+      "failure_reason": null,
+      "blockers": [],
+      "log_tail": "",
+      "assignment_audit": null,
+      "depends_on": [],
+      "write_scope": [
+        "src/server/app/health.py",
+        "tests/unit/server/app/test_health.py"
+      ],
+      "declared_paths": [
+        "src/server/app/health.py",
+        "tests/unit/server/app/test_health.py"
+      ],
+      "acceptance": [
+        "cmd: pytest -q tests/unit/server/app/test_health.py",
+        "returns 200 with {\"ok\": true}"
+      ],
+      "risk_bearing": true
+    }
+  ],
+  "outcomes": {},
+  "gates": {
+    "schema_version": "dispatch_gates_v1",
+    "updated_at": "2026-11-20T10:42:00+00:00",
+    "lines": {
+      "line-0": {
+        "line_id": "line-0",
+        "phase": "awaiting_human",
+        "risk_bearing": true,
+        "author": "kimi",
+        "primary_reviewer": "codex",
+        "secondary_reviewer": "glm",
+        "fix_round": 1,
+        "blocking_rounds": 0,
+        "replans": 0,
+        "replanned_from": null,
+        "reason": "g5_passed",
+        "updated_at": "2026-11-20T10:42:00+00:00",
+        "gates": {
+          "G0": {
+            "result": "pass",
+            "reason": "planner_output_valid",
+            "at": "2026-11-20T10:00:05+00:00"
+          },
+          "D1": {
+            "result": "pass",
+            "reason": "planner_output_valid",
+            "at": "2026-11-20T10:00:05+00:00"
+          },
+          "G2": {
+            "result": "pass",
+            "reason": "focused_tests_passed",
+            "at": "2026-11-20T10:31:10+00:00",
+            "commands": [
+              {
+                "index": 0,
+                "exit_code": 0,
+                "duration_ms": 8120,
+                "log_ref": "gates/d3adbeef/line-0/g2-2-0.log"
+              }
+            ]
+          },
+          "primary_review": {
+            "result": "pass",
+            "verdict": "merge",
+            "reviewer": "codex",
+            "round": 1,
+            "blocker_count": 0,
+            "reason": "review_merged",
+            "at": "2026-11-20T10:35:00+00:00"
+          },
+          "secondary_review": {
+            "result": "pass",
+            "verdict": "merge",
+            "reviewer": "glm",
+            "round": 0,
+            "blocker_count": 0,
+            "reason": "review_merged",
+            "at": "2026-11-20T10:38:00+00:00"
+          },
+          "G5": {
+            "result": "pass",
+            "reason": "g5_passed",
+            "at": "2026-11-20T10:42:00+00:00"
+          },
+          "G6": {
+            "result": "pending",
+            "reason": "awaiting_human",
+            "at": "2026-11-20T10:42:00+00:00"
+          }
+        },
+        "history": [
+          {
+            "round": 0,
+            "gate": "primary_review",
+            "result": "fail",
+            "reviewer": "codex",
+            "blocker_count": 2,
+            "reason": "review_blocked",
+            "at": "2026-11-20T10:20:00+00:00"
+          },
+          {
+            "round": 1,
+            "gate": "primary_review",
+            "result": "pass",
+            "reviewer": "codex",
+            "blocker_count": 0,
+            "reason": "review_merged",
+            "at": "2026-11-20T10:35:00+00:00"
+          }
+        ],
+        "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4",
+        "events": [
+          {
+            "task_id": "line-0",
+            "from_stage": "planning",
+            "to_stage": "spec_review",
+            "gate": "G0",
+            "result": "",
+            "reason": "spec_submitted",
+            "provider": "",
+            "timestamp": "2026-11-20T10:00:00+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "spec_review",
+            "to_stage": "dag_ready",
+            "gate": "G0",
+            "result": "pass",
+            "reason": "spec_accepted",
+            "provider": "",
+            "timestamp": "2026-11-20T10:00:05+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "dag_ready",
+            "to_stage": "assigned",
+            "gate": "D1",
+            "result": "",
+            "reason": "assigned",
+            "provider": "kimi",
+            "timestamp": "2026-11-20T10:00:10+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "assigned",
+            "to_stage": "implementing",
+            "gate": "",
+            "result": "",
+            "reason": "implementation_started",
+            "provider": "",
+            "timestamp": "2026-11-20T10:00:15+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "implementing",
+            "to_stage": "focused_tests",
+            "gate": "G2",
+            "result": "",
+            "reason": "work_submitted",
+            "provider": "kimi",
+            "timestamp": "2026-11-20T10:12:00+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "focused_tests",
+            "to_stage": "primary_review",
+            "gate": "G2",
+            "result": "pass",
+            "reason": "focused_tests_passed",
+            "provider": "",
+            "timestamp": "2026-11-20T10:14:30+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "primary_review",
+            "to_stage": "fixing",
+            "gate": "",
+            "result": "fail",
+            "reason": "review_blocked",
+            "provider": "codex",
+            "timestamp": "2026-11-20T10:20:00+00:00",
+            "handoff_ref": ""
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "fixing",
+            "to_stage": "primary_review",
+            "gate": "",
+            "result": "",
+            "reason": "fix_resubmitted",
+            "provider": "kimi",
+            "timestamp": "2026-11-20T10:31:10+00:00",
+            "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4"
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "primary_review",
+            "to_stage": "secondary_review",
+            "gate": "",
+            "result": "pass",
+            "reason": "primary_review_passed",
+            "provider": "codex",
+            "timestamp": "2026-11-20T10:35:00+00:00",
+            "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4"
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "secondary_review",
+            "to_stage": "integration_checks",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "secondary_review_passed",
+            "provider": "glm",
+            "timestamp": "2026-11-20T10:38:00+00:00",
+            "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4"
+          },
+          {
+            "task_id": "line-0",
+            "from_stage": "integration_checks",
+            "to_stage": "awaiting_human",
+            "gate": "G5",
+            "result": "pass",
+            "reason": "integration_checks_passed",
+            "provider": "",
+            "timestamp": "2026-11-20T10:42:00+00:00",
+            "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4"
+          }
+        ],
+        "machine": {
+          "task_id": "line-0",
+          "stage": "awaiting_human",
+          "risk_bearing": true,
+          "author_provider": "kimi",
+          "developer_provider": "kimi",
+          "primary_reviewer": "codex",
+          "secondary_reviewer": "glm",
+          "primary_verdict": "approve",
+          "primary_passed": true,
+          "secondary_passed": true,
+          "secondary_skipped": false,
+          "fix_rounds": 0,
+          "blocking_reviewer": "",
+          "blocking_rounds": 0,
+          "return_stage": "primary_review",
+          "handoff": null,
+          "handoff_ref": "sha256:5b2d1bc84a74b93e708ef95a7b48224c5b514e7db2c7d1333a7d4d9c0a51ddb4",
+          "blocked_from": "",
+          "replan_options": [],
+          "contributors": [
+            "kimi"
+          ],
+          "conflict_reviewer": ""
+        }
+      }
+    },
+    "integration": {
+      "phase": "passed",
+      "branch": "integrate/auto-dispatch-d3adbeef",
+      "merged_lines": [
+        "line-0"
+      ],
+      "reason": "g5_passed",
+      "at": "2026-11-20T10:42:00+00:00",
+      "checks": {
+        "full_suite": {
+          "result": "pass",
+          "exit_code": 0,
+          "duration_ms": 412000,
+          "command_source": "CONDUCTOR_DISPATCH_G5_COMMAND",
+          "log_ref": "gates/d3adbeef/g5-full.log"
+        },
+        "alembic_single_head": {
+          "result": "pass",
+          "heads": [
+            "141"
+          ],
+          "reason": "alembic_single_head"
+        }
+      }
+    },
+    "approval": {
+      "gate": "G6",
+      "result": "pending",
+      "token_present": true,
+      "at": "2026-11-20T10:42:00+00:00"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+/* Configured-route reminders: a provider id is not a connection. The user
+   needs to see whether MiniMax saved the CN API, the international API, or the
+   M Plan before they can trust what the model picker will run. */
+
+.configured-routes {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-success-soft);
+  border-radius: var(--radius-control);
+  background: var(--color-success-soft);
+}
+
+.configured-routes-label {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-success);
+  padding-top: 2px;
+}
+
+.configured-routes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.configured-route-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border: 1px solid var(--color-success-soft);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  font-size: var(--size-chrome);
+  line-height: 1.5;
+}
+
+.configured-route-chip > span {
+  color: var(--color-text-quaternary);
+}
+
+.configured-current-route {
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome);
+  color: var(--color-success);
+}

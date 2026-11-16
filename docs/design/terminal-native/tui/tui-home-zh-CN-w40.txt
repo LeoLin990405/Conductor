@@ -1,0 +1,32 @@
+ Conductor Super-agent  ○ 空闲
+  Conductor
+  描述一个任务后按 Enter，它会作为
+  Ticket 在 Home 上运行。
+  / 命令    @ 附加    ? 按键
+  ◆ 2 个需要你 — /jobs --attention
+  ✔  读取适配器注册表
+    已完成 · /jobs 1 · kimi · 12s
+    09:41
+  ◆  需要一台带 bash 的主机
+    需要你 · /reply 2 · deepseek · 2h05m
+    09:12
+  ✖  沙箱拒绝了这次执行
+    失败 · /retry 3 · cursor · 7h57m
+    01:35
+
+
+
+
+
+
+
+
+
+
+  命令
+  ▸ tickets       列出 Ticket；/jobs…
+    reply         回复需要你的 Ticket
+    retry         重试失败或等待中的…
+    help          显示 TUI 按键和命令
+❯ 描述一个任务，/ 打开命令，@ 附加文件
+自动 · ● 3 在线   ◆ 2 · shift+enter 换行

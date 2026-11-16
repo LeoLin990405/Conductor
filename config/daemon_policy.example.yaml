@@ -1,0 +1,105 @@
+# The endpoint device's own authority boundary for a BYOM local daemon.
+#
+# The daemon reads this file on the device it runs on. A compromised cloud
+# worker cannot change it: the file never travels to the cloud, and the cloud
+# only learns the policy *version*, which a lease is bound to. Copy this file
+# to ~/.config/conductor/daemon_policy.yaml on the device and start the daemon
+# with --policy <path> (or leave it at the default path).
+#
+# The daemon refuses to start from a policy file anyone else can write: it
+# must be owned by the daemon user, mode 0600 or stricter, and outside every
+# mount a Worker can write — the workspace, the isolation root and every
+# runtime write path the workspace policy names (a Worker runs as the same
+# user, so a policy there could be replaced between Tickets). Case-variant and
+# aliased spellings of those mounts are caught. Unknown fields are a startup
+# error, so a misspelled `denyy:` cannot silently drop a restriction.
+#
+# How a Ticket is checked:
+#   1. The request text (the Ticket's title and scope) is matched against the
+#      patterns of every operation. Each matching rule names one operation.
+#   2. An operation in a provider's `deny` is refused. An operation the
+#      provider does not list in `allow` is refused too, even when the request
+#      also names an operation the provider may run.
+#   3. A request that names no operation at all is refused unless the provider
+#      sets `allow_unclassified: true`.
+#   4. A read-only run — `read_only: true` here, a provider's own
+#      `read_only: true`, or a speculative Ticket — accepts only the
+#      operations listed in `read_only_operations`. The outer workspace
+#      sandbox then also takes the workspace write grant away, so a command
+#      that slipped past the patterns still cannot change the device; the
+#      native CLI state directories stay writable. The daemon refuses to
+#      start a read-only run when an extra runtime write path overlaps the
+#      workspace.
+#
+# The launch prompt the cloud sends next to the Ticket is the text the CLI
+# actually runs, so it is checked under the same rules: an operation it names
+# that the provider may not run refuses the Ticket before the CLI starts. A
+# command line is parsed the way a shell would read it: comments dropped,
+# `&&`, `||`, `|`, `;` and `&` split, env assignments and list markers
+# skipped, and shell words decoded (quote concatenation and escapes). The
+# daemon only authorizes plain, fully resolved command lists: substitutions
+# (`$(...)`, backticks), expansions (`$'...'`, `${...}`), compound/control
+# commands and redirection (however spaced) are unsupported and refuse the
+# line. A command that names no operation of this policy is refused too: an
+# unresolved command word is never treated as prose. A prose line is not a
+# command, so a path reference such as the server prompt's inline folder
+# mention stays prose. Keep the patterns narrow, because the server's own
+# instructions ("do not modify files, run mutating commands, or push") travel
+# in that prompt as well; the prompt must still name at least one allowed
+# operation unless the provider sets `allow_unclassified: true`.
+#
+# Everything not listed is refused, so start from the operations this device
+# really needs and add the rest deliberately.
+
+format: 1
+
+# Refuse every operation that is not listed in `read_only_operations`.
+read_only: false
+
+# The operations that cannot change the device.
+read_only_operations:
+  - repo.read
+  - test.run
+  - build.run
+
+# The operations this device recognises, and the request text that implies
+# each one. Single quotes keep a regular expression exactly as written.
+operations:
+  - operation: repo.read
+    patterns:
+      - '\bgit\s+(status|diff|log|show|branch)\b'
+      - '\b(read|inspect|review)\b'
+  - operation: repo.push
+    patterns:
+      - '\bgit\s+push\b'
+  - operation: repo.publish
+    patterns:
+      - '\b(npm publish|twine upload|docker push)\b'
+  - operation: test.run
+    patterns:
+      - '\b(pytest|npm test|pnpm test|make test)\b'
+  - operation: build.run
+    patterns:
+      - '\b(npm run build|pnpm build|make build)\b'
+
+providers:
+  codex:
+    read_only: false
+    allow_unclassified: false
+    allow:
+      - repo.read
+      - test.run
+      - build.run
+    deny:
+      - repo.push
+      - repo.publish
+
+  claude-code:
+    read_only: false
+    allow_unclassified: false
+    allow:
+      - repo.read
+      - test.run
+    deny:
+      - repo.push
+      - repo.publish

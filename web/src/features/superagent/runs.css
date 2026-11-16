@@ -1,0 +1,221 @@
+/* Terminal-native Runs page (/runs).
+   Colours are the S01 token custom properties; only token hexes appear, as
+   fallbacks. Square geometry (nothing above radius.card), hairline rules, mono
+   rows with a glyph + word for every state, and right-aligned tabular
+   durations. One dense row per Worker run; the raw log of the selected run
+   sits beside the list (below it when narrow). */
+
+.tn-runs {
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  min-width: 0;
+}
+
+.tn-runs *,
+.tn-runs *::before,
+.tn-runs *::after {
+  box-sizing: border-box;
+}
+
+.tn-runs-hint {
+  color: var(--ink-muted, #9aa3b5);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tn-runs-muted { color: var(--ink-muted, #9aa3b5); }
+.tn-runs-error {
+  margin: 0 0 var(--space-3, 12px);
+  color: var(--ink-error, #ff7a7a);
+  border-radius: var(--radius-none, 0px);
+}
+
+.tn-runs-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-4, 16px);
+  align-items: start;
+  min-width: 0;
+}
+.tn-runs-listwrap { min-width: 0; }
+
+/* ---------- list ---------- */
+
+.tn-runs-list {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  min-width: 0;
+}
+
+.tn-runs-row {
+  display: grid;
+  grid-template-columns: 12ch minmax(0, 1fr) minmax(0, 18ch) minmax(0, 14ch) 9ch 12ch;
+  align-items: center;
+  column-gap: var(--space-3, 12px);
+  width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border: 0;
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-faint, #2a2f3a);
+  border-radius: var(--radius-none, 0px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.tn-runs-run:hover { background: var(--surface-elevated, #282c34); }
+.tn-runs-run--active {
+  background: var(--surface-selection, #1a2140);
+  box-shadow: inset 2px 0 0 var(--ink-baton, #8b9cff);
+}
+/* Rows draw their own ring (unlayered, so it beats the focus-defaults layer and
+   its tabindex="-1" opt-out): roving focus must stay visible on j/k. Inward,
+   so the hairline-ruled list never clips it. */
+.tn-runs-run:focus-visible {
+  outline: var(--border-focus, 2px) solid var(--ink-focus, #8b9cff);
+  outline-offset: -2px;
+  background: var(--surface-selection, #1a2140);
+}
+
+.tn-runs-colhead {
+  cursor: default;
+  color: var(--ink-muted, #9aa3b5);
+  border-bottom-color: var(--ink-rule, #3a4150);
+}
+
+.tn-runs-state { white-space: nowrap; flex-shrink: 0; }
+.tn-runs-title { font-weight: var(--weight-label, 500); }
+.tn-runs-worker,
+.tn-runs-origin,
+.tn-runs-age { color: var(--ink-muted, #9aa3b5); }
+
+/* Durations and ages: right-aligned, tabular figures, never wrapped. */
+.tn-runs-num {
+  justify-self: end;
+  text-align: end;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tn-runs-duration { color: var(--ink-fg, #e6e8ee); }
+
+.tn-runs-attention {
+  grid-column: 2 / -1;
+  color: var(--ink-hold, #f2b544);
+  font-family: var(--font-prose, var(--font-mono));
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Long names truncate; the state column never shrinks, so it never hides. */
+.tn-runs-trunc {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- detail ---------- */
+
+.tn-runs-detail {
+  min-width: 0;
+  padding: var(--space-3, 12px);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-card, 3px);
+  background: var(--surface-canvas, #1e1e1e);
+}
+.tn-runs-detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2, 8px) var(--space-3, 12px);
+  margin-bottom: var(--space-2, 8px);
+  min-width: 0;
+}
+.tn-runs-detail-title {
+  flex: 1 1 100%;
+  min-width: 0;
+  font-weight: var(--weight-label, 500);
+  overflow-wrap: anywhere;
+}
+.tn-runs-detail-worker { min-width: 0; overflow-wrap: anywhere; }
+.tn-runs-detail-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+  margin-inline-start: auto;
+}
+.tn-runs-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3, 12px);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  background: transparent;
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tn-runs-button:hover { border-color: var(--ink-fg, #e6e8ee); }
+.tn-runs-button:focus-visible,
+.tn-runs-raw:focus-visible {
+  outline: var(--border-focus, 2px) solid var(--ink-focus, #8b9cff);
+  outline-offset: var(--focus-offset, 2px);
+}
+.tn-runs-note { margin: 0 0 var(--space-2, 8px); font-family: var(--font-prose, var(--font-mono)); }
+.tn-runs-raw {
+  max-height: 60vh;
+  min-height: 6em;
+  overflow: auto;
+  margin: 0;
+  padding: var(--space-2, 8px);
+  border: var(--border-hairline, 1px) solid var(--ink-faint, #2a2f3a);
+  border-radius: var(--radius-control, 2px);
+  background: var(--surface-page, #0f1115);
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- medium: list above the log ---------- */
+
+@media (max-width: 1100px) {
+  .tn-runs-split { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- narrow: stack instead of dropping a column ---------- */
+
+@media (max-width: 720px) {
+  .tn-runs-hint,
+  .tn-runs-colhead { display: none; }
+  .tn-runs .sa-page-head { flex-wrap: wrap; }
+
+  .tn-runs-row {
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+    grid-template-areas:
+      "state  duration age"
+      "title  title    title"
+      "worker worker   worker"
+      "origin origin   origin"
+      "attn   attn     attn";
+    row-gap: 2px;
+    padding: var(--space-2, 8px);
+  }
+  .tn-runs-row .tn-runs-state { grid-area: state; }
+  .tn-runs-row .tn-runs-duration { grid-area: duration; }
+  .tn-runs-row .tn-runs-age { grid-area: age; }
+  .tn-runs-row .tn-runs-title { grid-area: title; }
+  .tn-runs-row .tn-runs-worker { grid-area: worker; }
+  .tn-runs-row .tn-runs-origin { grid-area: origin; }
+  .tn-runs-row .tn-runs-attention { grid-area: attn; }
+}

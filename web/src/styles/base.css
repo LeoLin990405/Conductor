@@ -1,0 +1,234 @@
+/* ============================================
+   Base element styles, on top of Tailwind's preflight
+   ============================================
+
+   Imported straight after preflight (index.css) and, like it, outside any
+   cascade layer, so these win over preflight by source order and lose to every
+   utility and component rule by specificity. */
+
+/* ---------- Tailwind v3 preflight, where v4's differs ----------
+   The v4 preflight changed these defaults. Each rule puts back the v3 value so
+   the upgrade moves no pixels; drop one only as a deliberate visual change. */
+
+/* v4 makes form controls transparent, square and fully opaque; v3 left all
+   three to the browser, so a field with no background class showed the
+   platform's field color. */
+input,
+select,
+optgroup,
+textarea {
+  background-color: revert;
+}
+
+input:where([type='button'], [type='reset'], [type='submit']) {
+  background-color: transparent;
+}
+
+button,
+input,
+select,
+optgroup,
+textarea {
+  border-radius: revert;
+  opacity: revert;
+}
+
+/* v4 zeroes every element's padding; v3 left options at the browser's. */
+option {
+  padding: revert;
+}
+
+/* The token muted ink rather than a second gray outside the palette. */
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-muted);
+}
+
+/* v4 dropped the pointer cursor on buttons. */
+button,
+[role='button'] {
+  cursor: pointer;
+}
+
+:disabled {
+  cursor: default;
+}
+
+/* ---------- App base ---------- */
+
+* {
+  box-sizing: border-box;
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  min-width: 320px;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tailwind's preflight carries `:-moz-focusring { outline: auto }` outside any
+   layer, so in Firefox it would beat the whole focus layer in tokens.css: its
+   own ring on a keyboard focus, and one on a clicked field the layer means to
+   keep quiet. Same specificity and later in source, so this wins, and
+   revert-layer hands the decision back to the layer. */
+:-moz-focusring {
+  outline: revert-layer;
+}
+
+/* ============================================
+   Terminal-native surface language
+   One flat sheet: token ground, hairline rules, square geometry, mono chrome.
+   Kept unlayered and after the base rules so the ink ground and typography
+   win over preflight defaults without touching component code.
+   ============================================ */
+
+body {
+  background: var(--surface-page);
+  color: var(--ink-fg);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--surface-selection);
+  color: var(--ink-fg);
+}
+
+/* One surface language: hairline edge, token ground, square card radius. */
+.ui-card {
+  background: var(--surface-canvas);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-0);
+}
+
+/* ---------- Terminal vocabulary ----------
+   A dense readout layer on top of the shared card language: kickers and
+   inline metadata speak in mono uppercase; figures stay tabular. */
+.terminal-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--weight-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.terminal-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.terminal-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.02em;
+}
+
+.terminal-rail {
+  border-left: var(--border-focus) solid var(--ink-baton);
+  padding-left: var(--space-2);
+}
+
+.terminal-grid-lines {
+  background-image:
+    linear-gradient(var(--ink-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-faint) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.ui-card-hover {
+  transition:
+    background-color var(--duration-quick) var(--ease-standard),
+    border-color var(--duration-quick) var(--ease-standard);
+}
+
+.ui-card-hover:hover {
+  background: var(--surface-elevated);
+  border-color: var(--ink-muted);
+}
+
+.ui-elevated {
+  background: var(--surface-elevated);
+  border: var(--border-hairline) solid var(--ink-rule);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.ui-page-title {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: var(--weight-label);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ink-fg);
+}
+
+.ui-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--weight-label);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.ui-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.ui-hairline {
+  border: 0;
+  border-top: var(--border-hairline) solid var(--ink-rule);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--ink-muted) 22%, transparent);
+  border: 3px solid transparent;
+  border-radius: var(--radius-control);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--ink-muted) 34%, transparent);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Dialogs are terminal panels: square-ish edges, hairline border, no pill
+   controls inside. Applies to Radix dialogs and their forms everywhere. */
+[role='dialog'] {
+  border-radius: var(--radius-overlay) !important;
+}
+
+[role='dialog'] input,
+[role='dialog'] textarea,
+[role='dialog'] [role='combobox'],
+[role='dialog'] button {
+  border-radius: var(--radius-control) !important;
+}

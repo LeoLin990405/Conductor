@@ -1,0 +1,1 @@
+{"type": "turn.completed", "sessionId": "<session-id>", "payload": {"resultType": "error_max_turns", "response": ""}}

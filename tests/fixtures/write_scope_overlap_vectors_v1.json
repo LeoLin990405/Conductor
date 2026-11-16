@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "description": "Write-scope overlap vectors shared by the planner validator and the DAG assignment stage. Every 'overlap' pair must be refused by one of the two layers; every 'disjoint' pair may be assigned to two different developers. 'rejected_whitespace' holds scopes that are only invalid because of surrounding whitespace: the trimmed spelling is the value that must be checked and stored. 'rejected_items' holds single write-scope items the one scope check refuses (blank, NUL and escaping spellings), and 'mixed_blank_positions' holds multi-item scopes with a blank member in each position, each refused as a whole rather than silently dropping the bad item.",
+  "overlap": [
+    ["**/*.py", "**/*.py"],
+    ["*/a.py", "*/a.py"],
+    ["**/*.py", "src/a.py"],
+    ["*/a.py", "src/a.py"],
+    ["foo*/bar.py", "foobar/bar.py"],
+    ["*.py", "foo.py"],
+    ["foo?.py", "foo1.py"],
+    ["[ab].py", "a.py"],
+    ["././", "src/a.py"],
+    ["./", "./src/a.py"],
+    ["src", "src/a.py"],
+    ["*", "src/a.py"]
+  ],
+  "disjoint": [
+    ["*.py", "src/a.py"],
+    ["src/a.py", "src/b.py"],
+    ["docs", "src"],
+    ["src/*.py", "docs/x.py"]
+  ],
+  "rejected": [
+    "src/../x.py",
+    "*/../x.py",
+    "foo/..",
+    "..",
+    "/etc/x",
+    "\\etc\\secret",
+    "C:\\x",
+    ""
+  ],
+  "rejected_whitespace": [
+    " /etc/x",
+    " C:\\x",
+    " ~/secret",
+    " ../outside.py",
+    "src/.. "
+  ],
+  "rejected_items": [
+    "",
+    " ",
+    "\t",
+    " \t\n ",
+    "src/\u0000x.py"
+  ],
+  "mixed_blank_positions": [
+    ["src/a.py", ""],
+    ["", "src/a.py"],
+    ["src/a.py", " ", "src/b.py"]
+  ]
+}

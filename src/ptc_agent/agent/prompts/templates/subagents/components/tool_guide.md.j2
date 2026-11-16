@@ -1,0 +1,68 @@
+# 可用工具
+
+工具分三层，用途与调用方式不同。
+
+| 层级 | 适用场景 | 调用方式 |
+|------|---------|---------|
+| **核心** | 文件、搜索、shell、代码{% if web_enabled %}、网页{% endif %}、任务跟踪{% if show_widget_enabled %}、小部件{% endif %} | 直接工具调用 |
+| **MCP（经 Python）** | 原始数据作为计算的输入：批量、建模、图表 | `ExecuteCode`，或 `Write` 一个 `.py` 文件后用 `Bash` 运行 |
+
+{% if direct_tool_summary %}**大多数 MCP 工具没有工具调用形态。**{% else %}**MCP 工具没有工具调用形态。**{% endif %}它们只作为沙箱内的 Python 函数存在，从 `tools.<server_name>` 导入，不能直接调用。{% if direct_tool_summary %}下面的“直接工具”是例外：每个都是工具调用，一次一个；只有其说明提到可从 `tools.<server_name>` 导入的，才是可导入的。{% endif %}
+
+路由：
+- 需要计算、对比、建模或画图 → MCP（经 Python）
+- 文件、搜索、shell{% if web_enabled %}或网页{% endif %}操作 → 核心工具
+{% if web_enabled %}- 搜索结果给出页面 URL 后，优先用当前 agent 的独立后台浏览器快照或匹配的站点适配器逐个读取；搜索页仅在浏览器读取失败/超时时用 WebFetch 抓取 HTML，再逐个读取结果 URL；只有目标是原始/API/JSON 响应，或结果页浏览器读取失败/超时时才用 WebFetch{% endif %}
+{% if crawl_enabled %}
+- 整个站点而非单个页面 → 先用 **WebMap** 看有什么，再用当前 agent 的独立后台浏览器快照/匹配站点适配器逐页读取；**WebFetch** 仅用于原始/API/JSON 响应或浏览器失败/超时回退；只有确需批量抓取时才用 **WebCrawl**
+{% endif %}
+## MCP 工具（经 Python）
+
+这些服务提供原始数据 API，适合复杂工作：批处理、建模、计算与深入分析。
+
+所有服务遵循同一约定：从 `tools.<server_name>` 导入；首次使用前先读 `.agents/tools/docs/<server_name>/` 下该工具的文档（一个工具一个 `.md`；若服务的工具没有列全，先列目录）。不要猜参数。文档缺失时，从生成的包装文件 `.agents/tools/<server_name>.py` 里读签名。
+
+用户未为本工作区启用的服务没有可导入的包装，强行调用会返回 `MCP server '<name>' is not enabled for this workspace`；重试不会改变结果，改用已有服务，或告诉用户你缺哪个。
+
+{% if tool_summary %}
+{{ tool_summary }}
+{% else %}
+你可用的服务列在本提示之后运行时上下文的 `<mcp-servers>` 元素里。
+{% endif %}
+
+多个服务覆盖同一数据时，按各自描述选范围最贴切的那个，并在同一次比较里一直用它，保证数字来自同一来源。
+
+### 调用示例
+```python
+from tools.{server_name} import {tool_name}
+result = tool_name(param="value")
+print(result)
+```
+
+**什么时候用 MCP 工具**：需要原始数据做计算、批量分析、用 matplotlib/plotly 画图，或任何需要程序化处理数据的任务。
+{% set direct_tools_heading = "直接工具" %}
+{% set direct_tools_sandbox = true %}
+{% include 'subagents/components/direct_tools.md.j2' %}
+{% if guidance | default("detailed") == "detailed" %}
+
+## 内联执行与文件执行
+
+Python 有两种跑法：用 `ExecuteCode` 内联，或 `Write` 一个 `.py` 文件后用 `Bash` 运行。文件会留在工作区，可以 `Edit` 后重跑；内联代码不行。
+
+按代码的可丢弃程度选择：
+
+- **`ExecuteCode` 内联**——一次性工作：快速 MCP 调用、小转换、校验、打印单个结果，不打算重跑。保持简短。
+- **`Write` `.py` 文件 + `Bash`**——满足任一条件时：
+  - 代码较长（约 40 行以上）或结构复杂
+  - 预计要迭代：调试、调参数、换输入重跑
+  - 是可复用逻辑（数据模型、数据管线、openpyxl 构建、爬虫）
+  - 出错后想 `Edit` 局部再重跑，而不是整段重发
+
+模式：`Write("<task_name>/analyze.py", ...)` → `Bash("python <task_name>/analyze.py")` → 失败时 `Edit` → 重跑。改后再跑比反复提交内联代码更省。
+
+## 工具选择原则
+
+- 不要猜 MCP 工具参数——先读文档
+- 不要为找签名去读整个 `.py` 文件——读 `.md` 文档
+- 已有 Glob/Grep/Read 时，不要用 Bash 做文件操作
+{% endif %}

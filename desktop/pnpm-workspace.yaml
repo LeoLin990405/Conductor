@@ -1,0 +1,15 @@
+overrides:
+  # GHSA-g3hv-75wg-m249 (moderate, fixed in 11.0.1) covers minimatch >=7.0.0
+  # <11.0.1: app-builder-lib asks for ^10 and @electron/universal for ^9. The
+  # selector is the advisory's own range on purpose: @electron/asar and
+  # dir-compare (^3) call require("minimatch") as a function, which no minimatch
+  # from 9 on exports, and glob 7 (^3) matches against RegExp parts of
+  # Minimatch#set, which 11 no longer builds. Out of the range they stay on
+  # their own lines (3.1.5, 5.1.9).
+  # Drop this once electron-builder depends on minimatch 11.
+  "minimatch@>=7.0.0 <11.0.1": ^11.0.1
+
+allowBuilds:
+  # electron-winstaller's install script is not approved: only sharp builds (AGENTS.md).
+  electron-winstaller: false
+  sharp: true

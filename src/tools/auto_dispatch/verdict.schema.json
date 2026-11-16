@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["passed", "blockers", "verdict", "status", "needed_evidence"],
+  "properties": {
+    "passed": {"type": "boolean"},
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "verdict": {"type": "string"},
+    "status": {"type": "string", "enum": ["pass", "fail", "inconclusive"]},
+    "needed_evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

@@ -1,0 +1,1 @@
+No permission client configured for Bash

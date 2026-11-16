@@ -1,0 +1,29 @@
+{
+  "name": "conductor-desktop",
+  "version": "0.1.4",
+  "private": true,
+  "description": "Desktop shell for Conductor — the multi-agent collaboration and aggregation platform",
+  "homepage": "https://github.com/LeoLin990405/Conductor",
+  "author": {
+    "name": "Conductor"
+  },
+  "main": "src/index.js",
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "postinstall": "node -e \"require('electron')\"",
+    "start": "node scripts/write-build-config.mjs && electron .",
+    "test": "node --test --test-concurrency=1",
+    "preview": "node scripts/preview.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "build": "node scripts/write-build-config.mjs && node scripts/make-icons.mjs && node scripts/build.mjs --dir",
+    "dist": "node scripts/write-build-config.mjs && node scripts/make-icons.mjs && node scripts/build.mjs"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "electron": "^43.8.1",
+    "electron-builder": "^26.15.3",
+    "sharp": "^0.35.5"
+  }
+}

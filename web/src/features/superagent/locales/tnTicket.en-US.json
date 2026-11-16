@@ -1,0 +1,131 @@
+{
+  "tnTicket": {
+    "title": "Ticket",
+    "lede": "The conversation, worker progress, the worker report and the read-only Git delivery check.",
+    "back": "← Back",
+    "missing": "Missing Ticket id.",
+    "loading": "Loading task…",
+    "loadError": "Could not read this task. Retry in a moment.",
+    "notFound": "Task not found.",
+    "copyId": "Copy ID",
+    "meta": {
+      "workspace": "Workspace",
+      "source": "Source",
+      "sourceId": "Source ID",
+      "triggerId": "Trigger ID",
+      "worker": "Worker",
+      "attempts": "Attempts",
+      "mode": "Mode",
+      "outcome": "Observe outcome",
+      "switches": "Switches",
+      "created": "Created",
+      "updated": "Updated",
+      "duration": "Duration",
+      "ended": "Ended",
+      "none": "—",
+      "ptcAgent": "PTC agent",
+      "manual": "Manual request",
+      "scheduled": "Scheduled task",
+      "speculative": "Speculative plan — review before executing"
+    },
+    "section": {
+      "conversation": "Conversation",
+      "progress": "Worker progress",
+      "report": "Report",
+      "delivery": "Git delivery check"
+    },
+    "conversation": {
+      "label": "Transcript — j/k scroll one row",
+      "loading": "Loading task activity…",
+      "error": "Could not load task activity.",
+      "empty": "No task activity yet.",
+      "who": {
+        "created": "Created",
+        "instruction": "Instruction",
+        "source": "Source",
+        "report": "Update",
+        "closed": "Closed"
+      },
+      "log": "Execution log",
+      "logHide": "Hide execution log",
+      "logNote": "This log is the worker session. The task above is what you track and close."
+    },
+    "actions": {
+      "close": "Close task",
+      "closed": "Closed",
+      "closeFailed": "Could not close this task. The worker is still running.",
+      "retry": "Retry",
+      "approve": "Approve plan & run",
+      "discard": "Discard plan"
+    },
+    "composer": {
+      "label": "Composer",
+      "placeholder": "Reply to the worker, or press / at column 0…",
+      "send": "send",
+      "status": "Enter sends · Shift+Enter (or Ctrl+J) newline · / at column 0 opens the palette prefilled with /",
+      "sent": "added to the task · Enter sends · Shift+Enter newline",
+      "empty": "nothing to send · Enter sends · Shift+Enter newline",
+      "failed": "Could not add this instruction. Retry in a moment.",
+      "daemonFailed": "Could not add this instruction. A daemon task accepts one only while it is blocked or waiting.",
+      "trapPending": "Confirm the request above first — the prompt is a trap in front of the composer.",
+      "closedNote": "This task takes no more instructions.",
+      "daemonNote": "This daemon task takes an instruction only while it is blocked or waiting."
+    },
+    "progress": {
+      "elapsed": "Elapsed",
+      "steps": "{{done}} of {{total}} steps",
+      "phase": {
+        "queued": "Queued",
+        "running": "Running",
+        "waiting": "Waiting",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "none": "No worker progress for this task yet."
+    },
+    "report": {
+      "heading": "Worker report",
+      "empty": "No report yet. The worker writes one when it finishes or needs you.",
+      "question": "Question"
+    },
+    "delivery": {
+      "workspace": "workspace",
+      "branch": "branch",
+      "base": "base",
+      "host": "host",
+      "cleanup": "cleanup",
+      "gitCheck": "git check",
+      "decision": "decision",
+      "notRecorded": "not recorded",
+      "cleanupPending": "cleanup pending",
+      "cleanupClear": "no cleanup pending",
+      "unsupported": "this runtime cannot be checked — review the diff by hand",
+      "checked": "checked with the latest report",
+      "noReport": "no report yet",
+      "decisionDone": "delivered",
+      "decisionNeedsYou": "needs you — answer or retry on this page",
+      "decisionFailed": "failed — retry or close",
+      "decisionOpen": "in progress",
+      "decisionClosed": "closed",
+      "contract": "Ticket delivery contract: the worker commits its own changes before finishing, and the report above is the one it sends. This check is read-only Git state — it never mutates the workspace, and it runs again before any merge is allowed to land."
+    },
+    "clarify": {
+      "heading": "Confirm the request before this ticket starts",
+      "score": "Clarity score {{score}}",
+      "below": "Clarity score {{score}} — below the 0.6 threshold",
+      "original": "Original prompt",
+      "review": "Review the expanded request — edit anything that misses what you meant.",
+      "assumptions": "Assumptions",
+      "questions": "Open questions",
+      "confirm": "Confirm & start",
+      "asDrafted": "Confirm as drafted",
+      "failed": "Could not confirm. Retry in a moment.",
+      "loading": "Loading clarification…",
+      "status": "Enter confirms · Shift+Enter (or Ctrl+J) newline · Esc returns to the composer",
+      "empty": "nothing to confirm · Enter confirms · Shift+Enter newline",
+      "sent": "confirmed · the Ticket is queued",
+      "needsYou": "Needs you"
+    }
+  }
+}

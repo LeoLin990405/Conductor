@@ -1,0 +1,81 @@
+{
+  "flow": "F2",
+  "revision": "synthetic-baseline",
+  "app_revision": "12d17232",
+  "captured_at": "2026-10-25T00:00:00Z",
+  "synthetic": true,
+  "http": [
+    {
+      "method": "POST",
+      "path": "/api/v1/threads/4f6a0e4c-3f9c-4d43-8a0b-9e0f1a2b3c4d/messages",
+      "status": 200,
+      "request": {
+        "body": {
+          "message": "分析 600519 最新季报",
+          "thread_id": "4f6a0e4c-3f9c-4d43-8a0b-9e0f1a2b3c4d"
+        }
+      },
+      "response": {
+        "accepted": true,
+        "run_id": "9b2c1d3e-5f60-4a7b-8c9d-0e1f2a3b4c5d"
+      }
+    }
+  ],
+  "sse": [
+    {
+      "label": "main",
+      "events": [
+        {
+          "type": "message_chunk",
+          "payload": {
+            "seq": 1,
+            "content": "Analyzing the filing "
+          }
+        },
+        {
+          "type": "tool_call",
+          "payload": {
+            "seq": 2,
+            "tool": "filesystem_read",
+            "args": {
+              "path": "/workspace/report.md"
+            }
+          }
+        },
+        {
+          "type": "tool_call_result",
+          "payload": {
+            "seq": 3,
+            "ok": true,
+            "latency_ms": 250,
+            "token_count": 1000
+          }
+        },
+        {
+          "type": "message_chunk",
+          "payload": {
+            "seq": 4,
+            "content": "The filing looks consistent."
+          }
+        }
+      ]
+    }
+  ],
+  "db": [
+    {
+      "table": "conversation_responses",
+      "keys": [
+        "conversation_response_id"
+      ],
+      "rows": [
+        {
+          "conversation_response_id": "9b2c1d3e-5f60-4a7b-8c9d-0e1f2a3b4c5d",
+          "status": "completed",
+          "turn_index": 1,
+          "token_count": 1000,
+          "latency_ms": 250
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+/* Terminal-native Sources page (/sources).
+   Colours are the S01 token custom properties; only token hexes appear, as
+   fallbacks. Square geometry (nothing above radius.card), hairline rules, mono
+   ids. One dense row per Source or schedule: health as glyph + word, job
+   counts right-aligned in tabular figures, then the row's actions. The global
+   :focus-visible ring (2px ink.focus, tokens.css) is left untouched. */
+
+.tn-sources {
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tn-sources *,
+.tn-sources *::before,
+.tn-sources *::after {
+  box-sizing: border-box;
+}
+
+.tn-sources-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  min-width: 0;
+  margin-bottom: var(--space-6, 32px);
+}
+
+.tn-sources-section-head h2 {
+  margin: 0;
+  font-size: var(--size-prose, 15px);
+  font-weight: var(--weight-label, 500);
+  color: var(--ink-fg, #e6e8ee);
+}
+
+.tn-sources-subhead {
+  margin: var(--space-4, 16px) 0 0;
+  font-size: var(--size-chrome, 12px);
+  font-weight: var(--weight-label, 500);
+  color: var(--ink-fg, #e6e8ee);
+}
+
+.tn-sources-lede {
+  margin: var(--space-1, 4px) 0 0;
+  max-width: 76ch;
+  font-family: var(--font-prose, var(--font-mono));
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-prose, 1.65);
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-sources-muted { color: var(--ink-muted, #9aa3b5); }
+.tn-sources-empty { margin: 0; padding: var(--space-2, 8px) 0; border-top: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150); }
+
+/* ---------- list ---------- */
+
+.tn-sources-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  min-width: 0;
+}
+
+.tn-sources-row,
+.tn-sources-head {
+  display: grid;
+  grid-template-columns: 13ch minmax(0, 1fr) max-content;
+  grid-template-areas:
+    "health main counts"
+    ". actions actions";
+  align-items: start;
+  column-gap: var(--space-3, 12px);
+  row-gap: var(--space-1, 4px);
+  min-width: 0;
+  padding: var(--space-2, 8px);
+}
+
+.tn-sources-row {
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-none, 0px);
+}
+.tn-sources-row:hover,
+.tn-sources-row:focus-within {
+  background: var(--surface-canvas, #1e1e1e);
+}
+
+.tn-sources-head {
+  grid-template-areas: "health main counts";
+  padding-block: 0 var(--space-1, 4px);
+  color: var(--ink-muted, #9aa3b5);
+}
+.tn-sources-head > :nth-child(1) { grid-area: health; }
+.tn-sources-head > :nth-child(2) { grid-area: main; }
+.tn-sources-head > :nth-child(3) { grid-area: counts; }
+
+.tn-sources-cell-health { grid-area: health; min-width: 0; }
+.tn-sources-cell-main { grid-area: main; min-width: 0; }
+.tn-sources-cell-counts { grid-area: counts; min-width: 0; }
+
+.tn-sources-name {
+  display: block;
+  font-weight: var(--weight-label, 500);
+  color: var(--ink-fg, #e6e8ee);
+}
+
+.tn-sources-meta {
+  margin: 0;
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-sources-code {
+  font: inherit;
+  color: var(--ink-baton, #8b9cff);
+}
+
+.tn-sources-error-line {
+  margin: 0;
+  color: var(--ink-error, #ff7a7a);
+}
+
+/* ---------- health: glyph + word ---------- */
+
+.tn-sources-health {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  white-space: nowrap;
+}
+.tn-sources-health-glyph { min-width: 1.15em; text-align: center; }
+.tn-sources-health-word { color: var(--ink-muted, #9aa3b5); }
+.tn-sources-health--ok .tn-sources-health-glyph,
+.tn-sources-health--active .tn-sources-health-glyph { color: var(--ink-ok, #5bd38a); }
+.tn-sources-health--error .tn-sources-health-glyph,
+.tn-sources-health--error .tn-sources-health-word { color: var(--ink-error, #ff7a7a); }
+.tn-sources-health--paused .tn-sources-health-glyph,
+.tn-sources-health--waiting .tn-sources-health-glyph { color: var(--ink-muted, #9aa3b5); }
+
+/* ---------- job counts: right-aligned, tabular ---------- */
+
+.tn-sources-counts {
+  display: grid;
+  grid-template-columns: repeat(4, 9ch) 10ch;
+  justify-content: end;
+  column-gap: var(--space-2, 8px);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+.tn-sources-count {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: var(--space-1, 4px);
+  white-space: nowrap;
+  color: var(--ink-fg, #e6e8ee);
+}
+.tn-sources-count-num { font-variant-numeric: tabular-nums; }
+.tn-sources-count-glyph { color: var(--ink-muted, #9aa3b5); }
+.tn-sources-count--running .tn-sources-count-glyph { color: var(--ink-tempo, #56c7d9); }
+.tn-sources-count--needsYou .tn-sources-count-glyph { color: var(--ink-hold, #f2b544); }
+.tn-sources-count--failed .tn-sources-count-glyph { color: var(--ink-error, #ff7a7a); }
+.tn-sources-count--zero .tn-sources-count-num { color: var(--ink-muted, #9aa3b5); }
+.tn-sources-count--legend,
+.tn-sources-count--legend .tn-sources-count-num {
+  color: var(--ink-muted, #9aa3b5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tn-sources-count-word { display: none; color: var(--ink-muted, #9aa3b5); }
+.tn-sources-count-word--always { display: inline; }
+
+/* ---------- actions ---------- */
+
+.tn-sources-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+  min-width: 0;
+}
+
+.tn-sources-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 var(--space-2, 8px);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  background: transparent;
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tn-sources-btn:hover { border-color: var(--ink-fg, #e6e8ee); }
+.tn-sources-btn:disabled { color: var(--ink-muted, #9aa3b5); cursor: not-allowed; }
+.tn-sources-btn--danger { color: var(--ink-error, #ff7a7a); }
+
+/* ---------- forms ---------- */
+
+.tn-sources-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--space-3, 12px);
+  min-width: 0;
+  margin-top: var(--space-2, 8px);
+}
+.tn-sources-form label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+  min-width: 0;
+  color: var(--ink-muted, #9aa3b5);
+}
+.tn-sources-wide { grid-column: 1 / -1; }
+.tn-sources-form input,
+.tn-sources-form select,
+.tn-sources-form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  background: var(--surface-page, #0f1115);
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+}
+.tn-sources-form textarea { resize: vertical; }
+
+.tn-sources-details { margin-top: var(--space-2, 8px); }
+.tn-sources-details summary {
+  cursor: pointer;
+  color: var(--ink-baton, #8b9cff);
+  width: fit-content;
+}
+
+.tn-sources-submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-3, 12px);
+}
+
+/* ---------- narrow: stack the columns, never drop one ---------- */
+
+@media (max-width: 760px) {
+  .tn-sources-head { display: none; }
+  .tn-sources-row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "health"
+      "main"
+      "counts"
+      "actions";
+  }
+  .tn-sources-counts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: var(--space-1, 4px) var(--space-3, 12px);
+    text-align: start;
+  }
+  .tn-sources-count-word { display: inline; }
+}

@@ -1,0 +1,9 @@
+{
+  "format": 1,
+  "keys": [
+    {
+      "kid": "example",
+      "public_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    }
+  ]
+}

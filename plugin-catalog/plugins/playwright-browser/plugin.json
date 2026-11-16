@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "playwright-browser",
+  "version": "0.1.0",
+  "description": "Playwright browser automation for pages WebFetch cannot reach: JS-rendered exchanges, filings and anti-bot pages. Runs headless Chromium inside the sandbox.",
+  "author": {
+    "name": "Conductor (curated)"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "playwright",
+    "browser",
+    "automation",
+    "scraping",
+    "web"
+  ],
+  "extensions": {
+    "ai.conductor": {
+      "servers": {
+        "playwright": {
+          "description": "Headless Chromium automation: navigate, snapshot the accessibility tree, click, type, extract text and download files.",
+          "instruction": "Use for pages that require a browser: JS-rendered announcements, exchange search, login walls, or pages where WebFetch returns an empty shell. Prefer WebFetch for simple article pages; prefer Playwright when you must interact, paginate, or read rendered content.",
+          "tool_exposure_mode": "summary",
+          "icon": "playwright.dev"
+        }
+      }
+    }
+  }
+}

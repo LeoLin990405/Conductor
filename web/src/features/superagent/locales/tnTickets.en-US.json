@@ -1,0 +1,56 @@
+{
+  "tnTickets": {
+    "title": "Tickets",
+    "lede": "Every Ticket across manual requests, GitHub and automations. Each row carries its state glyph, word and colour.",
+    "filters": {
+      "label": "Ticket filters",
+      "search": "search title, scope or origin",
+      "searchPlaceholder": "Search title, scope or origin",
+      "worker": "worker",
+      "workerAny": "any",
+      "sort": "sort",
+      "sortUpdated": "updated ↓",
+      "sortCreated": "created ↓",
+      "sortTitle": "title",
+      "states": "State filter",
+      "all": "all",
+      "attention": "--attention"
+    },
+    "summary": {
+      "showing": "showing",
+      "count": "{{shown}} of {{total}}",
+      "query": "query",
+      "worker": "worker",
+      "keys": "j/k move · Enter opens · / filters"
+    },
+    "columns": {
+      "state": "state",
+      "ticket": "ticket",
+      "worker": "worker · model",
+      "owner": "owner",
+      "updated": "updated"
+    },
+    "origin": {
+      "manual": "manual",
+      "github": "github",
+      "schedule": "schedule"
+    },
+    "owner": {
+      "cloud": "cloud",
+      "daemon": "daemon:{{id}}"
+    },
+    "workerNone": "PTC",
+    "list": "Tickets",
+    "empty": "No Tickets yet. Start one from the composer on Home.",
+    "emptyFiltered": "No Ticket matches these filters.",
+    "error": "Could not read Tickets. Check the connection and retry.",
+    "loadMore": "Load more Tickets",
+    "loading": "Loading…",
+    "scope": {
+      "failed": "Showing failed and blocked Tickets.",
+      "source": "Showing Tickets from one Source.",
+      "schedule": "Showing Tickets from one schedule.",
+      "clear": "Clear filter"
+    }
+  }
+}

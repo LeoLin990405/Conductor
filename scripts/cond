@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+# cond — start, stop, and upgrade a local Conductor checkout.
+#
+# The checkout defaults to this script's repository, not a fixed worktree.
+# `cond stop` and `cond status` remain. With no subcommand, cond brings the
+# stack up and opens the Super-agent CLI.
+set -euo pipefail
+
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+DEFAULT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="${CONDUCTOR_REPO_ROOT:-$DEFAULT_ROOT}"
+if [[ -d "$REPO_ROOT" ]]; then
+  REPO_ROOT="$(cd "$REPO_ROOT" && pwd)"
+fi
+
+usage() {
+  cat <<'EOF'
+Usage: cond up|down|status|restart|logs|doctor|upgrade|clean|backup|smoke
+       cond --version
+       cond restart [all|daemons] [--wait-timeout SECONDS] [--force | --no-wait]
+       cond restart --drain [--wait-timeout SECONDS] [--force]
+       cond drain [--reason TEXT] | cond undrain
+       cond smoke [--timeout SECONDS] [--json]
+       cond down|stop|restart|upgrade [--wait-timeout SECONDS] [--force | --no-wait]
+       cond setup [--write] [--force] [--json]
+       cond agents list|set|login
+       cond workspace add|list|show|remove
+       cond apps register|list|scopes|rotate|revoke|audit|snippet
+       cond status
+       cond start
+       cond backup
+       cond cli status
+       cond cli update [--only NAME] [--dry-run] [--force] [--json]
+       cond daemons migrate --script PATH --list PATH
+       cond launchd install|enable|disable|uninstall
+       cond [--continue] [-p PROMPT] [--no-tui]
+
+`cond up` starts the backend on 127.0.0.1, the web console (default port
+5170), and every daemon in the fleet file. `cond stop` is `cond down`.
+Paths come from CONDUCTOR_REPO_ROOT, CONDUCTOR_HOME, and
+CONDUCTOR_WORKTREE_ROOT (default ~/.conductor/worktrees).
+EOF
+}
+
+interpreter() {
+  if [[ -n "${CONDUCTOR_PYTHON:-}" ]]; then
+    printf '%s' "$CONDUCTOR_PYTHON"
+  elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+    printf '%s' "$REPO_ROOT/.venv/bin/python"
+  else
+    command -v python3
+  fi
+}
+
+run_py() {
+  PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+    CONDUCTOR_REPO_ROOT="$REPO_ROOT" \
+    "$(interpreter)" -m src.conductor_cli.ops_cli "$@"
+}
+
+# The version line of the checkout cond launches, not an installed one:
+# `cond --version` names the tree cond runs from. The identity module runs
+# directly, without the CLI's imports, so asking what is running still
+# answers in a checkout whose dependencies are not installed -- which is
+# exactly when an operator asks.
+run_version() {
+  PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+    CONDUCTOR_REPO_ROOT="$REPO_ROOT" \
+    "$(interpreter)" "$REPO_ROOT/src/conductor_cli/build_info.py"
+}
+
+version_line() {
+  if [[ -f "$REPO_ROOT/src/conductor_cli/build_info.py" ]]; then
+    run_version
+  else
+    # An older checkout has no identity module; its CLI still prints a
+    # version, and a version question must never fail. Run it from that
+    # checkout, so the answer is that checkout's version.
+    (
+      cd "$REPO_ROOT"
+      PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+        CONDUCTOR_REPO_ROOT="$REPO_ROOT" \
+        "$(interpreter)" -m src.conductor_cli --version
+    )
+  fi
+}
+
+run_cli() {
+  local interp=""
+  if [[ -n "${CONDUCTOR_PYTHON:-}" ]]; then
+    interp="$CONDUCTOR_PYTHON"
+  elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+    interp="$REPO_ROOT/.venv/bin/python"
+  else
+    interp="$(command -v python3)"
+  fi
+  PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+    CONDUCTOR_REPO_ROOT="$REPO_ROOT" \
+    "$interp" -m src.conductor_cli.cli "$@"
+}
+
+cmd="${1:-}"
+case "$cmd" in
+  -h|--help|help)
+    usage
+    exit 0
+    ;;
+  --version|-V)
+    shift
+    version_line
+    exit $?
+    ;;
+  start)
+    shift
+    run_py up "$@"
+    exit $?
+    ;;
+  stop)
+    shift
+    run_py down "$@"
+    exit $?
+    ;;
+  # ``workspace`` belongs to the operator CLI, not the ops CLI. Without this
+  # case the arguments fell through to the Super-agent TUI after starting the
+  # stack, so ``cond workspace add`` never reached the registry.
+  workspace)
+    shift
+    run_cli workspace "$@"
+    exit $?
+    ;;
+  # ``apps`` is an operator-CLI verb too (ops_cli.FORWARDED_VERBS): it needs
+  # the server's collab admin routes, not the stack, so it goes straight to
+  # ``conductor apps``.
+  apps)
+    shift
+    run_cli apps "$@"
+    exit $?
+    ;;
+  # Every verb ops_cli.build_parser() defines (start/stop are mapped above).
+  # tests/unit/test_cond_wrapper_verbs.py fails when one is missing here.
+  up|down|status|restart|logs|doctor|upgrade|clean|launchd|daemons|backup|foreground|cli|setup|agents|smoke|drain|undrain)
+    run_py "$@"
+    exit $?
+    ;;
+esac
+
+run_py up
+port="${CONDUCTOR_BACKEND_PORT:-8000}"
+base="${CONDUCTOR_BASE_URL:-http://127.0.0.1:${port}}"
+agent="$REPO_ROOT/.venv/bin/ptc-agent"
+[[ -x "$agent" ]] || {
+  printf '[cond] error: missing %s\n' "$agent" >&2
+  exit 1
+}
+cd "$REPO_ROOT"
+exec "$agent" --server "$base" --user-id local-dev-user --super-agent "$@"

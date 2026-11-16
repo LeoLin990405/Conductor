@@ -1,0 +1,559 @@
+/* ============================================
+   Centralized Tokens + Global Styles
+   Semantic color tokens + Tailwind theme + base/utilities
+   ============================================ */
+
+/* ---------- Root text scale ----------
+   100% inherits the user's browser/OS font-size preference; the app-level
+   setting (FontScaleContext, stamped as --app-font-scale on <html>)
+   multiplies on top, so both compose. Everything sized in rem follows. */
+html {
+  font-size: calc(100% * var(--app-font-scale, 1));
+}
+
+/* ---------- Mobile touch polish ---------- */
+@media (max-width: 767px) {
+  /* Disable tap highlight globally on touch devices */
+  * { -webkit-tap-highlight-color: transparent; }
+
+  /* Prevent iOS Safari from shifting the page when the virtual keyboard opens */
+  body { position: fixed; }
+
+  /* Utility: contain overscroll inside overlays/drawers */
+  .mobile-scroll-contain { overscroll-behavior: contain; }
+
+  /* Prevent iOS Safari auto-zoom on input focus (requires >= 16px font-size);
+     max() keeps inputs growing with the root scale instead of pinning them. */
+  input, select, textarea { font-size: max(16px, 1rem) !important; }
+}
+
+/* ---------- Semantic color tokens (hex/rgba for inline use) ---------- */
+:root {
+  /* Font roles: Sora is the app's voice (chrome, nav, controls); Geist is
+     the reading face for long-form surfaces (conversation, file content).
+     Apply via body default + the .font-content utility. */
+  /* One shared CJK companion (Noto Sans SC, unicode-range sliced by Google
+     Fonts) sits after the Latin faces in every role: Latin glyphs never reach
+     it, CJK renders identically on every OS instead of PingFang/YaHei. Mono
+     needs it too, since kickers and readouts set translated copy in it. In
+     each it goes ahead of the system faces, which can reach the OS's own CJK
+     face through the system's fallback before a later family is tried. */
+  --font-ui: var(--font-mono);
+  --font-content: var(--font-prose);
+  /* Page and section titles (Settings.css, Plugins.css). conductor.css used
+     to declare this; titles are chrome, and SPEC.md Type sets chrome in mono. */
+  --font-display: var(--font-mono);
+  /* --font-mono owned by terminal-native.css */
+
+  --sidebar-width: 64px;
+  --sidebar-rail-width: 64px;
+  --bottom-tab-height: 78px;
+  /* Space above a page's first row. Every route's title or header row starts
+     this far down, so the first row sits at one depth when moving between pages
+     (centre of a 28px title row: --page-top + 14px). */
+  --page-top: clamp(16px, 3vw, 32px);
+  /* The lane every webkit scrollbar takes from the layout (rules below). */
+  --scrollbar-size: 12px;
+
+  /* ---------- Background roles ----------
+     Which fill belongs on which surface. Reach for the role, not a lookalike
+     value — two roles sharing a hex in one theme diverge in the other.
+
+     | token        | surface                                                |
+     |--------------|--------------------------------------------------------|
+     | bg-page      | the app ground: chat page, settings, auth               |
+     | bg-canvas    | ground behind a card grid (dashboard); = page in dark   |
+     | bg-card      | a card/panel sitting on page or canvas                  |
+     | bg-card-hover| hover fill of a clickable card row (solid twin of card) |
+     | bg-tool-card | agent tool/artifact cards inside the transcript         |
+     | bg-elevated  | raised chrome over a card: menus, tooltips, hover sheets |
+     | bg-input     | text inputs, textareas, field-shaped readouts           |
+     | bg-popover   | hex twin of the --popover HSL the Radix/shadcn          |
+     |              | popover + select primitives paint themselves with       |
+
+     ⚠️ Floating surfaces deliberately do NOT share one fill yet: Radix
+     popover/select use --popover, tooltips and menus use bg-elevated, and
+     four dialogs still paint bg-page. Unification is deferred until the three
+     fills are compared side-by-side in both themes — don't converge one of
+     them in isolation.
+
+     Legacy --color-* names alias terminal-native surfaces/ink (or color-mix
+     of them) so unconverted pages keep rendering. */
+  --color-bg-page: var(--surface-page);
+  --color-bg-canvas: var(--surface-canvas);
+  --color-bg-card: var(--surface-elevated);
+  --color-bg-card-hover: var(--surface-selection);
+  --color-bg-tool-card: var(--surface-canvas);
+  --color-bg-elevated: var(--surface-elevated);
+  --color-bg-input: var(--surface-canvas);
+  --color-bg-popover: var(--surface-elevated);
+  --color-bg-tag: var(--surface-selection);
+  --color-bg-code: var(--surface-page);
+  --color-bg-surface: color-mix(in srgb, var(--ink-muted) 6%, transparent);
+  --color-bg-hover: color-mix(in srgb, var(--ink-muted) 8%, transparent);
+  --color-bg-subtle: color-mix(in srgb, var(--ink-muted) 4%, transparent);
+  --color-bg-chart-placeholder: var(--surface-page);
+  /* Spreadsheet grid: aliases of theme-invariant --sheet-* (terminal-native). */
+  --color-sheet-paper: var(--sheet-paper);
+  --color-sheet-ink: var(--sheet-ink);
+  /* Scrims: near-black veil (ink.onAccent in dark ≈ page). Strong ≥ base;
+     percentages track the old 0.6 / 0.8 black alphas. */
+  --color-bg-overlay: color-mix(in srgb, var(--ink-on-accent) 60%, transparent);
+  --color-bg-overlay-strong: color-mix(in srgb, var(--ink-on-accent) 80%, transparent);
+
+  --color-border-muted: color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  --color-border-default: var(--ink-rule);
+  --color-border-elevated: var(--ink-rule);
+  --color-border-subtle: var(--ink-faint);
+  --color-border-input: var(--ink-rule);
+  /* The edge of a chosen option card. The borders above are hairlines that
+     vanish on bg-elevated, the dialog fill; this one has to read on every
+     fill, so it is a step up from all of them. Neutral: a selection never
+     takes the accent. */
+  --color-border-strong: color-mix(in srgb, var(--ink-muted) 34%, transparent);
+
+  --color-text-primary: var(--ink-fg);
+  --color-text-secondary: var(--ink-muted);
+  --color-text-tertiary: var(--ink-muted);
+  --color-text-quaternary: var(--ink-muted);
+  --color-text-muted: var(--ink-muted);
+  /* Ink, not white — the dark accent is a light ember, so white on it lands
+     under 3:1. Anything painted on --color-accent-primary must use this. */
+  --color-text-on-accent: var(--ink-on-accent);
+  --color-icon-muted: var(--ink-muted);
+
+  /* Text, so solid muted ink: 40-50% mixes of ink.fg fall to 2.4-3.1:1 on
+     selection and 2.4:1 on canvas. */
+  --Labels-Secondary: var(--ink-muted);
+  --Labels-Tertiary: var(--ink-muted);
+  --Labels-Quaternary: var(--ink-muted);
+
+  /* Accent + soft fills: solids alias ink/surface tokens; soft fills are
+     color-mix so labels on them keep contrast (never equal the fg ink). */
+  --color-accent-primary: var(--ink-baton);
+  --color-accent-soft: color-mix(in srgb, var(--ink-baton) 12%, transparent);
+  --color-accent-disabled: color-mix(in srgb, var(--ink-baton) 48%, transparent);
+  /* Open/selected edges + glows. High alpha on purpose: at ~0.5 the amber
+     blends toward muddy brown over charcoal instead of reading as accent. */
+  --color-accent-overlay: color-mix(in srgb, var(--ink-baton) 66%, transparent);
+  --color-accent-gradient: linear-gradient(90deg, var(--ink-baton) 0%, var(--ink-tempo) 100%);
+
+  /* Focus ring, for plain CSS files. Derived from --ring so Tailwind's
+     ring-ring and a hand-written box-shadow can never drift apart. */
+  --color-focus-ring: var(--ink-focus);
+
+  --color-slash-icon: var(--ink-baton);
+  --color-slash-pill-bg: color-mix(in srgb, var(--ink-baton) 12%, transparent);
+  --color-slash-pill-border: color-mix(in srgb, var(--ink-baton) 28%, transparent);
+
+  --color-profit: var(--ink-ok);
+  --color-profit-soft: color-mix(in srgb, var(--ink-ok) 15%, transparent);
+  --color-profit-border: color-mix(in srgb, var(--ink-ok) 30%, transparent);
+  --color-profit-border-hover: color-mix(in srgb, var(--ink-ok) 36%, transparent);
+  --color-profit-muted: color-mix(in srgb, var(--ink-ok) 62%, transparent);
+  --color-loss: var(--ink-error);
+  --color-loss-soft: color-mix(in srgb, var(--ink-error) 12%, transparent);
+  --color-loss-muted: color-mix(in srgb, var(--ink-error) 60%, transparent);
+  --color-border-loss: color-mix(in srgb, var(--ink-error) 30%, transparent);
+
+  --color-warning: var(--ink-hold);
+  --color-warning-soft: color-mix(in srgb, var(--ink-hold) 12%, transparent);
+  --color-info: var(--ink-tempo);
+  --color-info-soft: color-mix(in srgb, var(--ink-tempo) 12%, transparent);
+  --color-success: var(--ink-ok);
+  --color-success-soft: color-mix(in srgb, var(--ink-ok) 12%, transparent);
+  --color-accent-light: var(--ink-tempo);
+  --color-btn-primary-bg: var(--surface-accent);
+  --color-btn-primary-text: var(--ink-on-accent);
+  /* Stop-button hover: the paper send face warmed toward red — hover intent
+     only, never the resting state. */
+  --color-btn-stop-hover-bg: var(--surface-selection);
+  --color-btn-stop-hover-fg: var(--ink-error);
+  --color-btn-danger: var(--ink-error);
+  --color-btn-danger-pressed: var(--ink-error);
+  --color-icon-danger: var(--ink-error);
+  --color-danger-hover-bg: color-mix(in srgb, var(--ink-error) 20%, transparent);
+  /* Resting tint behind a danger glyph and its words (a failed status pill).
+     Failure, not a negative change: --color-loss-soft keeps that role. */
+  --color-danger-soft: color-mix(in srgb, var(--ink-error) 12%, transparent);
+
+  --color-status-modified: color-mix(in srgb, var(--ink-hold) 70%, transparent);
+  --color-status-modified-border: color-mix(in srgb, var(--ink-hold) 50%, transparent);
+  --color-status-modified-glow: color-mix(in srgb, var(--ink-hold) 25%, transparent);
+
+  /* Dot-grid retired from work surfaces — kept barely-visible for empty states. */
+  --color-dot-grid: color-mix(in srgb, var(--ink-rule) 20%, transparent);
+
+  /* Identity tiles (Plugins rows): a name hashes to one of these eight muted
+     tints, so every server/skill/plugin keeps a recognizable mark across
+     surfaces. Identity is meaning — the one sanctioned hue system outside
+     accent + semantic colors; fills stay translucent so the tiles annotate
+     rather than brand. */
+  --color-identity-0-bg: color-mix(in srgb, var(--ink-baton) 16%, transparent);
+  --color-identity-0-fg: var(--ink-baton);
+  --color-identity-1-bg: color-mix(in srgb, var(--ink-tempo) 16%, transparent);
+  --color-identity-1-fg: var(--ink-tempo);
+  --color-identity-2-bg: color-mix(in srgb, var(--ink-ok) 16%, transparent);
+  --color-identity-2-fg: var(--ink-ok);
+  --color-identity-3-bg: color-mix(in srgb, var(--ink-hold) 16%, transparent);
+  --color-identity-3-fg: var(--ink-hold);
+  --color-identity-4-bg: color-mix(in srgb, var(--ink-error) 16%, transparent);
+  --color-identity-4-fg: var(--ink-error);
+  --color-identity-5-bg: color-mix(in srgb, var(--ink-muted) 16%, transparent);
+  --color-identity-5-fg: var(--ink-muted);
+  --color-identity-6-bg: color-mix(in srgb, var(--ink-focus) 16%, transparent);
+  --color-identity-6-fg: var(--ink-focus);
+  --color-identity-7-bg: color-mix(in srgb, var(--ink-fg) 16%, transparent);
+  --color-identity-7-fg: var(--ink-fg);
+  --color-bg-card-gradient: color-mix(in srgb, var(--ink-muted) 3%, transparent);
+  --color-bg-card-border: color-mix(in srgb, var(--ink-rule) 45%, transparent);
+
+  /* ---------- Tailwind/shadcn compatibility bridge ----------
+     Full colours (not relative HSL channels) so Chrome/Edge 111 can paint
+     hsl()-free theme utilities. @theme maps --color-* to these directly. */
+  --background: var(--surface-page);
+  --foreground: var(--ink-fg);
+  --card: var(--surface-elevated);
+  --card-foreground: var(--ink-fg);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--ink-fg);
+  --primary: var(--ink-baton);
+  --primary-foreground: var(--ink-on-accent);
+  --secondary: var(--surface-canvas);
+  --secondary-foreground: var(--ink-fg);
+  --muted: var(--surface-canvas);
+  /* Placeholders and dialog descriptions paint with this, so it is body
+     text: the solid muted ink (>= 5.5:1 on every surface, both themes), never
+     a translucent mix of it. */
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--ink-baton);
+  --accent-foreground: var(--ink-on-accent);
+  --destructive: var(--ink-error);
+  --destructive-foreground: var(--ink-on-accent);
+  --border: color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  --input: var(--surface-canvas);
+  --ring: var(--ink-focus);
+  --radius: var(--radius-control);
+  /* --radius-card / --radius-control owned by terminal-native.css */
+  --shadow-elevated: var(--elevation-1);
+  --surface-card: var(--surface-elevated);
+  --surface-card-hover: var(--surface-selection);
+  /* --surface-elevated owned by terminal-native.css */
+  --shadow-card: var(--elevation-1);
+
+  /* HSL channels, not a colour: App.css (S12) paints `hsl(var(--bg-main))`
+     and S01 may not edit it. These are the channels of themes.dark.surfaces.page
+     (#0F1115); the light block below carries #FFFFFF's. terminalNativeTokens.test.ts
+     derives both from tokens.json, so they cannot drift from the hex. */
+  --bg-main: 220 16.6667% 7.0588%;
+  --bg-panel: color-mix(in srgb, var(--surface-elevated) 94%, transparent);
+  --border-light: color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  --border-card: var(--ink-rule);
+  /* Up/down (positive/negative change): solid ink aliases; soft fills are color-mix. */
+  --color-up: var(--ink-ok);
+  --color-up-soft: color-mix(in srgb, var(--ink-ok) 16%, transparent);
+  --color-down: var(--ink-error);
+  --color-down-soft: color-mix(in srgb, var(--ink-error) 16%, transparent);
+  --accent-fin: var(--ink-hold);
+  --sidebar-bg: var(--surface-page);
+  --sidebar-border: color-mix(in srgb, var(--ink-rule) 45%, transparent);
+  --sidebar-hover: color-mix(in srgb, var(--ink-muted) 8%, transparent);
+  --sidebar-icon: color-mix(in srgb, var(--ink-muted) 60%, transparent);
+  --sidebar-icon-selected: var(--ink-fg);
+  --sidebar-indicator: var(--ink-baton);
+}
+
+/* ---------- Light theme overrides ---------- */
+/* Solid aliases and Labels/shadows live on :root. This block only retunes
+   soft color-mix percentages for paper. */
+[data-theme="light"] {
+  /* HSL channels of themes.light.surfaces.page (#FFFFFF); see --bg-main above. */
+  --bg-main: 0 0% 100%;
+  /* Paper-tuned soft mixes only; Labels/shadows/fonts follow :root aliases. */
+  --color-accent-soft: color-mix(in srgb, var(--ink-baton) 10%, transparent);
+  --color-profit-soft: color-mix(in srgb, var(--ink-ok) 8%, transparent);
+  --color-loss-soft: color-mix(in srgb, var(--ink-error) 7%, transparent);
+  --color-warning-soft: color-mix(in srgb, var(--ink-hold) 8%, transparent);
+  --color-info-soft: color-mix(in srgb, var(--ink-tempo) 8%, transparent);
+  --color-success-soft: color-mix(in srgb, var(--ink-ok) 8%, transparent);
+  --color-danger-soft: color-mix(in srgb, var(--ink-error) 7%, transparent);
+  --color-danger-hover-bg: color-mix(in srgb, var(--ink-error) 8%, transparent);
+  --color-up-soft: color-mix(in srgb, var(--ink-ok) 8%, transparent);
+  --color-down-soft: color-mix(in srgb, var(--ink-error) 8%, transparent);
+  --color-slash-pill-bg: color-mix(in srgb, var(--ink-baton) 12%, transparent);
+  --color-slash-pill-border: color-mix(in srgb, var(--ink-baton) 35%, transparent);
+  --color-bg-hover: color-mix(in srgb, var(--ink-fg) 4%, transparent);
+  --color-bg-subtle: color-mix(in srgb, var(--ink-fg) 2%, transparent);
+  --color-bg-overlay: color-mix(in srgb, var(--ink-fg) 25%, transparent);
+  --color-bg-overlay-strong: color-mix(in srgb, var(--ink-fg) 45%, transparent);
+  /* Light tempo / ok / error sit near 5:1 on the page and under 4.5:1 on
+     selection (SPEC.md Contrast), so tints carrying those inks as text stay
+     light enough to keep 4.5:1: the stop hover takes a red tint instead of
+     selection, and identity tiles drop from 16% to 6%. */
+  --color-btn-stop-hover-bg: color-mix(in srgb, var(--ink-error) 7%, transparent);
+  /* Selection-tinted grounds of unconverted pages (tags, hovered cards).
+     Those pages do not repaint tempo / ok / error in fg the way a converted
+     selected row does, and on surface.selection (#DCE3FF) those inks measure
+     3.94-4.01:1. 40% selection over the page keeps the tint and clears 4.5:1 (tempo 4.57, ok 4.62, error 4.65). */
+  --color-bg-tag: color-mix(in srgb, var(--surface-selection) 40%, var(--surface-page));
+  --color-bg-card-hover: color-mix(in srgb, var(--surface-selection) 40%, var(--surface-page));
+  --surface-card-hover: color-mix(in srgb, var(--surface-selection) 40%, var(--surface-page));
+  --color-identity-0-bg: color-mix(in srgb, var(--ink-baton) 6%, transparent);
+  --color-identity-1-bg: color-mix(in srgb, var(--ink-tempo) 6%, transparent);
+  --color-identity-2-bg: color-mix(in srgb, var(--ink-ok) 6%, transparent);
+  --color-identity-3-bg: color-mix(in srgb, var(--ink-hold) 6%, transparent);
+  --color-identity-4-bg: color-mix(in srgb, var(--ink-error) 6%, transparent);
+  --color-identity-5-bg: color-mix(in srgb, var(--ink-muted) 6%, transparent);
+  --color-identity-6-bg: color-mix(in srgb, var(--ink-focus) 6%, transparent);
+  --color-identity-7-bg: color-mix(in srgb, var(--ink-fg) 6%, transparent);
+}
+
+/* Focus rings.
+
+   Everything in here is a default: the ring a control gets unless something
+   draws its own. It sits in a cascade layer of its own so that "its own"
+   means any rule outside this layer, whatever its specificity -- a Tailwind
+   `focus-visible:` utility, a hand-written `.class:focus-visible`, a
+   box-shadow ring on a sidebar row. Unlayered styles beat layered ones
+   outright, so a component never has to out-specify this block. (Tailwind's
+   preflight, the base rules in base.css and the utilities are imported
+   outside any layer for the same reason; see index.css.) */
+@layer focus-defaults {
+  /* Without a baseline the fallback is Chromium's -- `outline: auto` in a blue
+     this product uses nowhere -- and that was the ring on four out of five
+     controls, the chat transcript included. */
+  :focus-visible {
+    outline: var(--border-focus) solid var(--color-focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* A field that fills a bordered container has nowhere to put a ring of its
+     own. An outline on the field alone cuts across the container's border and
+     leaves whatever else lives in there outside the indicator: the icon on a
+     search pill, the chips already entered on a token field. Mark the container
+     and it rings on the field's behalf. Such a container carries
+     `owns-its-edge` too, its sibling opt-out for the focused-field edge below.
+
+     Scoped to a direct-child input so a button sharing the container -- a clear
+     affordance, a chip's remove -- still rings itself instead of lighting the
+     whole box. Held off under the pointer like everything else here, and for
+     the same reason: the field inside matches :focus-visible for either
+     device, so ungated this would light the container on a click.
+
+     All three sit behind @supports because only the first of them survives a
+     parser without :has(): taking the ring off the field is a plain selector,
+     while the two rules that put it on the container are dropped as invalid.
+     Split, the fallback is not a ring in the wrong place, it is no ring at
+     all. Together they degrade to the baseline, which rings the field. */
+  @supports selector(:has(*)) {
+    .rings-within > input:focus-visible {
+      outline: none;
+    }
+
+    .rings-within:has(> input:focus-visible) {
+      outline: var(--border-focus) solid var(--color-focus-ring);
+      outline-offset: var(--focus-offset);
+    }
+
+    /* Transparent for the reason the rule at the end of this layer is. */
+    :root[data-pointer-focus] .rings-within:has(> input:focus-visible) {
+      outline-color: transparent;
+    }
+  }
+
+  /* Inside an SVG, Chromium paints its own ring on plain :focus -- it does not
+     gate that on :focus-visible the way it does for HTML, so a mouse click on
+     a chart draws a ring where the same click on a button would not. Take the
+     non-keyboard half away and the pseudo-class above rings the surface on a
+     Tab, exactly like everything else.
+
+     The descendant half is what the visible bug was: recharts stacks its
+     z-index layers as `<g tabindex="-1">`, so a click landing on a bar focuses
+     that layer rather than the surface, which is why the stray ring hugged the
+     bars and left the axis labels outside them. */
+  svg:focus:not(:focus-visible),
+  svg :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* A box that clips -- a tab bar that scrolls sideways, a segmented control
+     rounding its children -- eats the outset ring off whichever child sits
+     flush against the clipped edge, and what is left renders as a bar down one
+     side. Mark the clipper and its children ring inward instead. */
+  .clips-focus-ring > :focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* tabindex="-1" is not a tab stop -- it is a landing spot script moves focus
+     to so the next Tab starts there (dialog roots, scroll ports). Chromium
+     carries :focus-visible across that programmatic move (lib/inputModality.ts),
+     so without this the ring draws around an entire dialog. */
+  [tabindex="-1"]:focus-visible {
+    outline: none;
+  }
+
+  /* Menu and listbox items are tabindex="-1" as well (roving focus), but they
+     are the one landing spot the user drives through: someone arrowing down a
+     menu needs the ring to travel with them. Inward, because the menu clips at
+     its own padding. currentColor rather than the ink token: a highlighted
+     item swaps its text to the accent foreground, and a ring in the page ink
+     drawn inside that fill reads at under 2:1 against it.
+
+     The ring below it is transparent rather than absent, and it is on every
+     item rather than the focused one: forced colors drops the highlight tint
+     that marks the current row everywhere else, and what it repaints instead
+     is an outline that was already drawn. A row with no outline at all is a
+     row the OS has nothing to paint, which under a mouse is every row in the
+     menu. This is the transparent outline the items used to carry as a
+     utility class, kept where the rest of the rule lives. */
+  [role="menuitem"],
+  [role="menuitemcheckbox"],
+  [role="menuitemradio"],
+  [role="option"] {
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+  }
+
+  [role="menuitem"]:focus-visible,
+  [role="menuitemcheckbox"]:focus-visible,
+  [role="menuitemradio"]:focus-visible,
+  [role="option"]:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+
+  /* The browser matches :focus-visible on a mouse click for any control that
+     might take a keystroke next -- text fields, <select>, the number and date
+     widgets -- and Chromium carries it across a programmatic focus move on top
+     of that: the first control a dialog focuses after a click, the trigger a
+     menu hands focus back to, the item under the mouse as it crosses a menu.
+     No selector tells any of those from a Tab, so lib/inputModality.ts records
+     whether a key placed the focus the page holds, and while it says no the
+     ring this sheet draws is held off. A keystroke lifts the record, so the
+     same control rings the moment the keyboard takes over. It out-specifies
+     both the baseline and the item rule above, so it reaches every ring in
+     this layer. Only the color, so a rule that already set `outline: none`
+     stays at none -- and a component painting a ring of its own outside this
+     layer keeps it, which is why one that can light under a pointer reads the
+     same record itself (`:root:not([data-pointer-focus])`, LoginPage.css).
+
+     Transparent rather than `none`, which is not a stylistic choice: forced
+     colors repaints every outline in the system palette but cannot paint one
+     that was never drawn, and it drops the box-shadow and normalizes the
+     border a field would otherwise be distinguished by. `none` here leaves a
+     high-contrast user with a clicked field marked by nothing but the caret.
+     A transparent outline is invisible everywhere else and becomes the
+     system's own focus color there -- the same reason Tailwind's
+     `outline-hidden` draws this under forced colors rather than nothing. */
+  :root[data-pointer-focus] :focus-visible {
+    outline-color: transparent;
+  }
+}
+
+/* Focused text fields.
+
+   The layer above answers one question: does a keyboard ring draw. This
+   answers a different one: does a field the pointer just clicked look
+   focused. It does, by its edge and nothing else -- the accent border that
+   marks the about-to-act moment everywhere else, plus a one-pixel halo of
+   the soft accent so that edge reads on a dark card. No outline and no
+   pointer gate: a field the mouse focused is about to receive typing.
+
+   Unlayered and !important on purpose. Fields set their resting border as
+   an inline style across the app, and inline beats every stylesheet rule
+   except an important one; sweeping the border onto a class would give
+   every field a second place its edge is decided. Only the edge, only
+   while focused, never on a field flagged invalid, and never on a control
+   with no text entry (checkbox, radio, range, file, color), whose focus is
+   the ring's job.
+
+   Every other exception is opt-out by one class a box puts on itself,
+   `owns-its-edge`, so the next edge-owning box declares itself where it is
+   built instead of coming back to edit this selector. It must: the halo is
+   a shadow, and a shadow draws on a borderless field too, as a faint
+   rectangle inside a box already lit. The block below hands that box the
+   edge on its field's behalf, the way `.rings-within` hands it the ring. */
+:where(input, textarea, select):focus:not([type="checkbox"], [type="radio"], [type="range"], [type="file"], [type="color"], [type="submit"], [type="button"], [aria-invalid="true"], .owns-its-edge, .owns-its-edge *) {
+  border-color: var(--color-accent-primary) !important;
+  box-shadow: 0 0 0 1px var(--color-accent-soft) !important;
+}
+
+@supports selector(:has(*)) {
+  .owns-its-edge:has(> :where(input, textarea):focus) {
+    border-color: var(--color-accent-primary) !important;
+    box-shadow: 0 0 0 1px var(--color-accent-soft) !important;
+  }
+}
+
+/* Reading face for long-form surfaces: conversation transcript, file
+   viewers. Chrome/UI stays on the body default (--font-ui). */
+@utility font-content {
+  font-family: var(--font-content);
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* A scrollbar never touches the edge it runs along. The thumb paints only the
+   middle of its --scrollbar-size lane, a transparent border insetting it from
+   the container's border, and the track stops short of both ends, clear of
+   rounded corners and of a divider above the list. A container that tints its
+   thumb sets background-color, never the background shorthand, which would
+   reset the clip and paint the inset too. Documents the app frames carry a
+   copy, so a change here goes to each: buildHtmlSrcDoc.ts (widgets), the
+   server's workspace_files/serve.py (served HTML) and sec_proxy.py (filings). */
+::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-elevated);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: calc(var(--scrollbar-size) / 2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-tertiary);
+}
+
+/* Monaco's own scrollbar, inset through CodeEditor's options. Its arrows are
+   there only to hold the track short of both ends. */
+.monaco-editor .scrollbar > .scra,
+.monaco-editor .scrollbar > .arrow-background {
+  display: none;
+}
+
+.monaco-editor .scrollbar > .slider {
+  border-radius: 3px;
+}
+
+/* === Floating AI chat FAB (mobile) === */
+.conductor-fab {
+  position: fixed;
+  bottom: calc(var(--bottom-tab-height, 0px) + 16px);
+  right: 16px;
+  z-index: 40;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-muted);
+  box-shadow: var(--elevation-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}

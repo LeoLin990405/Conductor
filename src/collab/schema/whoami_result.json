@@ -1,0 +1,48 @@
+{
+  "$id": "https://conductor.local/collab/schema/whoami_result.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "agent": {
+      "type": "string"
+    },
+    "app_id": {
+      "type": "string"
+    },
+    "can_write": {
+      "type": "boolean"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "max_leases": {
+      "type": "integer"
+    },
+    "scopes": {
+      "items": {
+        "enum": [
+          "read",
+          "propose",
+          "claim",
+          "report",
+          "ask",
+          "review"
+        ]
+      },
+      "type": "array"
+    },
+    "user_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "app_id",
+    "user_id",
+    "scopes",
+    "can_write",
+    "max_leases",
+    "enabled"
+  ],
+  "title": "collab.whoami_result",
+  "type": "object"
+}

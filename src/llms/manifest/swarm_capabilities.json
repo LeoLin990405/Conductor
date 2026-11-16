@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "default": true,
+  "models": {
+    "auto": false
+  },
+  "note": "Per-model Swarm capability. Default true for catalog models that can call tools; set an explicit false here for any model that cannot drive parallel subagent tool calls. The auto router is excluded because its selected model is not known before the turn starts."
+}

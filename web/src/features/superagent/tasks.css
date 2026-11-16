@@ -1,0 +1,169 @@
+/* S15 — terminal-native Tickets list (/tasks, docs/design/terminal-native/web/tickets.html).
+   Colours are tokens.json inks through the S01 custom properties; softer rules
+   are color-mix() of those inks. superagent.css (S14) supplies .sa-page,
+   .sa-card and the StateMark glyph inks; this file only adds the list. */
+
+/* ---------- filter bar ---------- */
+.tn-tix-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  margin-bottom: var(--space-4, 16px);
+}
+.tn-tix-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  align-items: flex-start;
+}
+.tn-tix-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+  min-width: 0;
+  color: var(--ink-muted, #9aa3b5);
+  font-size: var(--size-chrome, 12px);
+}
+.tn-tix-field--grow { flex: 1 1 260px; }
+.tn-tix-field .tn-tix-input {
+  min-height: 32px;
+  min-width: 0;
+  width: 100%;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  background: var(--surface-page, #0f1115);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome, 12px);
+}
+
+.tn-tix-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+}
+.tn-tix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  min-height: 24px;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  background: var(--surface-page, #0f1115);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  color: var(--ink-muted, #9aa3b5);
+  font-family: var(--font-mono);
+  font-size: var(--size-chrome, 12px);
+  cursor: pointer;
+}
+.tn-tix-chip:hover { color: var(--ink-fg, #e6e8ee); }
+.tn-tix-chip[aria-pressed='true'] {
+  color: var(--ink-fg, #e6e8ee);
+  border-color: var(--ink-muted, #9aa3b5);
+  background: var(--surface-selection, #1a2140);
+}
+.tn-tix-chip[aria-pressed='true'] .sa-state-word { color: var(--ink-fg, #e6e8ee); }
+
+.tn-tix-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px) var(--space-4, 16px);
+  padding-top: var(--space-3, 12px);
+  border-top: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+  color: var(--ink-muted, #9aa3b5);
+  font-size: var(--size-chrome, 12px);
+  overflow-wrap: anywhere;
+}
+.tn-tix-summary b { color: var(--ink-fg, #e6e8ee); font-weight: var(--weight-label, 500); }
+
+/* ---------- the dense list ---------- */
+.tn-tix-card { padding: 0; overflow: hidden; }
+.tn-tix {
+  width: 100%;
+  border-collapse: collapse;
+  /* fixed layout: a long title never widens its column or pushes the state column out */
+  table-layout: fixed;
+  font-size: var(--size-chrome, 12px);
+}
+.tn-tix-col-state { width: 14ch; }
+.tn-tix-col-worker { width: 24ch; }
+.tn-tix-col-owner { width: 16ch; }
+.tn-tix-col-updated { width: 9ch; }
+.tn-tix th {
+  text-align: start;
+  font-weight: var(--weight-label, 500);
+  color: var(--ink-muted, #9aa3b5);
+  padding: var(--space-2, 8px);
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tn-tix td {
+  vertical-align: top;
+  padding: var(--space-2, 8px);
+  border-bottom: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tn-tix tbody tr:last-child td { border-bottom: 0; }
+.tn-tix-row { cursor: pointer; }
+.tn-tix-row:hover { background: var(--surface-page, #0f1115); }
+.tn-tix-row[aria-selected='true'] { background: var(--surface-selection, #1a2140); }
+.tn-tix-row[aria-selected='true'] .tn-tix-title { font-weight: var(--weight-label, 500); }
+/* the ring sits inside the row so the card's overflow never clips it */
+.tn-tix-row:focus-visible { outline-offset: calc(var(--focus-offset, 2px) * -1); }
+
+.tn-tix-state { overflow: visible; }
+.tn-tix-title,
+.tn-tix-sub,
+.tn-tix-model {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.tn-tix-title { color: var(--ink-fg, #e6e8ee); line-height: 24px; }
+.tn-tix-sub,
+.tn-tix-model { color: var(--ink-muted, #9aa3b5); margin-top: var(--space-1, 4px); }
+.tn-tix-provider { color: var(--ink-baton, #8b9cff); }
+.tn-tix-owner { color: var(--ink-fg, #e6e8ee); }
+.tn-tix-updated { color: var(--ink-muted, #9aa3b5); }
+
+/* Light selection-ink rule (tokens.json): on #DCE3FF the running, completed
+   and failed inks fall under 4.5:1, so on a selected row those glyphs repaint
+   in fg. Every dark ink clears 4.5:1 on #1A2140 and keeps its colour. */
+[data-theme='light'] .tn-tix-row[aria-selected='true'] .sa-state--running .sa-state-glyph,
+[data-theme='light'] .tn-tix-row[aria-selected='true'] .sa-state--completed .sa-state-glyph,
+[data-theme='light'] .tn-tix-row[aria-selected='true'] .sa-state--failed .sa-state-glyph {
+  color: var(--ink-fg, #1b1e26);
+}
+.tn-tix-row[aria-selected='true'] .sa-state-word { color: var(--ink-fg, #e6e8ee); }
+
+/* ---------- 390: each row becomes a two-line card ---------- */
+@media (max-width: 640px) {
+  .tn-tix,
+  .tn-tix tbody { display: block; }
+  .tn-tix thead,
+  .tn-tix colgroup { display: none; }
+  .tn-tix-row {
+    display: grid;
+    /* state and age keep their width; only the title column shrinks */
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    column-gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    border-bottom: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+  }
+  .tn-tix tbody tr:last-child { border-bottom: 0; }
+  .tn-tix td { display: block; padding: 0; border-bottom: 0; }
+  .tn-tix-state { grid-column: 1; grid-row: 1; }
+  .tn-tix-ticket { grid-column: 2; grid-row: 1; }
+  .tn-tix-updated { grid-column: 3; grid-row: 1; line-height: 24px; }
+  .tn-tix-worker { grid-column: 1 / 3; grid-row: 2; display: flex; gap: var(--space-2, 8px); min-width: 0; }
+  .tn-tix-worker .tn-tix-model { margin-top: 0; }
+  .tn-tix-owner { grid-column: 3; grid-row: 2; color: var(--ink-muted, #9aa3b5); max-width: 16ch; }
+  .tn-tix-state .sa-state { line-height: 24px; }
+}

@@ -1,0 +1,32 @@
+ Conductor Super-agent  ● live
+
+
+
+
+
+  List the registered adapters.
+  ♩ kimi is conducting on branch
+  feat/tui.
+  ▸ read_file [done 1.2s]
+  ╰ registry.py adapters
+  ♬ Add the review queue screen
+    kimi · feat/tui · 7f782add · 42s
+  │ Worker is executing the Ticket
+  │ ▸ grep "review"
+  │ ╰ src/server/services/autonomy/revie
+  │ w_merge.py
+  │ ▸ pytest tests/unit
+  │ ╰ 128 passed in 4.21s
+  │ ▸ git diff --stat
+  │ ╰ 3 files changed, 214 insertions
+  │ There are 2 registered names and no
+  │ file was changed. The registered
+  │ adapter names stay alphabetical
+  │ across the native registry today.
+  commands
+  ▸ status        reread Supervisor…
+    details       toggle Worker details…
+    stop          stop a running Ticket…
+    compact       drop activity noise…
+❯ Describe a task, / for commands
+auto · ● 3 online          esc interrupt

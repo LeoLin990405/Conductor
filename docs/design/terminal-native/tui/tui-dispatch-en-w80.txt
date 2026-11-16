@@ -1,0 +1,32 @@
+ Conductor Super-agent  deepseek-flash · session bad2c655  ○ idle
+
+
+
+
+
+
+  dispatch
+  7f3a91c2  APPROVAL  62%  integrate/r2
+  Ship the terminal-native review queue screen
+  waiting on a human for G6
+  roster
+  line     status     model     gate      fix  verdict  depends
+  L1    ✔  Completed  kimi      reviewed  1    ✔ MERGE  —
+  L2    ●  Running    deepseek  build     0    —        L1
+  L3    ▣  Blocked    cursor    —         0    ✖ BLOCK  L2
+  L4    ○  Queued     minimax   —         0    —        L2
+  dag
+  L0: L1
+  L1: L2, L4
+  L2: L3
+  unassigned
+  L4  worker pool exhausted
+  commands
+  ▸ dispatch      /dispatch   dispatch roster; /dispatch <id> reads one
+    approve       —           approve a dispatch that is waiting for a person
+    reject        —           reject a dispatch that is waiting for a person
+    review        /review     queue a local cross-review (/review run <line>…
+╭──────────────────────────────────────────────────────────────────────────────╮
+│❯ Describe a task, / for commands, @ to attach a file                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+auto · ● 3 online                         ◆ 2 · shift+enter newline · alt+m mode

@@ -1,0 +1,38 @@
+{
+  "tnRuns": {
+    "title": "执行日志",
+    "lede": "执行过任务的 Worker 会话。打开任务即可创建、跟踪或关闭这项工作。",
+    "error": "无法读取 Worker 运行记录，请检查连接后重试。",
+    "loading": "正在加载 Worker 运行记录…",
+    "empty": "还没有 Worker 运行过。",
+    "selectPrompt": "请选择一次运行。",
+    "fallbackTitle": "Worker 运行",
+    "fallbackWorker": "PTC",
+    "needsPerson": "需要人工处理",
+    "listLabel": "Worker 运行记录",
+    "rawLabel": "原始运行事件",
+    "rawEmpty": "还没有事件。",
+    "hint": "j/k 移动 · enter 打开",
+    "copyRaw": "复制原始记录",
+    "openTask": "打开任务",
+    "col": {
+      "state": "状态",
+      "run": "运行",
+      "worker": "worker",
+      "origin": "来源",
+      "duration": "耗时",
+      "updated": "更新"
+    },
+    "origin": {
+      "schedule": "定时",
+      "manual": "手动",
+      "github": "GitHub"
+    },
+    "duration": {
+      "none": "—",
+      "s": "{{s}}秒",
+      "ms": "{{m}}分{{s}}秒",
+      "hm": "{{h}}时{{m}}分"
+    }
+  }
+}

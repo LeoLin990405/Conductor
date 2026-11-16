@@ -1,0 +1,45 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "github-mcp",
+  "version": "0.1.0",
+  "description": "GitHub's official remote MCP server: repositories, issues, pull requests, actions and code search for development and project workflows.",
+  "author": {
+    "name": "Conductor (curated)"
+  },
+  "license": "MIT",
+  "keywords": [
+    "github",
+    "repository",
+    "issues",
+    "pull-requests",
+    "code-search"
+  ],
+  "extensions": {
+    "ai.conductor": {
+      "secrets": [
+        {
+          "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "label": "GitHub Personal Access Token",
+          "description": "Fine-grained token for the repositories the agent may read or update. Leave unset to install the connector without connecting it.",
+          "docs_url": "https://github.com/settings/tokens",
+          "regex": "^[A-Za-z0-9_]+$",
+          "bind": [
+            {
+              "server": "github",
+              "header": "Authorization",
+              "prefix": "Bearer "
+            }
+          ]
+        }
+      ],
+      "servers": {
+        "github": {
+          "description": "GitHub repositories, issues, pull requests, actions runs and code search through the official remote MCP server.",
+          "instruction": "Use for repository and project questions: read files, search code, inspect issues/pull requests or check Actions. Read-only unless the token was granted write scopes.",
+          "tool_exposure_mode": "summary",
+          "icon": "github.com"
+        }
+      }
+    }
+  }
+}

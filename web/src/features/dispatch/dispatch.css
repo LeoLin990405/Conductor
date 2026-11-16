@@ -1,0 +1,576 @@
+/* Terminal-native dispatch pages.
+   Colours are token custom properties (S01 --surface-* / --ink-*); only the
+   25 token hexes appear, as fallbacks, and nothing here invents a new one.
+   Geometry follows the design (docs/design/terminal-native/web/dispatch.html):
+   square cards, hairline rules, mono ids, a glyph and a word for every state. */
+
+.tn-dispatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6, 32px);
+  padding: var(--space-5, 24px) var(--space-4, 16px) var(--space-6, 32px);
+  max-width: 1440px;
+  margin-inline: auto;
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--size-chrome, 12px);
+  line-height: var(--lh-chrome, 1.45);
+  overflow-wrap: anywhere;
+}
+
+.tn-dispatch *,
+.tn-dispatch *::before,
+.tn-dispatch *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- page head ---------- */
+
+.tn-dispatch-head h1 {
+  font-size: var(--size-prose, 15px);
+  font-weight: var(--weight-label, 500);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-sub {
+  color: var(--ink-muted, #9aa3b5);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-lede {
+  max-width: 76ch;
+  margin-top: var(--space-3, 12px);
+  color: var(--ink-muted, #9aa3b5);
+  font-family: var(--font-prose, Geist, "Noto Sans SC", system-ui, sans-serif);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px) var(--space-4, 16px);
+  margin-top: var(--space-2, 8px);
+  color: var(--ink-muted, #9aa3b5);
+}
+
+/* ---------- sections ---------- */
+
+.tn-dispatch-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  min-width: 0;
+}
+
+.tn-dispatch-section > h2 {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  padding-bottom: var(--space-1, 4px);
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  color: var(--ink-muted, #9aa3b5);
+  font-size: var(--size-chrome, 12px);
+  font-weight: var(--weight-label, 500);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tn-dispatch-hint {
+  color: var(--ink-muted, #9aa3b5);
+  font-family: var(--font-prose, Geist, "Noto Sans SC", system-ui, sans-serif);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--space-4, 16px);
+  align-items: start;
+}
+
+/* ---------- surfaces ---------- */
+
+.tn-dispatch-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  min-width: 0;
+  padding: var(--space-4, 16px);
+  background: var(--surface-canvas, #1e1e1e);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-card, 3px);
+}
+
+.tn-dispatch-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4, 16px);
+}
+
+/* ---------- rows ---------- */
+
+.tn-dispatch-list {
+  display: grid;
+  gap: var(--space-2, 8px);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tn-dispatch-row {
+  display: grid;
+  gap: var(--space-1, 4px);
+  padding: var(--space-2, 8px);
+  border: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+  border-radius: var(--radius-control, 2px);
+  min-width: 0;
+}
+
+.tn-dispatch-row:hover {
+  background: var(--surface-page, #0f1115);
+}
+
+.tn-dispatch-row-top {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px) var(--space-3, 12px);
+}
+
+.tn-dispatch-row-goal {
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-prose, Geist, "Noto Sans SC", system-ui, sans-serif);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-mono {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-provider {
+  color: var(--ink-baton, #8b9cff);
+}
+
+.tn-dispatch-link {
+  color: var(--ink-baton, #8b9cff);
+  text-decoration: none;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tn-dispatch-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- marks: a glyph and a word ---------- */
+
+.tn-dispatch-st,
+.tn-dispatch-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  white-space: nowrap;
+}
+
+.tn-dispatch-st .tn-dispatch-glyph,
+.tn-dispatch-verdict .tn-dispatch-mark {
+  width: 1ch;
+  text-align: center;
+}
+
+.tn-dispatch-st .tn-dispatch-word,
+.tn-dispatch-verdict .tn-dispatch-word {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-st--muted .tn-dispatch-glyph {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-st--tempo .tn-dispatch-glyph {
+  color: var(--ink-tempo, #56c7d9);
+}
+
+.tn-dispatch-st--hold .tn-dispatch-glyph {
+  color: var(--ink-hold, #f2b544);
+}
+
+.tn-dispatch-st--error .tn-dispatch-glyph {
+  color: var(--ink-error, #ff7a7a);
+}
+
+.tn-dispatch-st--ok .tn-dispatch-glyph {
+  color: var(--ink-ok, #5bd38a);
+}
+
+.tn-dispatch-verdict--ok .tn-dispatch-mark {
+  color: var(--ink-ok, #5bd38a);
+}
+
+.tn-dispatch-verdict--error .tn-dispatch-mark {
+  color: var(--ink-error, #ff7a7a);
+}
+
+.tn-dispatch-verdict--muted .tn-dispatch-mark {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+/* ---------- lines ---------- */
+
+.tn-dispatch-line-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+}
+
+.tn-dispatch-line-name {
+  color: var(--ink-fg, #e6e8ee);
+  font-weight: var(--weight-label, 500);
+}
+
+.tn-dispatch-branch {
+  color: var(--ink-baton, #8b9cff);
+}
+
+.tn-dispatch-kv {
+  display: grid;
+  grid-template-columns: 10ch minmax(0, 1fr);
+  gap: var(--space-1, 4px) var(--space-3, 12px);
+  margin: 0;
+}
+
+.tn-dispatch-kv dt {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-kv dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- tables ---------- */
+
+.tn-dispatch-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tn-dispatch-table th {
+  text-align: start;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  color: var(--ink-muted, #9aa3b5);
+  font-weight: var(--weight-label, 500);
+  white-space: nowrap;
+}
+
+.tn-dispatch-table td {
+  vertical-align: top;
+  padding: var(--space-2, 8px);
+  border-bottom: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+}
+
+.tn-dispatch-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.tn-dispatch-table tbody tr:hover {
+  background: var(--surface-page, #0f1115);
+}
+
+/* ---------- the named axis ---------- */
+
+.tn-dispatch-axis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tn-dispatch-axis li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  background: var(--surface-page, #0f1115);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-axis li .tn-dispatch-slot {
+  color: var(--ink-fg, #e6e8ee);
+  font-weight: var(--weight-label, 500);
+}
+
+.tn-dispatch-axis li[data-status="done"] .tn-dispatch-slot::before {
+  content: "✔ ";
+  color: var(--ink-ok, #5bd38a);
+}
+
+.tn-dispatch-axis li[data-status="current"] {
+  border-color: var(--ink-hold, #f2b544);
+  color: var(--ink-fg, #e6e8ee);
+}
+
+.tn-dispatch-axis li[data-status="current"] .tn-dispatch-slot::before {
+  content: "◆ ";
+  color: var(--ink-hold, #f2b544);
+}
+
+.tn-dispatch-axis li[data-status="unreached"] .tn-dispatch-slot::before {
+  content: "○ ";
+  color: var(--ink-muted, #9aa3b5);
+}
+
+/* ---------- the decision ---------- */
+
+.tn-dispatch-ask {
+  margin: 0;
+  padding-inline-start: var(--space-3, 12px);
+  border-inline-start: var(--border-focus, 2px) solid var(--ink-hold, #f2b544);
+  color: var(--ink-fg, #e6e8ee);
+  font-family: var(--font-prose, Geist, "Noto Sans SC", system-ui, sans-serif);
+  font-size: var(--size-prose, 15px);
+  line-height: var(--lh-prose, 1.65);
+}
+
+.tn-dispatch-verb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: var(--space-3, 12px);
+  background: var(--surface-page, #0f1115);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+}
+
+.tn-dispatch-verb code {
+  color: var(--ink-baton, #8b9cff);
+  font-family: inherit;
+}
+
+/* ---------- controls ---------- */
+
+.tn-dispatch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  min-height: 32px;
+  padding: var(--space-1, 4px) var(--space-3, 12px);
+  background: var(--surface-canvas, #1e1e1e);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tn-dispatch-btn:hover {
+  border-color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-btn--primary {
+  background: var(--surface-accent, #8b9cff);
+  border-color: var(--surface-accent, #8b9cff);
+  color: var(--ink-on-accent, #0f1115);
+}
+
+.tn-dispatch-btn--primary:hover {
+  border-color: var(--ink-fg, #e6e8ee);
+}
+
+.tn-dispatch-btn--danger {
+  color: var(--ink-error, #ff7a7a);
+}
+
+.tn-dispatch-btn--danger:hover {
+  border-color: var(--ink-error, #ff7a7a);
+}
+
+.tn-dispatch-btn--sm {
+  min-height: 24px;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+}
+
+.tn-dispatch-btn[aria-disabled="true"],
+.tn-dispatch-btn:disabled {
+  color: var(--ink-muted, #9aa3b5);
+  cursor: not-allowed;
+}
+
+/* A disabled primary keeps the accent fill, so it keeps the ink that reads
+   on that fill: ink.muted on ink.accent is 1.4:1 and reads as nothing. The
+   whole button dims instead, so the label stays legible. */
+.tn-dispatch-btn--primary:disabled {
+  color: var(--ink-on-accent, #0f1115);
+  opacity: 0.55;
+}
+
+/* the id inside a button keeps the button's ink: ink.baton on the accent
+   fill would be 1.00:1, so a primary button keeps ink.on-accent and a danger
+   button keeps ink.error */
+.tn-dispatch-btn code {
+  color: inherit;
+}
+
+.tn-dispatch-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+  min-width: 0;
+}
+
+.tn-dispatch-field > span {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-field input,
+.tn-dispatch-field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  background: var(--surface-page, #0f1115);
+  border: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  border-radius: var(--radius-control, 2px);
+  color: var(--ink-fg, #e6e8ee);
+  font: inherit;
+  line-height: var(--lh-chrome, 1.45);
+}
+
+.tn-dispatch-field textarea {
+  min-height: 64px;
+  resize: vertical;
+}
+
+.tn-dispatch-field input::placeholder,
+.tn-dispatch-field textarea::placeholder {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+.tn-dispatch-form {
+  display: flex;
+  /* The card is a column; a form inside it is a row, so a field's flex
+     basis is its width and not its height. */
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3, 12px);
+}
+
+.tn-dispatch-form .tn-dispatch-field {
+  flex: 1 1 260px;
+}
+
+.tn-dispatch-reassign {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2, 8px);
+  padding-top: var(--space-2, 8px);
+  border-top: var(--border-hairline, 1px) solid color-mix(in srgb, var(--ink-rule, #3a4150) 45%, transparent);
+}
+
+.tn-dispatch-reassign .tn-dispatch-field {
+  flex: 1 1 160px;
+}
+
+.tn-dispatch-reassign .tn-dispatch-hint,
+.tn-dispatch-reassign .tn-dispatch-alert {
+  flex: 1 1 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tn-dispatch-alert {
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border-inline-start: var(--border-focus, 2px) solid var(--ink-error, #ff7a7a);
+  background: var(--surface-canvas, #1e1e1e);
+  color: var(--ink-error, #ff7a7a);
+}
+
+.tn-dispatch-note {
+  color: var(--ink-muted, #9aa3b5);
+}
+
+/* ---------- responsive: 1440 designed, usable at 390 ---------- */
+
+@media (max-width: 1200px) {
+  .tn-dispatch-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .tn-dispatch-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tn-dispatch-kv {
+    grid-template-columns: 8ch minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .tn-dispatch {
+    padding-inline: var(--space-3, 12px);
+  }
+
+  .tn-dispatch-card {
+    padding: var(--space-3, 12px);
+  }
+
+  .tn-dispatch-grid-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tn-dispatch-table {
+    display: block;
+  }
+
+  .tn-dispatch-table thead {
+    display: none;
+  }
+
+  .tn-dispatch-table tbody {
+    display: block;
+  }
+
+  .tn-dispatch-table tr {
+    display: block;
+    padding: var(--space-2, 8px) 0;
+    border-bottom: var(--border-hairline, 1px) solid var(--ink-rule, #3a4150);
+  }
+
+  .tn-dispatch-table td {
+    display: flex;
+    gap: var(--space-3, 12px);
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--space-1, 4px) 0;
+    border-bottom: 0;
+  }
+
+  .tn-dispatch-table td::before {
+    content: attr(data-label);
+    color: var(--ink-muted, #9aa3b5);
+    flex: 0 0 auto;
+  }
+
+  .tn-dispatch-axis li {
+    flex-basis: 100%;
+  }
+}

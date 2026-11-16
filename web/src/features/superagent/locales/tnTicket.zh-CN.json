@@ -1,0 +1,131 @@
+{
+  "tnTicket": {
+    "title": "工单",
+    "lede": "对话、工人进度、工人报告与只读的 Git 交付检查。",
+    "back": "← 返回",
+    "missing": "缺少工单 ID。",
+    "loading": "正在读取任务…",
+    "loadError": "无法读取此任务，请稍后重试。",
+    "notFound": "未找到任务。",
+    "copyId": "复制 ID",
+    "meta": {
+      "workspace": "工作区",
+      "source": "来源",
+      "sourceId": "来源 ID",
+      "triggerId": "触发 ID",
+      "worker": "工人",
+      "attempts": "尝试次数",
+      "mode": "模式",
+      "outcome": "观察结果",
+      "switches": "切换",
+      "created": "创建于",
+      "updated": "更新于",
+      "duration": "耗时",
+      "ended": "结束于",
+      "none": "—",
+      "ptcAgent": "PTC 代理",
+      "manual": "手动请求",
+      "scheduled": "定时任务",
+      "speculative": "推测计划 — 执行前请先审阅"
+    },
+    "section": {
+      "conversation": "对话",
+      "progress": "工人进度",
+      "report": "报告",
+      "delivery": "Git 交付检查"
+    },
+    "conversation": {
+      "label": "记录 — j/k 滚动一行",
+      "loading": "正在读取任务动态…",
+      "error": "无法读取任务动态。",
+      "empty": "暂无任务动态。",
+      "who": {
+        "created": "已创建",
+        "instruction": "指令",
+        "source": "来源",
+        "report": "更新",
+        "closed": "已关闭"
+      },
+      "log": "执行日志",
+      "logHide": "隐藏执行日志",
+      "logNote": "此日志是工人会话；你跟踪并关闭的是上面的任务。"
+    },
+    "actions": {
+      "close": "关闭任务",
+      "closed": "已关闭",
+      "closeFailed": "无法关闭此任务，工人仍在运行。",
+      "retry": "重试",
+      "approve": "批准计划并运行",
+      "discard": "丢弃计划"
+    },
+    "composer": {
+      "label": "输入框",
+      "placeholder": "回复工人，或在行首按 / …",
+      "send": "发送",
+      "status": "Enter 发送 · Shift+Enter（或 Ctrl+J）换行 · 行首 / 打开命令面板并预填 /",
+      "sent": "已添加到任务 · Enter 发送 · Shift+Enter 换行",
+      "empty": "没有可发送的内容 · Enter 发送 · Shift+Enter 换行",
+      "failed": "无法添加此指令，请稍后重试。",
+      "daemonFailed": "无法添加此指令。守护进程任务只在阻塞或等待时接受指令。",
+      "trapPending": "请先确认上面的请求 — 该提示挡在输入框之前。",
+      "closedNote": "此任务不再接受指令。",
+      "daemonNote": "此守护进程任务只在阻塞或等待时接受指令。"
+    },
+    "progress": {
+      "elapsed": "已用时",
+      "steps": "{{done}} / {{total}} 步",
+      "phase": {
+        "queued": "排队中",
+        "running": "运行中",
+        "waiting": "等待中",
+        "completed": "已完成",
+        "failed": "失败",
+        "cancelled": "已取消"
+      },
+      "none": "此任务暂无工人进度。"
+    },
+    "report": {
+      "heading": "工人报告",
+      "empty": "暂无报告。工人在完成或需要你时会写一份。",
+      "question": "问题"
+    },
+    "delivery": {
+      "workspace": "工作区",
+      "branch": "分支",
+      "base": "基线",
+      "host": "主机",
+      "cleanup": "清理",
+      "gitCheck": "Git 检查",
+      "decision": "决定",
+      "notRecorded": "未记录",
+      "cleanupPending": "待清理",
+      "cleanupClear": "无待清理项",
+      "unsupported": "此运行时无法检查 — 请手动审阅差异",
+      "checked": "已随最新报告检查",
+      "noReport": "暂无报告",
+      "decisionDone": "已交付",
+      "decisionNeedsYou": "需要你 — 在本页回答或重试",
+      "decisionFailed": "失败 — 重试或关闭",
+      "decisionOpen": "进行中",
+      "decisionClosed": "已关闭",
+      "contract": "工单交付约定：工人在结束前提交自己的改动，上面的报告就是它发出的那一份。此检查只读取 Git 状态 — 从不修改工作区，并且在允许任何合并落地之前会再次运行。"
+    },
+    "clarify": {
+      "heading": "在工单开始前确认请求",
+      "score": "清晰度 {{score}}",
+      "below": "清晰度 {{score}} — 低于 0.6 阈值",
+      "original": "原始提示",
+      "review": "审阅扩展后的请求 — 修改任何不符合你本意的地方。",
+      "assumptions": "假设",
+      "questions": "待解问题",
+      "confirm": "确认并开始",
+      "asDrafted": "按草稿确认",
+      "failed": "无法确认，请稍后重试。",
+      "loading": "正在读取澄清…",
+      "status": "Enter 确认 · Shift+Enter（或 Ctrl+J）换行 · Esc 回到输入框",
+      "empty": "没有可确认的内容 · Enter 确认 · Shift+Enter 换行",
+      "sent": "已确认 · 工单已排队",
+      "needsYou": "需要你"
+    }
+  }
+}

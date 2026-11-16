@@ -1,0 +1,29 @@
+[
+  {
+    "pace": {
+      "primary": {
+        "deltaPercent": -36,
+        "expectedUsedPercent": 70,
+        "stage": "farBehind",
+        "summary": "36% in reserve | Expected 70% used | Lasts until reset",
+        "willLastToReset": true
+      }
+    },
+    "provider": "stepfun",
+    "rateWindowLabels": {
+      "primary": "Credit"
+    },
+    "source": "web",
+    "usage": {
+      "primary": {
+        "resetDescription": "Nov 19 at 6:53\u202fAM",
+        "resetsAt": "2026-11-19T12:53:29Z",
+        "usedPercent": 33.96033456250001,
+        "windowMinutes": 43200
+      },
+      "secondary": null,
+      "tertiary": null,
+      "updatedAt": "2026-11-10T06:56:15Z"
+    }
+  }
+]

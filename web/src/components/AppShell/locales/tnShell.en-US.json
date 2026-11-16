@@ -1,0 +1,30 @@
+{
+  "tnShell": {
+    "nav": {
+      "primary": "Primary navigation",
+      "inbox": "Inbox",
+      "tasks": "Tasks",
+      "agents": "Agents",
+      "lines": "Lines",
+      "dispatch": "Dispatch",
+      "agentFleet": "Agent fleet",
+      "runs": "Logs",
+      "sources": "Sources",
+      "plugins": "Plugins",
+      "skillsMcp": "Skills & MCP",
+      "settings": "Settings"
+    },
+    "palette": {
+      "trigger": "Command",
+      "open": "Open command palette",
+      "hint": "Ctrl K"
+    },
+    "brand": {
+      "tagline": "super-agent"
+    },
+    "loading": "Loading…",
+    "network": {
+      "offline": "Offline. Data may be out of date."
+    }
+  }
+}
